@@ -9,3 +9,21 @@ script = ExtResource( 1 )
 
 [node name="pc" parent="." instance=ExtResource( 2 )]
 position = Vector2( 79.148, 55.1796 )
+
+[node name="gui" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="status" type="Label" parent="gui"]
+anchor_top = -0.0157879
+anchor_bottom = -0.0157879
+margin_left = 461.0
+margin_top = 62.0
+margin_right = 649.0
+margin_bottom = 204.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

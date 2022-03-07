@@ -10,8 +10,9 @@ extends Node2D
 func _ready():
 	pass # Replace with function body.
 
-var x = 0
-var y = 0
+var x = 5
+var y = 5
+var tick = 0
 
 func _unhandled_input(event):
 	var acted = false
@@ -30,15 +31,17 @@ func _unhandled_input(event):
 	
 	if acted:
 		$pc.position = dungeon_to_screen(x,y)
+		tick += 1
+		$gui/status.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
 	
-
 # coordinate conversion from dungeon space to display space
+# possibly later: zooming or panning to handle large maps? our maps get pretty large!
 const TILE_WIDTH: int = 24
 const TILE_HEIGHT: int = 36
-func dungeon_to_screen(x: int, y: int
+func dungeon_to_screen(lx: int, ly: int
 		 , sx: int = 0, sy: int = 0) -> Vector2:
-	var scx = x * TILE_WIDTH + sx
-	var scy = y * TILE_HEIGHT + sy
+	var scx = lx * TILE_WIDTH + sx
+	var scy = ly * TILE_HEIGHT + sy
 	return Vector2(scx,scy)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
