@@ -10,6 +10,7 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
+
 }
 
 [application]
@@ -18,6 +19,10 @@ config/name="7DRL2022"
 run/main_scene="res://scenes/root.tscn"
 run/low_processor_mode=true
 config/icon="res://icon.png"
+
+[gdnative]
+
+singletons=[  ]
 
 [input]
 
