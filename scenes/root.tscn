@@ -8,8 +8,11 @@
 position = Vector2( 0.378738, 0.00562859 )
 script = ExtResource( 1 )
 
+[node name="terrain" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
 [node name="pc" parent="." instance=ExtResource( 2 )]
-position = Vector2( 79.148, 55.1796 )
+position = Vector2( 268.288, 92.4556 )
 
 [node name="gui" type="Control" parent="."]
 margin_right = 40.0
@@ -18,16 +21,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="status" type="Label" parent="gui"]
-anchor_top = -0.0157879
-anchor_bottom = -0.0157879
-margin_left = 836.517
-margin_top = 63.046
-margin_right = 1024.52
-margin_bottom = 205.046
+[node name="status_panel" type="ColorRect" parent="gui"]
+margin_top = 516.0
+margin_right = 1037.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="terrain" type="Node2D" parent="."]
-script = ExtResource( 3 )
+[node name="text" type="Label" parent="gui/status_panel"]
+margin_right = 1037.0
+margin_bottom = 83.0
+text = "lorem ipsum
+"

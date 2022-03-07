@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://resources/curses_24_36.png" type="Texture" id=1]
+[ext_resource path="res://sprites/backstop.tscn" type="PackedScene" id=2]
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=1]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 264, 216, 24, 36 )
 
 [node name="knight" type="Sprite"]
-position = Vector2( 220.361, 32.2641 )
-texture = SubResource( 5 )
+position = Vector2( 64, 64 )
+z_index = 2
+texture = SubResource( 1 )
+
+[node name="backstop" parent="." instance=ExtResource( 2 )]
+position = Vector2( 7.62939e-06, -3.8147e-06 )
