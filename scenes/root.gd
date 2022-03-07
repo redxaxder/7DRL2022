@@ -28,7 +28,7 @@ func _unhandled_input(event):
 	if acted:
 		$pc.position = SCREEN.dungeon_to_screen(x,y)
 		tick += 1
-		$gui/status.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
+		$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
 
 func try_move(i,j) -> bool:
 	if $terrain.at(i,j) == '#':
