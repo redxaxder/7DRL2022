@@ -23,10 +23,9 @@ TODO:
   - HUD: rage and fatigue levels
          combat log
          fatigue recovery rate
-  - controls:
-     vim + wasd + arrows to move
-     space to use item
-     . to pass
+  + controls:
+   + vim + wasd + arrows to move
+   + . to pass
   - first dijktra map
 
 
@@ -48,6 +47,7 @@ TODO:
       - apple: recover 30 fatigue
       - turkey: recover all fatigue
       - water: adds 5 to fatigue recovery rate
+      - space to use item
    - add doors
    - door handling when raged/calm
    - time system
