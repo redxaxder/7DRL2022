@@ -5,10 +5,9 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$terrain._ready()
+	$terrain.load_map(0)
 	pass # Replace with function body.
 
 var x = 3
@@ -44,7 +43,7 @@ func try_move(i,j) -> bool:
 		x = i
 		y = j
 		return true
-		
+
 
 func clear_terrain():
 	for child in $terrain.get_children():
