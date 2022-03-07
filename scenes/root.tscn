@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/root.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/terrain.gd" type="Script" id=3]
 
 [node name="root" type="Node2D"]
 position = Vector2( 0.378738, 0.00562859 )
@@ -20,10 +21,13 @@ __meta__ = {
 [node name="status" type="Label" parent="gui"]
 anchor_top = -0.0157879
 anchor_bottom = -0.0157879
-margin_left = 461.0
-margin_top = 62.0
-margin_right = 649.0
-margin_bottom = 204.0
+margin_left = 836.517
+margin_top = 63.046
+margin_right = 1024.52
+margin_bottom = 205.046
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="terrain" type="Node2D" parent="."]
+script = ExtResource( 3 )
