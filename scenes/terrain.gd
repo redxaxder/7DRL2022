@@ -1,5 +1,6 @@
 extends Node2D
 
+var SCREEN = preload("res://lib/screen.gd").new()
 var maps = preload("res://resources/maps/static_map.gd").new().maps
 
 var width: int = 20
@@ -42,6 +43,23 @@ func load_map(ix):
 		for i in range(room.z):
 			var y = room.y + i
 			contents[to_linear(bottom_edge, y)] = '#'
+
+
+var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
+var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
+
+const offset: Vector2 = Vector2(-12,-18)
+func _draw():
+	#instead of managing a bajillion sprites in here we manually
+	#draw walls and floors
+	for i in range(width):
+		for j in range(height):
+			var pos = SCREEN.dungeon_to_screen(i,j)
+			var tile = at(i,j)
+			if tile == '#':
+				draw_texture(wall_txtr,pos + offset)
+			elif tile == null:
+				draw_texture(floor_txtr,pos + offset)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
