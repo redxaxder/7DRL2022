@@ -6,24 +6,23 @@ var maps = preload("res://resources/maps/static_map.gd").new().maps
 var width: int = 20
 var height: int = 6
 var hole_punch_chance: float = 0.1
+var pan: Vector2 = Vector2(0,0)
 
-var contents: Array = \
-  ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#',
-   '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
-   '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
-   '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
-   '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
-   '#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#']
+var contents: Array = []
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
 func at(x,y):
-	return contents[to_linear(x,y)]
+	if x >= 0 && x < width && y >= 0 && y < height:
+		return contents[to_linear(x,y)]
+	else:
+		return '#'
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	load_map(0)
 
 func to_linear(x,y) -> int:
 	return width * y + x
@@ -115,9 +114,13 @@ const offset: Vector2 = Vector2(-12,-18)
 func _draw():
 	#instead of managing a bajillion sprites in here we manually
 	#draw walls and floors
-	for i in range(width):
-		for j in range(height):
-			var pos = SCREEN.dungeon_to_screen(i,j)
+	var min_x = max(pan.x,0)
+	var max_x = min(pan.x + SCREEN.VIEWPORT_WIDTH, width)
+	var min_y = max(pan.y,0)
+	var max_y = min(pan.y + SCREEN.VIEWPORT_HEIGHT, height)
+	for i in range(min_x,max_x):
+		for j in range(min_y,max_y):
+			var pos = SCREEN.dungeon_to_screen(i-pan.x,j-pan.y)
 			var tile = at(i,j)
 			if tile == '#':
 				draw_texture(wall_txtr,pos + offset)
