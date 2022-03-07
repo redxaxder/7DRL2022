@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://resources/curses_24_36.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 264, 216, 24, 36 )
+
+[node name="knight" type="Sprite"]
+position = Vector2( 220.361, 32.2641 )
+texture = SubResource( 5 )
