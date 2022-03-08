@@ -11,6 +11,7 @@ onready var combatLog = $hud/CombatLog
 signal end_player_turn()
 
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
+const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 
 func _ready():
@@ -22,6 +23,7 @@ func _ready():
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
 	spawn_mob(knight_scene, Vector2(10,10))
+	spawn_mob(monk_scene, Vector2(5, 5))
 	spawn_random_consumable(Vector2(15,15))
 
 func spawn_mob(prefab: PackedScene, pos: Vector2): 
