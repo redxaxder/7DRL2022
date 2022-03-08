@@ -14,10 +14,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/actor.gd"
 }, {
-"base": "Node",
-"class": "Log",
+"base": "PanelContainer",
+"class": "CombatLog",
 "language": "GDScript",
-"path": "res://scenes/CombatLog.gd"
+"path": "res://scenes/log.gd"
 }, {
 "base": "Sprite",
 "class": "Mob",
@@ -36,7 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Actor": "",
-"Log": "",
+"CombatLog": "",
 "Mob": "",
 "PC": "",
 "Terrain": ""

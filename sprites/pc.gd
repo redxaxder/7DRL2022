@@ -2,24 +2,25 @@ extends "res://lib/actor.gd"
 
 class_name PC
 
-var rage = 0
-var fatigue = 0
-var recovery = 0
+var rage: int = 0
+var rage_decay: int = 0
+var fatigue: int = 0
+var recovery: int = 0
 
 func _ready():
 	player = true
 	speed = 6
-	pos = Vector2(3,3)
+	pos = Vector2(30,30)
 
-
-var starting_rage = 20
-var rage_on_got_hit = 5
-var fatigue_on_got_hit = 5
+var starting_rage: int = 20
+var rage_on_got_hit: int = 10
+var fatigue_on_got_hit: int = 5
 
 func injure():
 	if rage > 0:
 		rage += rage_on_got_hit
 		fatigue += fatigue_on_got_hit
+		combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
 		combatLog.say("You suffer a fatal blow!")
 	else:
@@ -30,7 +31,9 @@ func injure():
 
 func tick():
 	if rage > 0:
-		rage -= 1
+		rage -= rage_decay
+		rage = max(rage,0)
+		rage_decay = 1 + fatigue / 40
 	elif fatigue > 0:
 		fatigue -= recovery
 		fatigue = max(fatigue,0)

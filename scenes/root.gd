@@ -4,8 +4,9 @@ extends Node2D
 var SCREEN = preload("res://lib/screen.gd").new()
 var constants = preload("res://lib/const.gd").new()
 
-onready var pc = $pc
-onready var terrain = $terrain
+onready var pc: PC = $pc
+onready var terrain: Terrain = $terrain
+onready var combatLog = $hud/CombatLog
 
 signal end_player_turn(pan)
 
@@ -16,10 +17,9 @@ func _ready():
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.position = SCREEN.dungeon_to_screen(pc.pos.x - pan.x,pc.pos.y - pan.y)
 	pc.terrain = terrain
-	pc.combatLog = $CombatLog
+	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
-	$CombatLog.label = $hud/log_panel/log
-	$CombatLog.say("welcome to the dungeon")
+	combatLog.say("waaa")
 	spawn_mob(knight_scene, Vector2(10,10))
 
 func spawn_mob(prefab: PackedScene, pos: Vector2): 
@@ -27,7 +27,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 	mob.pos = pos
 	mob.pc = pc
 	mob.terrain = terrain
-	mob.combatLog = $CombatLog
+	mob.combatLog = combatLog
 	add_child(mob)
 	$Scheduler.register_actor(mob)
 
@@ -56,12 +56,19 @@ func _unhandled_input(event):
 			acted = true
 		elif event.is_action_pressed("action"):
 			acted = true
-		
+
 		if acted:
 			pc.position = SCREEN.dungeon_to_screen(pc.pos.x - pan.x,pc.pos.y - pan.y)
 			tick += 1
 			pc.tick()
-			$hud/status_panel/text.text = "rage {0}\nfatigue {1}\nrecovery {2}".format([pc.rage, pc.fatigue, pc.recovery])
+			var status_text = ""
+			if pc.rage > 0:
+				status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
+				status_text += "fatigue {0}\n".format([pc.fatigue])
+			elif pc.fatigue > 0:
+				status_text += "recovery {0}\n".format([pc.recovery])
+				status_text += "fatigue {0}\n".format([pc.fatigue])
+			$hud/status_panel/status.text = status_text
 			terrain.update_dijkstra_map([pc.pos])
 			emit_signal(constants.END_PLAYER_TURN, pan, pc.pos, terrain)
 

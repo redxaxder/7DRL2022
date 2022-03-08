@@ -5,16 +5,16 @@ func _ready():
 	name = "knight"
 	._ready()
 
-func on_turn(pc_x: int, pc_y: int, terrain):
+func on_turn():
 	var d_map = terrain.dijkstra_map
 	if pc_adjacent():
 		attack()
 	else:
-		var next = seek_to_player(pc_x, pc_y, self.pos.x, self.pos.y, d_map, terrain)
+		var next = seek_to_player()
 		self.pos = next
 
 func attack():
-	combatLog.say("the knight attacks!")
+	combatLog.say("the knight stabs you!")
 	pc.injure()
 
 func draw(pan: Vector2) -> void:

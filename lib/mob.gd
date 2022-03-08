@@ -12,8 +12,11 @@ func pc_adjacent() -> bool:
 	var v = pos - pc.pos
 	return (abs(v.x) + abs(v.y) <= 1)
 
-func seek_to_player(px: int, py: int, ex: int, ey: int, d_map: Array, terrain: Node2D) -> Vector2:
+func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
+	var ex = pos.x
+	var ey = pos.y
+	var d_map = terrain.dijkstra_map
 	var smallest_val = d_map[terrain.to_linear(ex, ey)]
 	var candidates = [Vector2(ex + 1, ey), Vector2(ex, ey + 1), Vector2(ex - 1, ey), Vector2(ex, ey - 1)]
 	for c in candidates:

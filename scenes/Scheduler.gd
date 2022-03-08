@@ -40,7 +40,7 @@ func next_turn(player_pos: Vector2, terrain: Node2D, pan: Vector2):
 			if actor.player:
 				self.player_turn = true
 				return
-			actor.on_turn(player_pos.x, player_pos.y, terrain)
+			actor.on_turn()
 			next_turn(player_pos, terrain, pan)
 
 func priority(a) -> int:
