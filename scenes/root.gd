@@ -2,9 +2,20 @@ extends Node2D
 
 
 var SCREEN = preload("res://lib/screen.gd").new()
+var constants = preload("res://lib/const.gd").new()
+
+signal end_player_turn(pan)
+
+export(PackedScene) var knight_scene
 
 func _ready():
 	$terrain.load_map(1)
+	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
+	$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
+	var knight = knight_scene.instance()
+	knight.pos.x = 1
+	knight.pos.y = 1
+	add_child(knight)
 #	$terrain.dijstra_map(Vector2(2, 2), [Vector2(3, 3), Vector2(4, 4)], $terrain.contents)
 
 var x = 3
@@ -39,6 +50,7 @@ func _unhandled_input(event):
 		$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 		tick += 1
 		$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
+		emit_signal(constants.END_PLAYER_TURN, pan)
 
 
 const look_distance_h: int = 6
