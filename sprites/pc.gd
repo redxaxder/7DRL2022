@@ -33,6 +33,8 @@ func injure():
 		rage += rage_on_got_hit + starting_rage
 		fatigue += fatigue_on_got_hit
 		recovery = 0
+	combatLog.say("You die.")
+	emit_signal(constants.PLAYER_DIED)
 
 
 func tick():

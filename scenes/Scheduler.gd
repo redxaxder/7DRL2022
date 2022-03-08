@@ -36,7 +36,7 @@ func next_turn():
 		return next_turn()
 	for actor in turns_per_round.keys():
 		if priority(actor) == largest:
-			turns_per_round[actor] -= 1	
+			turns_per_round[actor] -= 1
 			if actor.player:
 				self.player_turn = true
 				return

@@ -18,7 +18,7 @@ TODO:
     + recover 1 fatigue per turn, and increase recovery rate each turn
     + just blocks rage
   + no character progression
-  - handle pc death
+  + handle pc death
   + all doorways are open
   + HUD: rage and fatigue levels
        + combat log
@@ -31,6 +31,9 @@ TODO:
 
 - second pass:
    - 3 enemies
+     - knight
+     - monk
+     - samurai
    - 3 levels
      - path to next level activates if you step on it
    - handle knockback
