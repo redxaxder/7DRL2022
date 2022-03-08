@@ -26,8 +26,25 @@ func attack():
 			self.pc.injure()
 			if self.cur_block_cooldown > 0:
 				self.cur_block_cooldown -= 1
+				
+func is_hit(dir: Vector2):
+	if self.blocking:
+		var v = pos - pc.pos
+		if abs(v.x) + abs(v.y) < 1 && (pc.fatigue <= 0 || pc.rage > 0):
+			emit_signal(constants.ENEMY_HIT, dir)
+			self.blocking = false
+			self.cur_block_cooldown = self.block_cooldown
+			self.combatLog.say("the knight blocks your attack!")
+			self.combatLog.say("the knight goes flying!")
+			self.knockback(dir)
+	else:
+		.is_hit(dir)
 
 func draw() -> void:
 	var t_pos = self.SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
 	self.transform.origin.x = float(t_pos.x)
 	self.transform.origin.y = float(t_pos.y)
+	if self.blocking:
+		self.modulate = Color(0, 0, 1)
+	else:
+		self.modulate = Color(1, 1, 1)

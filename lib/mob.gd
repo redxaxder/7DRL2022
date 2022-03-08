@@ -15,11 +15,11 @@ func pc_adjacent() -> bool:
 	return (abs(v.x) + abs(v.y) <= 1)
 	
 func is_hit(dir: Vector2):
-		var v = pos - pc.pos
-		if abs(v.x) + abs(v.y) < 1:
-			emit_signal(constants.ENEMY_HIT, dir)
-			emit_signal(constants.DESCHEDULE, self)
-			queue_free()
+	var v = pos - pc.pos
+	if abs(v.x) + abs(v.y) < 1 && pc.fatigue <= 0:
+		emit_signal(constants.ENEMY_HIT, dir)
+		emit_signal(constants.DESCHEDULE, self)
+		queue_free()
 
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
