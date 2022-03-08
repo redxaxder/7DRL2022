@@ -13,6 +13,7 @@ signal end_player_turn()
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
 const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
+const door_scene = preload("res://sprites/door.tscn")
 
 func _ready():
 	terrain.load_random_map()
@@ -22,19 +23,26 @@ func _ready():
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
-	spawn_mob(knight_scene, Vector2(10,10))
-	spawn_mob(monk_scene, Vector2(5, 5))
+	spawn_dynamic_mob(knight_scene, Vector2(10,10))
+	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
 	spawn_random_consumable(Vector2(15,15))
+	
+func spawn_door(pos: Vector2):
+	spawn_mob(door_scene, pos)
 
-func spawn_mob(prefab: PackedScene, pos: Vector2): 
+func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
+	var mob = spawn_mob(prefab, pos)
+	$Scheduler.register_actor(mob)
+	mob.connect(constants.DESCHEDULE, $Scheduler, "unregister_actor")
+	
+func spawn_mob(prefab: PackedScene, pos: Vector2):
 	var mob = prefab.instance() as Mob
 	mob.pos = pos
 	mob.pc = pc
 	mob.terrain = terrain
 	mob.combatLog = combatLog
 	add_child(mob)
-	$Scheduler.register_actor(mob)
-	mob.connect(constants.DESCHEDULE, $Scheduler, "unregister_actor")
+	return mob
 
 func spawn_random_consumable(p: Vector2):
 	var item = pickup_scene.instance() as Pickup

@@ -105,6 +105,11 @@ func load_random_map():
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
 	return load(path)
+	
+func spawn_door(x: int, y: int):
+	contents[to_linear(x, y)] = ' '
+	var root = get_parent()
+	root.spawn_door(Vector2(x, y))
 
 func load_map(ix): # max index: 26460
 	var map = load_map_resource(ix)
@@ -128,12 +133,12 @@ func load_map(ix): # max index: 26460
 			# bottom edge
 			contents[to_linear(x, bottom_edge)] = '#'
 			if rand_range(0, 1) < hole_punch_chance:
-				contents[to_linear(x, bottom_edge)] = ' '
+				spawn_door(x, bottom_edge)
 				hole_punched_x = true
 		# ensure x holes are punched
 		if not hole_punched_x:
 			var x = int(rand_range(room.x+1, right_edge-1))
-			contents[to_linear(x, bottom_edge)] = ' '
+			spawn_door(x, bottom_edge)
 		for i in range(room.z):
 			var y = room.y + i
 			# left edge
@@ -142,12 +147,12 @@ func load_map(ix): # max index: 26460
 			# right edge
 			contents[to_linear(right_edge, y)] = '#'
 			if rand_range(0, 1) < hole_punch_chance:
-				contents[to_linear(right_edge, y)] = ' '
+				spawn_door(right_edge, y)
 				hole_punched_y = true
 		# ensure y holes are punched
 		if not hole_punched_y:
 			var y = int(rand_range(room.y+1, bottom_edge-1))
-			contents[to_linear(right_edge, y)] = ' '
+			spawn_door(right_edge, y)
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
