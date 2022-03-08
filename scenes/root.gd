@@ -4,7 +4,7 @@ extends Node2D
 var SCREEN = preload("res://lib/screen.gd").new()
 
 func _ready():
-	$terrain.load_map(1)
+	$terrain.load_map(100)
 
 
 var x = 3
