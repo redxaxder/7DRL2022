@@ -2,6 +2,8 @@ extends "res://lib/actor.gd"
 
 class_name PC
 
+signal player_died()
+
 var rage: int = 0
 var rage_decay: int = 0
 var fatigue: int = 0
@@ -24,12 +26,14 @@ func injure():
 		fatigue += fatigue_on_got_hit
 		combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
-		combatLog.say("You suffer a fatal blow!")
+		combatLog.say("You die.")
+		emit_signal(constants.PLAYER_DIED)
 	else:
 		combatLog.say("You fly into a rage!")
 		rage += rage_on_got_hit + starting_rage
 		fatigue += fatigue_on_got_hit
 		recovery = 0
+
 
 func tick():
 	if rage > 0:

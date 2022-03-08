@@ -10,16 +10,16 @@ onready var combatLog = $hud/CombatLog
 
 signal end_player_turn()
 
-export(PackedScene) var knight_scene
+const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
 
 func _ready():
 	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
+	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.position = SCREEN.dungeon_to_screen(pc.pos.x,pc.pos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
-	combatLog.say("waaa")
 	spawn_mob(knight_scene, Vector2(10,10))
 
 func spawn_mob(prefab: PackedScene, pos: Vector2): 
@@ -108,6 +108,9 @@ func try_move(i,j) -> bool:
 		pc.pos.y = j
 		return true
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _handle_death():
+	combatLog.say("ouch")
+	print("oof")
+#	set_process_unhandled_input(false)
+#	get_parent().set_process_unhandled_input(true)
+#	queue_free()
