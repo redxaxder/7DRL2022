@@ -14,10 +14,10 @@ var pos: Vector2
 func _ready():
 	add_to_group(constants.MOBS)
 	
-func _on_turn(current: Sprite, pc_x: int, pc_y: int):
-	var d_map = $terrain.dijkstra_map(Vector2(current.pos.x, current.pos.y), [Vector2(pc_x, pc_y)], $terrain.contents)
-	var next = ai.seek_to_player(pc_x, pc_y, current.pos.x, current.pos.y, d_map)
-	current.pos = next	
+func on_turn(pc_x: int, pc_y: int, terrain):
+	var d_map = terrain.dijkstra_map(Vector2(self.pos.x, self.pos.y), [Vector2(pc_x, pc_y)], terrain.contents)
+	var next = ai.seek_to_player(pc_x, pc_y, self.pos.x, self.pos.y, d_map, terrain)
+	self.pos = next	
 	
 func draw(pan: Vector2) -> void:
 	var t_pos = SCREEN.dungeon_to_screen(self.pos.x - pan.x,self.pos.y - pan.y)
