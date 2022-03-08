@@ -17,8 +17,8 @@ func attack():
 	combatLog.say("the knight stabs you!")
 	pc.injure()
 
-func draw(pan: Vector2) -> void:
-	var t_pos = SCREEN.dungeon_to_screen(self.pos.x - pan.x,self.pos.y - pan.y)
+func draw() -> void:
+	var t_pos = SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
 	self.transform.origin.x = float(t_pos.x)
 	self.transform.origin.y = float(t_pos.y)
 

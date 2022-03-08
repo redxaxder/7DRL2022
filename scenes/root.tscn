@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/root.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
@@ -15,10 +15,32 @@ font_data = ExtResource( 7 )
 size = 15
 font_data = ExtResource( 7 )
 
+[sub_resource type="GDScript" id=3]
+script/source = "extends Camera2D
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+var pan := Vector2(0.0,0.0)
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
 [node name="root" type="Node2D"]
 position = Vector2( 0.378738, 0.00562859 )
 script = ExtResource( 1 )
 knight_scene = ExtResource( 5 )
+
+[node name="run" type="Node2D" parent="."]
 
 [node name="pc" parent="." instance=ExtResource( 2 )]
 position = Vector2( 268.288, 92.4556 )
@@ -91,3 +113,8 @@ __meta__ = {
 
 [node name="Scheduler" type="Node" parent="."]
 script = ExtResource( 4 )
+
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2( 508.517, 297.695 )
+current = true
+script = SubResource( 3 )

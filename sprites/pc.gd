@@ -6,6 +6,8 @@ var rage: int = 0
 var rage_decay: int = 0
 var fatigue: int = 0
 var recovery: int = 0
+var running: int = 0
+var run_dir: int = 0
 
 func _ready():
 	player = true

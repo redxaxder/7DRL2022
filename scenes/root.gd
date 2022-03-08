@@ -8,14 +8,14 @@ onready var pc: PC = $pc
 onready var terrain: Terrain = $terrain
 onready var combatLog = $hud/CombatLog
 
-signal end_player_turn(pan)
+signal end_player_turn()
 
 export(PackedScene) var knight_scene
 
 func _ready():
 	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
-	pc.position = SCREEN.dungeon_to_screen(pc.pos.x - pan.x,pc.pos.y - pan.y)
+	pc.position = SCREEN.dungeon_to_screen(pc.pos.x,pc.pos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
@@ -58,7 +58,7 @@ func _unhandled_input(event):
 			acted = true
 
 		if acted:
-			pc.position = SCREEN.dungeon_to_screen(pc.pos.x - pan.x,pc.pos.y - pan.y)
+			pc.position = SCREEN.dungeon_to_screen(pc.pos.x ,pc.pos.y)
 			tick += 1
 			pc.tick()
 			var status_text = ""
@@ -70,25 +70,35 @@ func _unhandled_input(event):
 				status_text += "fatigue {0}\n".format([pc.fatigue])
 			$hud/status_panel/status.text = status_text
 			terrain.update_dijkstra_map([pc.pos])
-			emit_signal(constants.END_PLAYER_TURN, pan, pc.pos, terrain)
+			emit_signal(constants.END_PLAYER_TURN)
 
 
 const look_distance_h: int = 6
 const look_distance_v: int = 3
 
-func update_pan(dir) -> void:
+func dir_to_vec(dir: int) -> Vector2:
 	match dir:
 		DIR.UP:
-			pan = Vector2(pc.pos.x-SCREEN.CENTER_X, pc.pos.y-look_distance_v-SCREEN.CENTER_Y)
+			return Vector2(0, -1)
 		DIR.DOWN:
-			pan = Vector2(pc.pos.x-SCREEN.CENTER_X,pc.pos.y+look_distance_v-SCREEN.CENTER_Y)
+			return Vector2(0,1)
 		DIR.LEFT:
-			pan = Vector2(pc.pos.x-SCREEN.CENTER_X-look_distance_h,pc.pos.y-SCREEN.CENTER_Y)
+			return Vector2(-1,0)
 		DIR.RIGHT:
-			pan = Vector2(pc.pos.x-SCREEN.CENTER_X+look_distance_h,pc.pos.y-SCREEN.CENTER_Y)
-	terrain.pan = pan
-	terrain.update()
-	
+			return Vector2(1,0)
+	return Vector2(0,0)
+
+func scale(v: Vector2, s: float) -> Vector2:
+	return Vector2(v.x * s, v.y*s)
+
+func update_pan(dir) -> void:
+	var pan := dir_to_vec(dir)
+
+	if abs(pan.x) > 0: # vary pan dist based on tile dimension
+		pan = scale(pan, SCREEN.TILE_WIDTH)
+	else:
+		pan = scale(pan, SCREEN.TILE_HEIGHT)
+	$camera.position = SCREEN.dungeon_to_screen(pc.pos.x, pc.pos.y) + SCREEN.CENTER + pan
 
 func try_move(i,j) -> bool:
 	if terrain.at(i,j) == '#':

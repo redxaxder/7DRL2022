@@ -7,7 +7,6 @@ var SCREEN = preload("res://lib/screen.gd").new()
 var width: int = 20
 var height: int = 6
 var hole_punch_chance: float = 0.1
-var pan: Vector2 = Vector2(0,0)
 
 var contents: Array = []
 var dijkstra_map: Array = []
@@ -157,19 +156,11 @@ var offset: Vector2 = Vector2(-SCREEN.TILE_WIDTH / 2,-SCREEN.TILE_HEIGHT / 2)
 func _draw():
 	#instead of managing a bajillion sprites in here we manually
 	#draw walls and floors
-	var min_x = max(pan.x,0)
-	var max_x = min(pan.x + SCREEN.VIEWPORT_WIDTH, width)
-	var min_y = max(pan.y,0)
-	var max_y = min(pan.y + SCREEN.VIEWPORT_HEIGHT, height)
-	for i in range(min_x,max_x):
-		for j in range(min_y,max_y):
-			var pos = SCREEN.dungeon_to_screen(i-pan.x,j-pan.y)
+	for i in range(width):
+		for j in range(height):
+			var pos = SCREEN.dungeon_to_screen(i,j)
 			var tile = at(i,j)
 			if tile == '#':
 				draw_texture(wall_txtr,pos + offset)
 			elif tile == null:
 				draw_texture(floor_txtr,pos + offset)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

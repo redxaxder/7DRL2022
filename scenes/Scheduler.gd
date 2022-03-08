@@ -16,16 +16,16 @@ var turns_per_round: Dictionary = {}
 func _ready():
 	self.player_turn = true
 
-func _end_player_turn(pan: Vector2, player_pos: Vector2, terrain: Node2D):
+func _end_player_turn():
 	self.player_turn = false
-	next_turn(player_pos, terrain, pan)
+	next_turn()
 	
 func register_actor(actor: Sprite):
 	actors.push_back(actor)
 	recalculate_turns()
 	
-func next_turn(player_pos: Vector2, terrain: Node2D, pan: Vector2):
-	get_tree().call_group(constants.MOBS, "draw", pan)
+func next_turn():
+	get_tree().call_group(constants.MOBS, "draw")
 	var largest: int = 0
 	for actor in turns_per_round.keys():
 		if priority(actor) > largest:
@@ -33,7 +33,7 @@ func next_turn(player_pos: Vector2, terrain: Node2D, pan: Vector2):
 	if largest == 0:
 		# time to recalculate
 		recalculate_turns()
-		return next_turn(player_pos, terrain, pan)
+		return next_turn()
 	for actor in turns_per_round.keys():
 		if priority(actor) == largest:
 			turns_per_round[actor] -= 1	
@@ -41,7 +41,7 @@ func next_turn(player_pos: Vector2, terrain: Node2D, pan: Vector2):
 				self.player_turn = true
 				return
 			actor.on_turn()
-			next_turn(player_pos, terrain, pan)
+			next_turn()
 
 func priority(a) -> int:
 	return turns_per_round[a] * 30 / a.speed
