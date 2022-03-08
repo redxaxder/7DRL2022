@@ -7,7 +7,7 @@ var SCREEN = preload("res://lib/screen.gd").new()
 # Declare member variables here. Examples:
 var pos: Vector2
 const player: bool = false
-const speed: int = 2
+const speed: int = 3
 # var a = 2
 # var b = "text"
 

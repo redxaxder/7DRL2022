@@ -5,7 +5,7 @@ extends Sprite
 # var a = 2
 # var b = "text"
 const player: bool = true
-var speed: int = 3
+var speed: int = 6
 
 
 # Called when the node enters the scene tree for the first time.

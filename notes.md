@@ -21,7 +21,7 @@ TODO:
   - handle pc death
   + all doorways are open
   - HUD: rage and fatigue levels
-         combat log
+       + combat log
          fatigue recovery rate
   + controls:
    + vim + wasd + arrows to move

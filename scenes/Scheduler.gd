@@ -28,21 +28,24 @@ func next_turn(player_pos: Vector2, terrain: Node2D, pan: Vector2):
 	get_tree().call_group(constants.MOBS, "draw", pan)
 	var largest: int = 0
 	for actor in turns_per_round.keys():
-		if turns_per_round[actor] > largest:
-			largest = turns_per_round[actor]
+		if priority(actor) > largest:
+			largest = priority(actor)
 	if largest == 0:
 		# time to recalculate
 		recalculate_turns()
 		return next_turn(player_pos, terrain, pan)
 	for actor in turns_per_round.keys():
-		if turns_per_round[actor] == largest:
+		if priority(actor) == largest:
 			turns_per_round[actor] -= 1	
 			if actor.player:
 				self.player_turn = true
 				return
 			actor.on_turn(player_pos.x, player_pos.y, terrain)
 			next_turn(player_pos, terrain, pan)
-		
+
+func priority(a) -> int:
+	return turns_per_round[a] * 30 / a.speed
+
 func recalculate_turns():
 	for a in actors:
 		turns_per_round[a] = a.speed
