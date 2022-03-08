@@ -8,4 +8,10 @@ var maps = [{
 		"width": 15,
 		"height": 15,
 		"rooms": [Vector3(0,0,5), Vector3(5, 0, 5), Vector3(0, 5, 5), Vector3(5, 5, 10)]
-	}]
+	},
+	{
+		"width": 5,
+		"height": 5,
+		"rooms": [Vector3(0, 0, 5)]
+	}
+	]

@@ -5,7 +5,8 @@ var SCREEN = preload("res://lib/screen.gd").new()
 
 func _ready():
 	$terrain.load_map(1)
-
+#	$terrain.dijstra_map(Vector2(2, 2), [Vector2(3, 3), Vector2(4, 4)], $terrain.contents)
+ 
 var x = 3
 var y = 3
 var tick = 0
