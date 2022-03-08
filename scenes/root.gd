@@ -19,6 +19,8 @@ func _ready():
 	knight.pos.x = 1
 	knight.pos.y = 1
 	add_child(knight)
+	$Scheduler.register_actor($pc)
+	$Scheduler.register_actor(knight)
 #	$terrain.dijstra_map(Vector2(2, 2), [Vector2(3, 3), Vector2(4, 4)], $terrain.contents)
 
 var x = 3
@@ -31,30 +33,31 @@ var tick = 0
 enum DIR{ UP, DOWN, LEFT, RIGHT}
 
 func _unhandled_input(event):
-	var acted = false
-	if event.is_action_pressed("left"):
-		acted = try_move(x-1,y)
-		if acted: update_pan(DIR.LEFT)
-	elif event.is_action_pressed("right"):
-		acted = try_move(x+1,y)
-		if acted: update_pan(DIR.RIGHT)
-	elif event.is_action_pressed("up"):
-		acted = try_move(x,y-1)
-		if acted: update_pan(DIR.UP)
-	elif event.is_action_pressed("down"):
-		acted = try_move(x,y+1)
-		if acted: update_pan(DIR.DOWN)
-	elif event.is_action_pressed("pass"):
-		acted = true
-	elif event.is_action_pressed("action"):
-		acted = true
-	
-	if acted:
-		pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
-		tick += 1
-		$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
-		$terrain.update_dijkstra_map([Vector2(x,y)])
-		emit_signal(constants.END_PLAYER_TURN, pan, Vector2(x, y), $terrain)
+	if $Scheduler.player_turn:
+		var acted = false
+		if event.is_action_pressed("left"):
+			acted = try_move(x-1,y)
+			if acted: update_pan(DIR.LEFT)
+		elif event.is_action_pressed("right"):
+			acted = try_move(x+1,y)
+			if acted: update_pan(DIR.RIGHT)
+		elif event.is_action_pressed("up"):
+			acted = try_move(x,y-1)
+			if acted: update_pan(DIR.UP)
+		elif event.is_action_pressed("down"):
+			acted = try_move(x,y+1)
+			if acted: update_pan(DIR.DOWN)
+		elif event.is_action_pressed("pass"):
+			acted = true
+		elif event.is_action_pressed("action"):
+			acted = true
+		
+		if acted:
+			$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
+			tick += 1
+			$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
+			$terrain.update_dijkstra_map([Vector2(x,y)])
+			emit_signal(constants.END_PLAYER_TURN, pan, Vector2(x, y), $terrain)
 
 
 const look_distance_h: int = 6
