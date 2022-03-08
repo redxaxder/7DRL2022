@@ -8,6 +8,7 @@ var hole_punch_chance: float = 0.1
 var pan: Vector2 = Vector2(0,0)
 
 var contents: Array = []
+var dijkstra_map: Array = []
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -24,60 +25,69 @@ func at(x,y):
 func _ready():
 	randomize()
 
+func from_linear(ix: int) -> Vector2:
+	return Vector2(ix % width, ix / width)
+	
 func to_linear(x,y) -> int:
 	return width * y + x
-	
-func dijkstra_map(source: Vector2, dest: Array, map: Array) -> Array:
+
+func update_dijkstra_map(dest: Array):
 	var d_map: Array
 	d_map.clear()
 	d_map.resize(contents.size())
 	# initialize all non-wall things to a very high number
-	for i in range(map.size()):
-		if map[i] == '#':
+	for i in range(contents.size()):
+		if contents[i] == '#':
 			d_map[i] = null
 		else:
 			d_map[i] = 1000000
 	# initialize all destinations to 0
 	for v in dest:
 		d_map[to_linear(v.x, v.y)] = 0
-	var changed: bool = true
-	while changed:
-		changed = false
-		for x in range(width):
-			for y in range(height):
-				var i: int = to_linear(x, y)
+	var live: Array = []
+	var next: Array = []
+	for v in dest:
+		var ix = to_linear(v.x, v.y)
+		for n in neighbors(ix):
+			live.append(n)
+	var prev
+	var tmp
+	while live.size() > 0:
+		next.clear()
+		for i in live:
+			if i != prev:
+				prev = i
 				if d_map[i] != null:
-					var neighs: Array = neighbor_vals(x, y, d_map)
+					var ns = neighbors(i)
+					var neighs: Array = []
+					for n in ns:
+						var v = d_map[n]
+						if v != null:
+							neighs.push_back(d_map[n])
 					if neighs.size() > 0:
 						var m: int = array_min(neighs)
 						if d_map[i] and d_map[i] > m + 1:
 							d_map[i] = array_min(neighs) + 1
-							changed = true
-#	for y in range(height):
-#		var start: int = to_linear(0, y)
-#		var end: int = to_linear(width-1, y)
-#		printt(d_map.slice(start, end))
-	return d_map
-	
-func neighbor_vals(x: int, y: int, map: Array) -> Array:
-	var arr: Array
-	arr.clear()
-	if x < width:
-		var e = map[to_linear(x + 1, y)]
-		if e !=	null:
-			arr.push_back(e)
-	if y < height - 1:
-		var s = map[to_linear(x, y + 1)]
-		if s != null:
-			arr.push_back(s)
-	if x > 0:
-		var w = map[to_linear(x - 1, y)]
-		if w != null:
-			arr.push_back(w)
-	if y > 0:
-		var n = map[to_linear(x, y - 1)]
-		if n != null:
-			arr.push_back(n)
+							if m <= 70:
+								for n in ns:
+									next.append(n)
+		tmp = live
+		live = next
+		next = tmp
+		next.sort()
+	dijkstra_map = d_map
+
+func neighbors(i: int) -> Array:
+	var arr: Array = []
+	var p = from_linear(i)
+	if p.x > 0:
+		arr.push_back(i-1)
+	if p.y > 0:
+		arr.push_back(i-width)
+	if p.x < width - 1:
+		arr.push_back(i+1)
+	if p.y < height - 1:
+		arr.push_back(i+width)
 	return arr
 	
 func array_min(arr: Array) -> int:
@@ -88,7 +98,7 @@ func array_min(arr: Array) -> int:
 	return m
 
 func load_random_map():
-	var ix = (randi() % 263 + 1) * 100
+	var ix = 20000 # (randi() % 263 + 1) * 100
 	load_map(ix)
 	
 func load_map_resource(ix):

@@ -53,6 +53,7 @@ func _unhandled_input(event):
 		pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 		tick += 1
 		$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
+		$terrain.update_dijkstra_map([Vector2(x,y)])
 		emit_signal(constants.END_PLAYER_TURN, pan, Vector2(x, y), $terrain)
 
 

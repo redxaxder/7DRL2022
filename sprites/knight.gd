@@ -15,7 +15,7 @@ func _ready():
 	add_to_group(constants.MOBS)
 	
 func on_turn(pc_x: int, pc_y: int, terrain):
-	var d_map = terrain.dijkstra_map(Vector2(self.pos.x, self.pos.y), [Vector2(pc_x, pc_y)], terrain.contents)
+	var d_map = terrain.dijkstra_map
 	var next = ai.seek_to_player(pc_x, pc_y, self.pos.x, self.pos.y, d_map, terrain)
 	self.pos = next	
 	
