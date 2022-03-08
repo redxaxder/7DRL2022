@@ -114,9 +114,10 @@ func update_pan(dir) -> void:
 		pan = scale(pan, SCREEN.TILE_HEIGHT)
 	$camera.position = SCREEN.dungeon_to_screen(pc.pos.x, pc.pos.y) + SCREEN.CENTER + pan
 
+var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
 func _handle_death():
-	combatLog.say("ouch")
-	print("oof")
-#	set_process_unhandled_input(false)
-#	get_parent().set_process_unhandled_input(true)
-#	queue_free()
+	combatLog.say("You have died.")
+	combatLog.say("Press space to return to main menu.")
+	var d = DeathModal.instance()
+	add_child(d)
+	set_process_unhandled_input(false)
