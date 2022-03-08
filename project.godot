@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Sprite",
+"class": "Mob",
+"language": "GDScript",
+"path": "res://lib/mob.gd"
+} ]
 _global_script_class_icons={
-
+"Mob": ""
 }
 
 [application]
