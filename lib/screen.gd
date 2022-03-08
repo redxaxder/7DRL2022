@@ -1,8 +1,8 @@
-const TILE_WIDTH: int = 24
-const TILE_HEIGHT: int = 36
+const TILE_WIDTH: int = 8
+const TILE_HEIGHT: int = 12
 
-const VIEWPORT_WIDTH: int = 42
-const VIEWPORT_HEIGHT: int = 14
+const VIEWPORT_WIDTH: int = 42 * 3
+const VIEWPORT_HEIGHT: int = 14 * 3
 
 const CENTER_X: int = VIEWPORT_WIDTH / 2
 const CENTER_Y: int = VIEWPORT_HEIGHT / 2
