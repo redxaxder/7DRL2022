@@ -11,7 +11,6 @@ onready var combatLog = $hud/CombatLog
 signal end_player_turn()
 
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
-const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 
 func _ready():
 	terrain.load_random_map()
@@ -22,7 +21,6 @@ func _ready():
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
 	spawn_mob(knight_scene, Vector2(10,10))
-	spawn_random_consumable(Vector2(15,15))
 
 func spawn_mob(prefab: PackedScene, pos: Vector2): 
 	var mob = prefab.instance() as Mob
@@ -32,13 +30,8 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 	mob.combatLog = combatLog
 	add_child(mob)
 	$Scheduler.register_actor(mob)
-	mob.connect(constants.DESCHEDULE, $Scheduler, "unregister_actor")
 
-func spawn_random_consumable(p: Vector2):
-	var item = pickup_scene.instance() as Pickup
-	item.random_consumable()
-	add_child(item)
-	item.drop(p)
+var pan  = Vector2(0,0)
 
 var tick = 0
 
@@ -46,39 +39,26 @@ enum DIR{ UP, DOWN, LEFT, RIGHT}
 
 func _unhandled_input(event):
 	if $Scheduler.player_turn:
-		var acted: bool = false
-		var moved: bool = false
-		var dir: int = DIR.UP
+		var acted = false
 		if event.is_action_pressed("left"):
-			acted = pc.try_move(pc.pos.x-1,pc.pos.y)
-			if acted: 
-				update_pan(DIR.LEFT)
-				moved = true
-				dir = DIR.LEFT
+			acted = try_move(pc.pos.x-1,pc.pos.y)
+			if acted: update_pan(DIR.LEFT)
 		elif event.is_action_pressed("right"):
-			acted = pc.try_move(pc.pos.x+1,pc.pos.y)
-			if acted: 
-				update_pan(DIR.RIGHT)
-				moved = true
-				dir = DIR.RIGHT
+			acted = try_move(pc.pos.x+1,pc.pos.y)
+			if acted: update_pan(DIR.RIGHT)
 		elif event.is_action_pressed("up"):
-			acted = pc.try_move(pc.pos.x,pc.pos.y-1)
-			if acted: 
-				update_pan(DIR.UP)
-				moved = true
-				dir = DIR.UP
+			acted = try_move(pc.pos.x,pc.pos.y-1)
+			if acted: update_pan(DIR.UP)
 		elif event.is_action_pressed("down"):
-			acted = pc.try_move(pc.pos.x,pc.pos.y+1)
-			if acted: 
-				update_pan(DIR.DOWN)
-				moved = true
-				dir = DIR.DOWN
+			acted = try_move(pc.pos.x,pc.pos.y+1)
+			if acted: update_pan(DIR.DOWN)
 		elif event.is_action_pressed("pass"):
 			acted = true
 		elif event.is_action_pressed("action"):
 			acted = true
 
 		if acted:
+			pc.position = SCREEN.dungeon_to_screen(pc.pos.x ,pc.pos.y)
 			tick += 1
 			pc.tick()
 			var status_text = ""
@@ -89,8 +69,12 @@ func _unhandled_input(event):
 				status_text += "recovery {0}\n".format([pc.recovery])
 				status_text += "fatigue {0}\n".format([pc.fatigue])
 			$hud/status_panel/status.text = status_text
-			get_tree().call_group(constants.MOBS, "is_hit", dir_to_vec(dir))
+			terrain.update_dijkstra_map([pc.pos])
 			emit_signal(constants.END_PLAYER_TURN)
+
+
+const look_distance_h: int = 6
+const look_distance_v: int = 3
 
 func dir_to_vec(dir: int) -> Vector2:
 	match dir:
@@ -116,10 +100,17 @@ func update_pan(dir) -> void:
 		pan = scale(pan, SCREEN.TILE_HEIGHT)
 	$camera.position = SCREEN.dungeon_to_screen(pc.pos.x, pc.pos.y) + SCREEN.CENTER + pan
 
-var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
+func try_move(i,j) -> bool:
+	if terrain.at(i,j) == '#':
+		return false
+	else:
+		pc.pos.x = i
+		pc.pos.y = j
+		return true
+
 func _handle_death():
-	combatLog.say("You have died.")
-	combatLog.say("Press space to return to main menu.")
-	var d = DeathModal.instance()
-	add_child(d)
-	set_process_unhandled_input(false)
+	combatLog.say("ouch")
+	print("oof")
+#	set_process_unhandled_input(false)
+#	get_parent().set_process_unhandled_input(true)
+#	queue_free()
