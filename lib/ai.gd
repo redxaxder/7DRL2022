@@ -10,24 +10,24 @@ func _ready():
 	pass # Replace with function body.
 	
 # d_map is a dijstra map
-func seek_to_player(px: int, py: int, ex: int, ey: int, d_map: Array) -> Vector2:
+func seek_to_player(px: int, py: int, ex: int, ey: int, d_map: Array, terrain: Node2D) -> Vector2:
 	# find the smallest direction in the d_map
 	var smallest = Vector2(ex + 1, ex)
-	var smallest_val = d_map[$terrain.to_linear(ex, ey)]
-	var e: int = d_map[$terrain.to_linear(ex + 1, ey)]
-	var w: int = d_map[$terrain.to_linear(ex - 1, ey)]
-	var n: int = d_map[$terrain.to_linear(ex, ey - 1)]
-	var s: int = d_map[$terrain.to_linear(ex, ey + 1)]
-	if e < smallest_val:
+	var smallest_val = d_map[terrain.to_linear(ex, ey)]
+	var e = d_map[terrain.to_linear(ex + 1, ey)]
+	var w = d_map[terrain.to_linear(ex - 1, ey)]
+	var n = d_map[terrain.to_linear(ex, ey - 1)]
+	var s = d_map[terrain.to_linear(ex, ey + 1)]
+	if e != null and e < smallest_val:
 		smallest = Vector2(ex + 1, ey)
 		smallest_val = e
-	if s < smallest_val:
+	if s != null and  s < smallest_val:
 		smallest = Vector2(ex, ey + 1)
 		smallest_val = s
-	if w < smallest_val:
+	if w != null and  w < smallest_val:
 		smallest = Vector2(ex - 1, ey)
 		smallest_val = w
-	if n < smallest_val:
+	if n != null and  n < smallest_val:
 		smallest = Vector2(ex, ey - 1)
 		smallest_val = n
 	return smallest
