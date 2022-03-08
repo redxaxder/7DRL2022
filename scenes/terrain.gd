@@ -1,7 +1,6 @@
 extends Node2D
 
 var SCREEN = preload("res://lib/screen.gd").new()
-var maps = preload("res://resources/maps/static_map.gd").new().maps
 
 var width: int = 20
 var height: int = 6
@@ -21,8 +20,8 @@ func at(x,y):
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	load_map(0)
+#func _ready():
+#	load_map(0)
 
 func to_linear(x,y) -> int:
 	return width * y + x
@@ -86,9 +85,13 @@ func array_min(arr: Array) -> int:
 		if i < m:
 			m = i
 	return m
-	
-func load_map(ix):
-	var map = maps[ix]
+
+func load_map_resource(ix):
+	var path = "res://resources/maps/map{0}.tres".format([ix])
+	return load(path)
+
+func load_map(ix): # max index: 26460
+	var map = load_map_resource(ix)
 	width = map.width + 1
 	height = map.height + 1
 	var size = width * height

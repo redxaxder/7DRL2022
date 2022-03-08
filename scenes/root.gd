@@ -9,7 +9,7 @@ signal end_player_turn(pan)
 export(PackedScene) var knight_scene
 
 func _ready():
-	$terrain.load_map(1)
+	$terrain.load_map(100)
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 	var knight = knight_scene.instance()
