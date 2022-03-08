@@ -20,8 +20,9 @@ func at(x,y):
 
 
 # Called when the node enters the scene tree for the first time.
-#func _ready():
-#	load_map(0)
+
+func _ready():
+	randomize()
 
 func to_linear(x,y) -> int:
 	return width * y + x
@@ -86,6 +87,10 @@ func array_min(arr: Array) -> int:
 			m = i
 	return m
 
+func load_random_map():
+	var ix = (randi() % 263 + 1) * 100
+	load_map(ix)
+	
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
 	return load(path)
@@ -136,7 +141,7 @@ func load_map(ix): # max index: 26460
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
 
-const offset: Vector2 = Vector2(-12,-18)
+var offset: Vector2 = Vector2(-SCREEN.TILE_WIDTH / 2,-SCREEN.TILE_HEIGHT / 2)
 func _draw():
 	#instead of managing a bajillion sprites in here we manually
 	#draw walls and floors

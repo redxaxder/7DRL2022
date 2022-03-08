@@ -4,14 +4,17 @@ extends Node2D
 var SCREEN = preload("res://lib/screen.gd").new()
 var constants = preload("res://lib/const.gd").new()
 
+onready var pc = $pc
+onready var terrain = $terrain
+
 signal end_player_turn(pan)
 
 export(PackedScene) var knight_scene
 
 func _ready():
-	$terrain.load_map(100)
+	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
-	$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
+	pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 	var knight = knight_scene.instance()
 	knight.pos.x = 1
 	knight.pos.y = 1
@@ -47,7 +50,7 @@ func _unhandled_input(event):
 		acted = true
 	
 	if acted:
-		$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
+		pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 		tick += 1
 		$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
 		emit_signal(constants.END_PLAYER_TURN, pan)
@@ -66,13 +69,12 @@ func update_pan(dir) -> void:
 			pan = Vector2(x-SCREEN.CENTER_X-look_distance_h,y-SCREEN.CENTER_Y)
 		DIR.RIGHT:
 			pan = Vector2(x-SCREEN.CENTER_X+look_distance_h,y-SCREEN.CENTER_Y)
-	$terrain	.pan = pan
-	$terrain._draw()
-	$terrain.update()
+	terrain.pan = pan
+	terrain.update()
 	
 
 func try_move(i,j) -> bool:
-	if $terrain.at(i,j) == '#':
+	if terrain.at(i,j) == '#':
 		return false
 	else:
 		x = i
