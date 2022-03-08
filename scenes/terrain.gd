@@ -26,6 +26,66 @@ func at(x,y):
 func to_linear(x,y) -> int:
 	return width * y + x
 	
+func dijkstra_map(source: Vector2, dest: Array, map: Array) -> Array:
+	var d_map: Array
+	d_map.clear()
+	d_map.resize(contents.size())
+	# initialize all non-wall things to a very high number
+	for i in range(map.size()):
+		if map[i] == '#':
+			d_map[i] = null
+		else:
+			d_map[i] = 1000000
+	# initialize all destinations to 0
+	for v in dest:
+		d_map[to_linear(v.x, v.y)] = 0
+	var changed: bool = true
+	while changed:
+		changed = false
+		for x in range(width):
+			for y in range(height):
+				var i: int = to_linear(x, y)
+				if d_map[i] != null:
+					var neighs: Array = neighbor_vals(x, y, d_map)
+					if neighs.size() > 0:
+						var m: int = array_min(neighs)
+						if d_map[i] and d_map[i] > m + 1:
+							d_map[i] = array_min(neighs) + 1
+							changed = true
+#	for y in range(height):
+#		var start: int = to_linear(0, y)
+#		var end: int = to_linear(width-1, y)
+#		printt(d_map.slice(start, end))
+	return d_map
+	
+func neighbor_vals(x: int, y: int, map: Array) -> Array:
+	var arr: Array
+	arr.clear()
+	if x < width:
+		var e = map[to_linear(x + 1, y)]
+		if e !=	null:
+			arr.push_back(e)
+	if y < height - 1:
+		var s = map[to_linear(x, y + 1)]
+		if s != null:
+			arr.push_back(s)
+	if x > 0:
+		var w = map[to_linear(x - 1, y)]
+		if w != null:
+			arr.push_back(w)
+	if y > 0:
+		var n = map[to_linear(x, y - 1)]
+		if n != null:
+			arr.push_back(n)
+	return arr
+	
+func array_min(arr: Array) -> int:
+	var m: int = arr[0]
+	for i in arr:
+		if i < m:
+			m = i
+	return m
+
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
 	return load(path)
