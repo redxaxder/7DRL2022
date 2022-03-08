@@ -20,9 +20,13 @@ func _end_player_turn():
 	self.player_turn = false
 	next_turn()
 	
-func register_actor(actor: Sprite):
+func register_actor(actor: Actor):
 	actors.push_back(actor)
 	recalculate_turns()
+	
+func unregister_actor(actor: Actor):
+	actors.erase(actor)
+	turns_per_round.erase(actor)
 	
 func next_turn():
 	get_tree().call_group(constants.MOBS, "draw")
