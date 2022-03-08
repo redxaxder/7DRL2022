@@ -1,18 +1,16 @@
-extends Sprite
+extends "res://lib/actor.gd"
 
 class_name Mob
 
-var constants = preload("res://lib/const.gd").new()
-var SCREEN = preload("res://lib/screen.gd").new()
-
-# Declare member variables here. Examples:
-var pos: Vector2
-const player: bool = false
-const speed: int = 3
+var pc: PC
 
 func _ready():
 	randomize()
 	add_to_group(constants.MOBS)
+
+func pc_adjacent() -> bool:
+	var v = pos - pc.pos
+	return (abs(v.x) + abs(v.y) <= 1)
 
 func seek_to_player(px: int, py: int, ex: int, ey: int, d_map: Array, terrain: Node2D) -> Vector2:
 	# find the smallest direction in the d_map
@@ -32,3 +30,4 @@ func seek_to_player(px: int, py: int, ex: int, ey: int, d_map: Array, terrain: N
 		return Vector2(ex,ey)
 	
 	return final_candidates[randi() % final_candidates.size()]
+

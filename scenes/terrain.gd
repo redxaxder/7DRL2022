@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Terrain
+
 var SCREEN = preload("res://lib/screen.gd").new()
 
 var width: int = 20

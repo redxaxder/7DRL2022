@@ -10,12 +10,36 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Sprite",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://lib/actor.gd"
+}, {
+"base": "Node",
+"class": "Log",
+"language": "GDScript",
+"path": "res://scenes/CombatLog.gd"
+}, {
+"base": "Sprite",
 "class": "Mob",
 "language": "GDScript",
 "path": "res://lib/mob.gd"
+}, {
+"base": "Sprite",
+"class": "PC",
+"language": "GDScript",
+"path": "res://sprites/pc.gd"
+}, {
+"base": "Node2D",
+"class": "Terrain",
+"language": "GDScript",
+"path": "res://scenes/terrain.gd"
 } ]
 _global_script_class_icons={
-"Mob": ""
+"Actor": "",
+"Log": "",
+"Mob": "",
+"PC": "",
+"Terrain": ""
 }
 
 [application]

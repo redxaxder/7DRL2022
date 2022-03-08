@@ -1,5 +1,7 @@
 extends Node
 
+class_name Log
+
 var messages = []
 var label: Label
 
