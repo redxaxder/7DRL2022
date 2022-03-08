@@ -14,10 +14,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/actor.gd"
 }, {
+"base": "Reference",
+"class": "Attack",
+"language": "GDScript",
+"path": "res://lib/attack.gd"
+}, {
 "base": "PanelContainer",
 "class": "CombatLog",
 "language": "GDScript",
 "path": "res://scenes/log.gd"
+}, {
+"base": "Reference",
+"class": "Const",
+"language": "GDScript",
+"path": "res://lib/const.gd"
+}, {
+"base": "Node",
+"class": "LocationService",
+"language": "GDScript",
+"path": "res://scenes/LocationService.gd"
 }, {
 "base": "Actor",
 "class": "Mob",
@@ -34,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://pickups/pickup.gd"
 }, {
+"base": "Reference",
+"class": "Screen",
+"language": "GDScript",
+"path": "res://lib/screen.gd"
+}, {
 "base": "Node2D",
 "class": "Terrain",
 "language": "GDScript",
@@ -41,10 +61,14 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Actor": "",
+"Attack": "",
 "CombatLog": "",
+"Const": "",
+"LocationService": "",
 "Mob": "",
 "PC": "",
 "Pickup": "",
+"Screen": "",
 "Terrain": ""
 }
 

@@ -7,13 +7,15 @@ var sprite: Sprite
 
 var SCREEN = preload("res://lib/screen.gd").new()
 var constants = preload("res://lib/const.gd").new()
+var is_weapon = false
 
 const apple_sprite: PackedScene = preload("res://pickups/apple.tscn")
 const turkey_sprite: PackedScene = preload("res://pickups/turkey.tscn")
 const brandy_sprite: PackedScene = preload("res://pickups/brandy.tscn")
 const water_sprite: PackedScene = preload("res://pickups/water.tscn")
+const weapon_sprite: PackedScene = preload("res://pickups/weapon.tscn")
 
-enum ITEM_TYPE{ APPLE, TURKEY, WATER, BRANDY}
+enum ITEM_TYPE{ APPLE, TURKEY, WATER, BRANDY }
 
 func _ready():
 	randomize()
@@ -40,6 +42,6 @@ func drop(p: Vector2):
 	sprite.visible = true
 
 func random_consumable():
-	init(randi() % 3)
+	init(randi() % 4)
 
 

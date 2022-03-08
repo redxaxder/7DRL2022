@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/terrain.gd" type="Script" id=3]
 [ext_resource path="res://scenes/Scheduler.gd" type="Script" id=4]
+[ext_resource path="res://scenes/LocationService.gd" type="Script" id=5]
 [ext_resource path="res://resources/FiraCode-Regular.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
 
@@ -114,3 +115,6 @@ script = ExtResource( 4 )
 position = Vector2( 508.517, 297.695 )
 current = true
 script = SubResource( 3 )
+
+[node name="LocationService" type="Node" parent="."]
+script = ExtResource( 5 )
