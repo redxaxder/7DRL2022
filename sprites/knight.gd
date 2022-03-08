@@ -1,27 +1,33 @@
-extends "res://lib/mob.gd"
+extends Mob
 
+const block_cooldown: int = 1
+var cur_block_cooldown: int = 0
+const block_chance: float = 0.25
+var blocking = false
 
 func _ready():
-	name = "knight"
+	self.name = "knight"
 	._ready()
 
 func on_turn():
-	var d_map = terrain.dijkstra_map
-	if pc_adjacent():
+	if .pc_adjacent():
 		attack()
 	else:
-		var next = seek_to_player()
+		var next = .seek_to_player()
 		self.pos = next
 
 func attack():
-	combatLog.say("the knight stabs you!")
-	pc.injure()
+	if not self.blocking:
+		if rand_range(0, 1) < block_chance and self.cur_block_cooldown == 0:
+			self.combatLog.say("the knight readies his shield!")
+			self.blocking = true
+		else:
+			self.combatLog.say("the knight stabs you!")
+			self.pc.injure()
+			if self.cur_block_cooldown > 0:
+				self.cur_block_cooldown -= 1
 
 func draw() -> void:
-	var t_pos = SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
+	var t_pos = self.SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
 	self.transform.origin.x = float(t_pos.x)
 	self.transform.origin.y = float(t_pos.y)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

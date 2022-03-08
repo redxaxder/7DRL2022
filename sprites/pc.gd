@@ -1,4 +1,4 @@
-extends "res://lib/actor.gd"
+extends Actor
 
 class_name PC
 
@@ -46,3 +46,18 @@ func tick():
 		recovery += 1
 	else:
 		recovery = 0
+		
+func enemy_hit(dir):
+	#back out of the enemy's spot
+	try_move(pos.x - dir.x, pos.y - dir.y)
+	
+
+func try_move(i,j) -> bool:
+	if terrain.at(i,j) == '#':
+		return false
+	else:
+		pos.x = i
+		pos.y = j
+		terrain.update_dijkstra_map([pos])		
+		position = self.SCREEN.dungeon_to_screen(pos.x ,pos.y)
+		return true

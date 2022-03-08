@@ -1,6 +1,8 @@
 #signals
 var END_PLAYER_TURN = "end_player_turn"
 var PLAYER_DIED = "player_died"
+var ENEMY_HIT = "enemy_hit"
+var DESCHEDULE = "deschedule"
 
 #groups
 var MOBS = "mobs"

@@ -1,6 +1,7 @@
 extends Sprite
 
 class_name Actor
+signal deschedule(actor)
 
 var constants = preload("res://lib/const.gd").new()
 var SCREEN = preload("res://lib/screen.gd").new()
