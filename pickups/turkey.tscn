@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://resources/curses_8_12.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 48, 168, 8, 12 )
+
+[node name="turkey" type="Sprite"]
+position = Vector2( 363.371, 166.75 )
+texture = SubResource( 1 )

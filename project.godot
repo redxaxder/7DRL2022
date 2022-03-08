@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://sprites/pc.gd"
 }, {
+"base": "Node",
+"class": "Pickup",
+"language": "GDScript",
+"path": "res://pickups/pickup.gd"
+}, {
 "base": "Node2D",
 "class": "Terrain",
 "language": "GDScript",
@@ -39,6 +44,7 @@ _global_script_class_icons={
 "CombatLog": "",
 "Mob": "",
 "PC": "",
+"Pickup": "",
 "Terrain": ""
 }
 

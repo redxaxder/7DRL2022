@@ -11,7 +11,6 @@ onready var combatLog = $hud/CombatLog
 signal end_player_turn()
 
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
-const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 
 func _ready():
 	terrain.load_random_map()
@@ -22,7 +21,6 @@ func _ready():
 	pc.combatLog = combatLog
 	$Scheduler.register_actor(pc)
 	spawn_mob(knight_scene, Vector2(10,10))
-	spawn_random_consumable(Vector2(15,15))
 
 func spawn_mob(prefab: PackedScene, pos: Vector2): 
 	var mob = prefab.instance() as Mob
@@ -33,11 +31,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 	add_child(mob)
 	$Scheduler.register_actor(mob)
 
-func spawn_random_consumable(p: Vector2):
-	var item = pickup_scene.instance() as Pickup
-	item.random_consumable()
-	add_child(item)
-	item.drop(p)
+var pan  = Vector2(0,0)
 
 var tick = 0
 
@@ -78,6 +72,10 @@ func _unhandled_input(event):
 			terrain.update_dijkstra_map([pc.pos])
 			emit_signal(constants.END_PLAYER_TURN)
 
+
+const look_distance_h: int = 6
+const look_distance_v: int = 3
+
 func dir_to_vec(dir: int) -> Vector2:
 	match dir:
 		DIR.UP:
@@ -110,10 +108,9 @@ func try_move(i,j) -> bool:
 		pc.pos.y = j
 		return true
 
-var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
 func _handle_death():
-	combatLog.say("You have died.")
-	combatLog.say("Press space to return to main menu.")
-	var d = DeathModal.instance()
-	add_child(d)
-	set_process_unhandled_input(false)
+	combatLog.say("ouch")
+	print("oof")
+#	set_process_unhandled_input(false)
+#	get_parent().set_process_unhandled_input(true)
+#	queue_free()
