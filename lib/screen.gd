@@ -1,3 +1,5 @@
+class_name Screen
+
 const TILE_WIDTH: int = 8
 const TILE_HEIGHT: int = 12
 

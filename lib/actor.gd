@@ -3,8 +3,8 @@ extends Sprite
 class_name Actor
 signal deschedule(actor)
 
-var constants = preload("res://lib/const.gd").new()
-var SCREEN = preload("res://lib/screen.gd").new()
+var constants: Const = preload("res://lib/const.gd").new()
+var SCREEN: Screen = preload("res://lib/screen.gd").new()
 
 var terrain: Terrain
 var combatLog: CombatLog
@@ -22,7 +22,7 @@ func try_move(i,j) -> bool:
 		terrain.update_dijkstra_map([pos])		
 		position = self.SCREEN.dungeon_to_screen(pos.x ,pos.y)
 		return true
-		
+
 func knockback(dir: Vector2):
 	var i: int = pos.x + dir.x
 	var j: int = pos.y + dir.y
@@ -31,6 +31,3 @@ func knockback(dir: Vector2):
 		i = pos.x + dir.x
 		j = pos.y + dir.y
 		c = try_move(i, j)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
