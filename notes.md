@@ -4,9 +4,9 @@ TODO:
 
 
 - first pass of impl has:
-  - only knights
-    - but no knockback
-  - 1 level randomly chosen from a squaring
+  + only knights
+    + but no knockback
+  + 1 level randomly chosen from a squaring
   - no items
   - rage
     - on entering rage: gain 20 rage
@@ -19,14 +19,14 @@ TODO:
     - just blocks rage
   - no character progression
   - handle pc death
-  - all doorways are open
+  + all doorways are open
   - HUD: rage and fatigue levels
          combat log
          fatigue recovery rate
   + controls:
    + vim + wasd + arrows to move
    + . to pass
-  - first dijktra map
+  + first dijktra map
 
 
 - second pass:

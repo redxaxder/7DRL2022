@@ -21,7 +21,9 @@ func _ready():
 	add_child(knight)
 	$Scheduler.register_actor($pc)
 	$Scheduler.register_actor(knight)
-#	$terrain.dijstra_map(Vector2(2, 2), [Vector2(3, 3), Vector2(4, 4)], $terrain.contents)
+	$CombatLog.label = $hud/log_panel/log
+	$CombatLog.say("welcome to the dungeon")
+
 
 var x = 3
 var y = 3
@@ -55,6 +57,7 @@ func _unhandled_input(event):
 		if acted:
 			$pc.position = SCREEN.dungeon_to_screen(x - pan.x,y - pan.y)
 			tick += 1
+			$CombatLog.say("tick {0}".format([tick]))
 			$hud/status_panel/text.text = "tick {0}\n x {1}\n y {2}".format([tick,x,y])
 			$terrain.update_dijkstra_map([Vector2(x,y)])
 			emit_signal(constants.END_PLAYER_TURN, pan, Vector2(x, y), $terrain)
