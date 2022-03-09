@@ -4,7 +4,7 @@
 [ext_resource path="res://pickups/weapon.gd" type="Script" id=2]
 [ext_resource path="res://sprites/backstop.tscn" type="PackedScene" id=3]
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 24, 8, 12 )
 
@@ -13,6 +13,6 @@ script = ExtResource( 2 )
 
 [node name="sprite" type="Sprite" parent="."]
 z_index = 2
-texture = SubResource( 2 )
+texture = SubResource( 1 )
 
 [node name="backstop" parent="sprite" instance=ExtResource( 3 )]

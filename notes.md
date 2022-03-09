@@ -37,15 +37,15 @@ TODO:
    - 3 levels
      - path to next level activates if you step on it
    - handle knockback
-   - HUD: equipped weapon / item
-   - yes to weapons
+   + HUD: equipped weapon / item
+   + yes to weapons
      + necrodancer style weapon use and management
      + sword: can attack one space diagonally. target selection ala necro whip
        + in direction player attacked
      + spear: as necro
      + broadsword: as necrodancer
        + direction based on lefthanded/righthanded
-       - 70% chance character is right handed
+       + 70% chance character is right handed
    - yes to items
       - apple: recover 30 fatigue
       - turkey: recover all fatigue
