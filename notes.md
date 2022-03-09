@@ -39,9 +39,9 @@ TODO:
    - handle knockback
    - HUD: equipped weapon / item
    - yes to weapons
-     - necrodancer style weapon use and management
-     - sword: can attack one space diagonally. target selection ala necro whip
-       - in direction player attacked
+     + necrodancer style weapon use and management
+     + sword: can attack one space diagonally. target selection ala necro whip
+       + in direction player attacked
      - spear: as necro
      - broadsword: as necrodancer
        - direction based on lefthanded/righthanded

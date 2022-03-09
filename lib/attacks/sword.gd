@@ -1,10 +1,5 @@
 extends Attack
 
-var southpaw = false
-
-func xor(l: bool, r: bool) -> bool:
-	return	(l && !r) || (!l && r)
-
 func try_attack(ls: LocationService, pos: Vector2, dir: int):
 	var attacked = false
 	attacked = .try_attack(ls, pos, dir)
