@@ -10,7 +10,6 @@ var fatigue: int = 0
 var recovery: int = 0
 var running: int = 0
 var run_dir: int = 0
-var attack: Attack
 
 var pickup: Pickup = null
 var weapon = null
@@ -20,7 +19,6 @@ var punch = preload("res://lib/attacks/punch.gd").new()
 func _ready():
 	self.player = true
 	self.speed = 6
-	self.attack = punch
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10
@@ -64,7 +62,10 @@ func try_attack(dir) -> bool:
 	elif fatigue <= 0:
 		can_attack = true
 	if can_attack:
-		return attack.try_attack(locationService, get_pos(), dir)
+		if weapon != null:
+			return weapon.attack.try_attack(locationService, get_pos(), dir)
+		else:
+			return punch.try_attack(locationService, get_pos(), dir)
 	else:
 		return false
 
