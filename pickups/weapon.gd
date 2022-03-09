@@ -18,7 +18,6 @@ func _ready():
 
 func init(type: int, southpaw: bool = false):
 	weapon_type = type
-	label = "what"
 	match weapon_type:
 		WEAPON_TYPE.SWORD:
 			attack = sword_attack
@@ -29,9 +28,7 @@ func init(type: int, southpaw: bool = false):
 		WEAPON_TYPE.BROADSWORD:
 			attack = broadsword_attack
 			label = "broadsword"
-		_:
-			label = "whaaaat"
-			print("whaaaa {0}".format([weapon_type])) 
+	attack.southpaw = southpaw
 
-func random_weapon():
-	init(randi() % 3)
+func random_weapon(southpaw: bool = false):
+	init(randi() % 3, southpaw)

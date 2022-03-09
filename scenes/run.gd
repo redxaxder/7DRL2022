@@ -18,11 +18,16 @@ const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene = preload("res://sprites/door.tscn")
 
+
+var southpaw = false
+
 func _ready():
+	randomize()
 	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	var pcpos = Vector2(30,30)
+	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
@@ -68,7 +73,7 @@ func spawn_random_consumable(p: Vector2):
 func spawn_random_weapon(p: Vector2):
 	var item = weapon_scene.instance()
 	item.locationService = locationService
-	item.random_weapon()
+	item.random_weapon(southpaw)
 	add_child(item)
 	item.drop(p)
 

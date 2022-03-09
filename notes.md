@@ -42,9 +42,9 @@ TODO:
      + necrodancer style weapon use and management
      + sword: can attack one space diagonally. target selection ala necro whip
        + in direction player attacked
-     - spear: as necro
-     - broadsword: as necrodancer
-       - direction based on lefthanded/righthanded
+     + spear: as necro
+     + broadsword: as necrodancer
+       + direction based on lefthanded/righthanded
        - 70% chance character is right handed
    - yes to items
       - apple: recover 30 fatigue
