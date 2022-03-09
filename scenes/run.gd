@@ -27,6 +27,7 @@ func _ready():
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
+	pc.connect(constants.PLAYER_LEVEL_UP, self, "_on_level_up")
 	var pcpos = Vector2(30,30)
 	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
@@ -122,6 +123,7 @@ func _unhandled_input(event):
 
 func update_status():
 	var status_text = ""
+	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !southpaw:
@@ -159,3 +161,6 @@ func _handle_death():
 	var d = DeathModal.instance()
 	add_child(d)
 	set_process_unhandled_input(false)
+
+func _on_level_up():
+	combatLog.say("level up!")

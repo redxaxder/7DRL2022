@@ -60,6 +60,6 @@ func place(p: Vector2):
 	locationService.insert(self, p)
 
 func random_consumable():
-	init(randi() % 5)
+	init(randi() % 4)
 
 

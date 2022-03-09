@@ -4,6 +4,7 @@ class_name Const
 var END_PLAYER_TURN = "end_player_turn"
 var PLAYER_DIED = "player_died"
 var PLAYER_STATUS_CHANGED = "status_changed"
+var PLAYER_LEVEL_UP = "level_up"
 var ENEMY_HIT = "enemy_hit"
 var DESCHEDULE = "deschedule"
 

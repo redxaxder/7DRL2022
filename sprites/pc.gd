@@ -4,11 +4,25 @@ class_name PC
 
 signal player_died()
 signal status_changed()
+signal level_up()
 
 var rage: int = 0
 var rage_decay: int = 0
 var fatigue: int = 0
 var recovery: int = 0
+
+const base_experience_gain_rate: int = 10
+const experience_gain_step: int = 10
+const max_experience_gain_rate: int = 200
+
+var experience_gain_rate: int = base_experience_gain_rate
+var experience: int = 0
+
+const base_experience_needed = 800
+const experience_needed_step = 400
+var experience_needed = base_experience_needed
+
+
 var running: int = 0
 var run_dir: int = 0
 
@@ -26,6 +40,7 @@ func _ready():
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10
+var rage_on_kill: int = 10
 var fatigue_on_got_hit: int = 5
 
 func injure():
@@ -57,15 +72,21 @@ func tick():
 		rage -= rage_decay
 		rage = max(rage,0)
 		rage_decay = 1 + fatigue / 40
+		if rage == 0: # we left rage!
+			experience_gain_rate = base_experience_gain_rate
 	elif fatigue > 0:
 		recover(recovery)
 		recovery += 1
 	else:
 		recovery = 0
+	if rage == 0:
+		while experience > experience_needed:
+			experience -= experience_needed
+			experience_needed += experience_needed_step
+			emit_signal(constants.PLAYER_STATUS_CHANGED)
+			emit_signal(constants.PLAYER_LEVEL_UP)
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
-func enemy_hit(dir):
-	#you've just hit an enemy!
-	pass
 
 func try_attack(dir) -> bool:
 	var can_attack = false
@@ -174,3 +195,8 @@ func consume_angry(p: Pickup) -> bool:
 			#TODO: soak in alchohol
 	return true
 
+func on_enemy_killed():
+	experience += experience_gain_rate
+	experience_gain_rate += experience_gain_step
+	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)
+	rage += rage_on_kill

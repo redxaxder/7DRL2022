@@ -51,13 +51,15 @@ func is_hit(dir: Vector2):
 
 func draw() -> void:
 	var pos = get_pos()
-	var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-	self.transform.origin.x = float(t_pos.x)
-	self.transform.origin.y = float(t_pos.y)
-	if self.blocking:
-		self.modulate = Color(0.460938, 0.460938, 1)
-	else:
-		self.modulate = Color(1, 1, 1)
+	if pos:
+		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		self.transform.origin.x = float(t_pos.x)
+		self.transform.origin.y = float(t_pos.y)
+		if self.blocking:
+			self.modulate = Color(0.460938, 0.460938, 1)
+		else:
+			self.modulate = Color(1, 1, 1)
 		
 func die():
 	self.combatLog.say("the knight dies.")
+	.die()
