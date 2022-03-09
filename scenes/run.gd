@@ -37,6 +37,11 @@ func _ready():
 	spawn_dynamic_mob(knight_scene, Vector2(10,10))
 	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
 	spawn_random_consumable(Vector2(15,15))
+	spawn_random_consumable(Vector2(16,15))
+	spawn_random_consumable(Vector2(17,15))
+	spawn_random_consumable(Vector2(18,15))
+	spawn_random_consumable(Vector2(19,15))
+	spawn_random_consumable(Vector2(20,15))
 	spawn_random_weapon(Vector2(20,20))
 	spawn_random_weapon(Vector2(20,21))
 	spawn_random_weapon(Vector2(20,22))
@@ -68,14 +73,14 @@ func spawn_random_consumable(p: Vector2):
 	item.locationService = locationService
 	item.random_consumable()
 	add_child(item)
-	item.drop(p)
+	item.place(p)
 
 func spawn_random_weapon(p: Vector2):
 	var item = weapon_scene.instance()
 	item.locationService = locationService
 	item.random_weapon(southpaw)
 	add_child(item)
-	item.drop(p)
+	item.place(p)
 
 var tick = 0
 
@@ -95,8 +100,7 @@ func _unhandled_input(event):
 		elif event.is_action_pressed("pass"):
 			acted = true
 		elif event.is_action_pressed("action"):
-			acted = true
-
+			acted = pc.consume()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)
 		
@@ -115,10 +119,12 @@ func _unhandled_input(event):
 			var status_text = ""
 			if pc.pickup != null || pc.weapon != null:
 				status_text += "holding:\n"
-				if pc.pickup != null:
+				if pc.pickup != null && !southpaw:
 					status_text += "  {0}\n".format([pc.pickup.label]) 
 				if pc.weapon != null:
 					status_text += "  {0}\n".format([pc.weapon.label]) 
+				if pc.pickup != null && southpaw:
+					status_text += "  {0}\n".format([pc.pickup.label]) 
 			if pc.rage > 0:
 				status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
 				status_text += "fatigue {0}\n".format([pc.fatigue])

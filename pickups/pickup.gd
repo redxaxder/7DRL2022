@@ -54,12 +54,12 @@ func take():
 	sprite.visible = false
 	locationService.delete_node(self)
 
-func drop(p: Vector2):
+func place(p: Vector2):
 	sprite.position = SCREEN.dungeon_to_screen(p.x,p.y)
 	sprite.visible = true
 	locationService.insert(self, p)
 
 func random_consumable():
-	init(randi() % 4)
+	init(randi() % 5)
 
 

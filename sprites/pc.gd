@@ -12,16 +12,14 @@ var running: int = 0
 var run_dir: int = 0
 
 var pickup: Pickup = null
-var shards: Pickup = null
 var weapon = null
 
 var punch = preload("res://lib/attacks/punch.gd").new()
+const pickup_scene = preload("res://pickups/pickup.tscn")
 
 func _ready():
 	self.player = true
 	self.speed = 6
-	shards = preload("res://pickups/pickup.tscn").instance()
-	shards.init(shards.ITEM_TYPE.SHARDS)
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10
@@ -41,6 +39,11 @@ func injure():
 		fatigue += fatigue_on_got_hit
 		recovery = 0
 
+func make_shards() -> Pickup:
+	var shards = pickup_scene.instance()
+	shards.init(shards.ITEM_TYPE.SHARDS)
+	shards.locationService = locationService
+	return shards
 
 func tick():
 	if rage > 0:
@@ -73,16 +76,22 @@ func try_attack(dir) -> bool:
 
 func pick_up(p: Pickup, l: Vector2):
 	if p.is_weapon:
+		var wt = -1
 		if weapon != null:
-			weapon.drop(l)
+			wt = weapon.weapon_type
+			weapon.place(l)
 		weapon = p
-		combatLog.say(p.pickup_text)
+		if p.weapon_type != wt:
+			combatLog.say(p.pickup_text)
 		p.take()
 	else:
+		var it = -1
 		if pickup != null:
-			pickup.drop(l)
+			it = pickup.type
+			pickup.place(l)
 		pickup = p
-		combatLog.say(p.pickup_text)
+		if p.type != it:
+			combatLog.say(p.pickup_text)
 		p.take()
 
 func consume() -> bool:
@@ -104,12 +113,17 @@ func consume_calm(p: Pickup) -> bool:
 			combatLog.say("You eat the apple. Delicious!")
 		p.ITEM_TYPE.TURKEY:
 			recover(fatigue)
-			combatLog.say("You choke down the entire turkey. You feel fighting shape.")
+			combatLog.say("You choke down the entire turkey. You feel in fighting shape.")
 		p.ITEM_TYPE.WATER:
 			recovery += 5
-			combatLog.say("You drink the water. You feel refreshed")
+			combatLog.say("You drink the water. You feel refreshed.")
 		p.ITEM_TYPE.BRANDY:
+			#TODO
 			combatLog.say("You drink the brandy. You're itching for a fight.")
+		p.ITEM_TYPE.SHARDS:
+			return false
+	pickup.queue_free()
+	pickup = null
 	return true
 
 func throw_item() -> bool:
@@ -127,15 +141,13 @@ func consume_angry(p: Pickup) -> bool:
 		p.ITEM_TYPE.WATER:
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
-			pickup =	 shards.duplicate()
-			shards.duplicate().drop()
+			pickup =	 make_shards()
 			#TODO: put out fire. maybe add wet?
 			return true
 		p.ITEM_TYPE.BRANDY:
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
-			pickup =	 shards.duplicate()
-			shards.duplicate().drop()
+			pickup =	 make_shards()
 			return true
 			#TODO: soak in alchohol
 	return true
