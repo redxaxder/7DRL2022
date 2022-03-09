@@ -195,7 +195,7 @@ func consume_angry(p: Pickup) -> bool:
 			#TODO: soak in alchohol
 	return true
 
-func on_enemy_killed():
+func _on_enemy_killed(label: String):
 	experience += experience_gain_rate
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)

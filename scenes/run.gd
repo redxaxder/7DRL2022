@@ -59,7 +59,8 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 	var mob = spawn_mob(prefab, pos)
 	$Scheduler.register_actor(mob)
 	mob.connect(constants.DESCHEDULE, $Scheduler, "unregister_actor")
-	
+	mob.connect(constants.KILLED_BY_PC, $pc, "_on_enemy_killed")
+
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	var mob = prefab.instance() as Mob
 	mob.pc = pc
