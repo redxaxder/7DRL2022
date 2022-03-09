@@ -10,12 +10,15 @@ var fatigue: int = 0
 var recovery: int = 0
 var running: int = 0
 var run_dir: int = 0
-var attack: Attack = preload("res://lib/attacks/punch.gd").new()
+var attack: Attack
 
+
+var punch = preload("res://lib/attacks/punch.gd").new()
 
 func _ready():
 	player = true
 	speed = 6
+	attack = punch
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10

@@ -1,6 +1,6 @@
 class_name Dir
 
-enum DIR{ UP, DOWN, LEFT, RIGHT }
+enum DIR{ UP, LEFT, DOWN, RIGHT }
 
 func dir_to_vec(dir: int) -> Vector2:
 	match dir:
@@ -13,3 +13,12 @@ func dir_to_vec(dir: int) -> Vector2:
 		DIR.RIGHT:
 			return Vector2(1,0)
 	return Vector2(0,0)
+
+func rot(dir: int, clockwise: bool = false) -> int:
+	if clockwise:
+		return (dir + 3) % 4
+	else:
+		return (dir + 1) % 4
+
+func invert(dir: int) -> int:
+	return (dir + 2) % 4
