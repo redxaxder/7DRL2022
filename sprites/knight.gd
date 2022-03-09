@@ -29,14 +29,12 @@ func attack():
 				
 func is_hit(dir: Vector2):
 	if self.blocking:
-		var v = get_pos() - pc.get_pos()
-		if abs(v.x) + abs(v.y) < 1 && (pc.fatigue <= 0 || pc.rage > 0):
-			emit_signal(constants.ENEMY_HIT, dir)
-			self.blocking = false
-			self.cur_block_cooldown = self.block_cooldown
-			self.combatLog.say("the knight blocks your attack!")
-			self.combatLog.say("the knight goes flying!")
-			self.knockback(dir)
+		emit_signal(constants.ENEMY_HIT, dir)
+		self.blocking = false
+		self.cur_block_cooldown = self.block_cooldown
+		self.combatLog.say("the knight blocks your attack!")
+		self.combatLog.say("the knight goes flying!")
+		self.knockback(dir)
 	else:
 		.is_hit(dir)
 
