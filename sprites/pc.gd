@@ -3,6 +3,7 @@ extends Actor
 class_name PC
 
 signal player_died()
+signal status_changed()
 
 var rage: int = 0
 var rage_decay: int = 0
@@ -40,6 +41,8 @@ func injure():
 		rage += rage_on_got_hit + starting_rage
 		fatigue += fatigue_on_got_hit
 		recovery = 0
+	rage_decay = 1 + fatigue / 40
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
 func make_shards() -> Pickup:
 	var shards = pickup_scene.instance()

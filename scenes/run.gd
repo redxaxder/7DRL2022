@@ -26,6 +26,7 @@ func _ready():
 	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
+	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	var pcpos = Vector2(30,30)
 	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
@@ -116,23 +117,27 @@ func _unhandled_input(event):
 		if acted:
 			tick += 1
 			pc.tick()
-			var status_text = ""
-			if pc.pickup != null || pc.weapon != null:
-				status_text += "holding:\n"
-				if pc.pickup != null && !southpaw:
-					status_text += "  {0}\n".format([pc.pickup.label]) 
-				if pc.weapon != null:
-					status_text += "  {0}\n".format([pc.weapon.label]) 
-				if pc.pickup != null && southpaw:
-					status_text += "  {0}\n".format([pc.pickup.label]) 
-			if pc.rage > 0:
-				status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
-				status_text += "fatigue {0}\n".format([pc.fatigue])
-			elif pc.fatigue > 0:
-				status_text += "recovery {0}\n".format([pc.recovery])
-				status_text += "fatigue {0}\n".format([pc.fatigue])
-			$hud/status_panel/status.text = status_text
+			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
+
+func update_status():
+	var status_text = ""
+	if pc.pickup != null || pc.weapon != null:
+		status_text += "holding:\n"
+		if pc.pickup != null && !southpaw:
+			status_text += "  {0}\n".format([pc.pickup.label]) 
+		if pc.weapon != null:
+			status_text += "  {0}\n".format([pc.weapon.label]) 
+		if pc.pickup != null && southpaw:
+			status_text += "  {0}\n".format([pc.pickup.label]) 
+	if pc.rage > 0:
+		status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
+		status_text += "fatigue {0}\n".format([pc.fatigue])
+	elif pc.fatigue > 0:
+		status_text += "recovery {0}\n".format([pc.recovery])
+		status_text += "fatigue {0}\n".format([pc.fatigue])
+	$hud/status_panel/status.text = status_text
+
 
 func scale(v: Vector2, s: float) -> Vector2:
 	return Vector2(v.x * s, v.y*s)

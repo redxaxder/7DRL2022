@@ -53,11 +53,11 @@ self_modulate = Color( 0.580392, 0.580392, 0.580392, 1 )
 anchor_left = 0.000739649
 anchor_top = 1.87174e-05
 anchor_right = 0.000739649
-anchor_bottom = 1.87174e-05
+anchor_bottom = 0.993
 margin_left = -3.7574
 margin_top = -3.01123
-margin_right = 148.243
-margin_bottom = 602.989
+margin_right = 190.494
+margin_bottom = 7.2002
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -65,7 +65,7 @@ __meta__ = {
 [node name="status" type="Label" parent="hud/status_panel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 145.0
+margin_right = 187.251
 margin_bottom = 599.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 1 )
@@ -82,15 +82,21 @@ __meta__ = {
 self_modulate = Color( 0.580392, 0.580392, 0.580392, 1 )
 anchor_left = 1.0
 anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = -233.0
-margin_bottom = 606.0
+margin_top = -3.0
+margin_right = 2.0
+margin_bottom = 3.0
 rect_clip_content = true
 script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="log" type="Label" parent="hud/CombatLog"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 226.0
+margin_right = 228.0
 margin_bottom = 599.0
 grow_vertical = 0
 size_flags_vertical = 3
