@@ -15,6 +15,7 @@ signal end_player_turn()
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
 const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
+const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene = preload("res://sprites/door.tscn")
 
 func _ready():
@@ -31,6 +32,13 @@ func _ready():
 	spawn_dynamic_mob(knight_scene, Vector2(10,10))
 	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
 	spawn_random_consumable(Vector2(15,15))
+	spawn_random_weapon(Vector2(20,20))
+	spawn_random_weapon(Vector2(20,21))
+	spawn_random_weapon(Vector2(20,22))
+	spawn_random_weapon(Vector2(20,23))
+	spawn_random_weapon(Vector2(20,24))
+	spawn_random_weapon(Vector2(20,25))
+	spawn_random_weapon(Vector2(20,26))
 	
 func spawn_door(pos: Vector2):
 	spawn_mob(door_scene, pos)
@@ -54,6 +62,13 @@ func spawn_random_consumable(p: Vector2):
 	var item = pickup_scene.instance() as Pickup
 	item.locationService = locationService
 	item.random_consumable()
+	add_child(item)
+	item.drop(p)
+
+func spawn_random_weapon(p: Vector2):
+	var item = weapon_scene.instance() as Weapon
+	item.locationService = locationService
+	item.random_weapon()
 	add_child(item)
 	item.drop(p)
 

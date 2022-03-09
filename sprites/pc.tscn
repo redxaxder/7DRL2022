@@ -11,10 +11,11 @@ region = Rect2( 0, 48, 8, 12 )
 [node name="pc" type="Sprite"]
 modulate = Color( 0.196078, 0.407843, 0.137255, 1 )
 position = Vector2( 64, 64 )
-z_index = 2
+z_index = 10
 z_as_relative = false
 texture = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="backstop" parent="." instance=ExtResource( 2 )]
-z_index = 1
+z_index = -1
+z_as_relative = true
