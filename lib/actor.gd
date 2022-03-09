@@ -8,6 +8,7 @@ var SCREEN: Screen = preload("res://lib/screen.gd").new()
 
 var terrain: Terrain
 var combatLog: CombatLog
+var locationService: LocationService
 
 var pos: Vector2
 var player: bool = false
@@ -16,12 +17,20 @@ var speed: int = 3
 func try_move(i,j) -> bool:
 	if terrain.at(i,j) == '#':
 		return false
+#	if locationService.lookup(Vector2(i,j), constants.BLOCKER).size() > 0:
+#		return false
 	else:
-		pos.x = i
-		pos.y = j
-		terrain.update_dijkstra_map([pos])		
+		set_pos(Vector2(i,j))
+		terrain.update_dijkstra_map([pos])
 		position = self.SCREEN.dungeon_to_screen(pos.x ,pos.y)
 		return true
+
+func get_pos(default = null) -> Vector2:
+	return locationService.lookup_backward(self, default)
+
+func set_pos(p: Vector2):
+	pos = p
+	locationService.insert(self,p)
 
 func knockback(dir: Vector2):
 	var i: int = pos.x + dir.x

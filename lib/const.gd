@@ -9,3 +9,4 @@ var DESCHEDULE = "deschedule"
 #groups
 var MOBS = "mobs"
 var PICKUPS = "pickups"
+var BLOCKER = "blocker"

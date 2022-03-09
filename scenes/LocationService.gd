@@ -10,11 +10,19 @@ var __forward: Dictionary = {}
 var __backward: Dictionary = {}
 
 func lookup_backward(n: Node, default = null) -> Vector2:
-	return __backward.get(n,default).duplicate()
+	return __backward.get(n,default)
 
-func lookup_forward(p: Vector2) -> Array:
+func lookup(p: Vector2, group: String = "") -> Array:
 	var l = p.floor()
-	return __forward.get(l,[]).duplicate()
+	var results = __forward.get(l,[]).duplicate()
+	if group == "":
+		return results
+	else:
+		var ret = []
+		for res in results:
+			if res.is_in_group(group):
+				ret.append(res)
+		return ret
 
 func delete_node(n: Node):
 	var l = lookup_backward(n)

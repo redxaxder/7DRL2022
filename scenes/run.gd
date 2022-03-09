@@ -7,6 +7,7 @@ var constants = preload("res://lib/const.gd").new()
 onready var pc: PC = $pc
 onready var terrain: Terrain = $terrain
 onready var combatLog = $hud/CombatLog
+onready var locationService = $LocationService
 
 signal end_player_turn()
 
@@ -19,9 +20,12 @@ func _ready():
 	terrain.load_random_map()
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
-	pc.position = SCREEN.dungeon_to_screen(pc.pos.x,pc.pos.y)
+	var pcpos = Vector2(30,30)
+	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
+	pc.locationService = locationService
+	pc.set_pos(pcpos)
 	$Scheduler.register_actor(pc)
 	spawn_dynamic_mob(knight_scene, Vector2(10,10))
 	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
@@ -37,10 +41,11 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 	
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	var mob = prefab.instance() as Mob
-	mob.pos = pos
 	mob.pc = pc
 	mob.terrain = terrain
 	mob.combatLog = combatLog
+	mob.locationService = locationService
+	mob.set_pos(pos)
 	add_child(mob)
 	return mob
 

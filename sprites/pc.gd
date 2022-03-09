@@ -14,7 +14,6 @@ var run_dir: int = 0
 func _ready():
 	player = true
 	speed = 6
-	pos = Vector2(30,30)
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10

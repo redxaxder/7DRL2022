@@ -11,11 +11,11 @@ func _ready():
 	connect(constants.ENEMY_HIT, pc, constants.ENEMY_HIT)
 
 func pc_adjacent() -> bool:
-	var v = pos - pc.pos
+	var v = get_pos() - pc.get_pos()
 	return (abs(v.x) + abs(v.y) <= 1)
 	
 func is_hit(dir: Vector2):
-	var v = pos - pc.pos
+	var v = get_pos() - pc.get_pos()
 	if abs(v.x) + abs(v.y) < 1 && pc.fatigue <= 0:
 		emit_signal(constants.ENEMY_HIT, dir)
 		emit_signal(constants.DESCHEDULE, self)
@@ -23,11 +23,10 @@ func is_hit(dir: Vector2):
 
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
-	var ex = pos.x
-	var ey = pos.y
+	var e = get_pos()
 	var d_map = terrain.dijkstra_map
-	var smallest_val = d_map[terrain.to_linear(ex, ey)]
-	var candidates = [Vector2(ex + 1, ey), Vector2(ex, ey + 1), Vector2(ex - 1, ey), Vector2(ex, ey - 1)]
+	var smallest_val = d_map[terrain.to_linear(e.x, e.y)]
+	var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	for c in candidates:
 		var t = d_map[terrain.to_linear(c.x,c.y)]
 		if t:
@@ -39,7 +38,7 @@ func seek_to_player() -> Vector2:
 			final_candidates.append(c)
 	
 	if final_candidates.size() == 0:
-		return Vector2(ex,ey)
+		final_candidates = candidates
 	
 	return final_candidates[randi() % final_candidates.size()]
 
