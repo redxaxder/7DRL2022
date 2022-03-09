@@ -64,26 +64,27 @@ func _unhandled_input(event):
 		var acted: bool = false
 		var moved: bool = false
 		var dir: int = DIR.UP
+		var ppos = pc.get_pos()
 		if event.is_action_pressed("left"):
-			acted = pc.try_move(pc.pos.x-1,pc.pos.y)
+			acted = pc.try_move(ppos.x-1,ppos.y)
 			if acted: 
 				update_pan(DIR.LEFT)
 				moved = true
 				dir = DIR.LEFT
 		elif event.is_action_pressed("right"):
-			acted = pc.try_move(pc.pos.x+1,pc.pos.y)
+			acted = pc.try_move(ppos.x+1,ppos.y)
 			if acted: 
 				update_pan(DIR.RIGHT)
 				moved = true
 				dir = DIR.RIGHT
 		elif event.is_action_pressed("up"):
-			acted = pc.try_move(pc.pos.x,pc.pos.y-1)
+			acted = pc.try_move(ppos.x,ppos.y-1)
 			if acted: 
 				update_pan(DIR.UP)
 				moved = true
 				dir = DIR.UP
 		elif event.is_action_pressed("down"):
-			acted = pc.try_move(pc.pos.x,pc.pos.y+1)
+			acted = pc.try_move(ppos.x,ppos.y+1)
 			if acted: 
 				update_pan(DIR.DOWN)
 				moved = true
@@ -129,7 +130,8 @@ func update_pan(dir) -> void:
 		pan = scale(pan, SCREEN.TILE_WIDTH)
 	else:
 		pan = scale(pan, SCREEN.TILE_HEIGHT)
-	$camera.position = SCREEN.dungeon_to_screen(pc.pos.x, pc.pos.y) + SCREEN.CENTER + pan
+	var ppos = pc.get_pos()
+	$camera.position = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + SCREEN.CENTER + pan
 
 var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
 func _handle_death():

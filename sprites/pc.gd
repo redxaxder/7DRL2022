@@ -48,5 +48,6 @@ func tick():
 		
 func enemy_hit(dir):
 	#back out of the enemy's spot
+	var pos = get_pos()
 	try_move(pos.x - dir.x, pos.y - dir.y)
 

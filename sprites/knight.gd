@@ -14,7 +14,7 @@ func on_turn():
 		attack()
 	else:
 		var next = .seek_to_player()
-		self.pos = next
+		set_pos(next)
 
 func attack():
 	if not self.blocking:
@@ -29,7 +29,7 @@ func attack():
 				
 func is_hit(dir: Vector2):
 	if self.blocking:
-		var v = pos - pc.pos
+		var v = get_pos() - pc.get_pos()
 		if abs(v.x) + abs(v.y) < 1 && (pc.fatigue <= 0 || pc.rage > 0):
 			emit_signal(constants.ENEMY_HIT, dir)
 			self.blocking = false
@@ -41,7 +41,8 @@ func is_hit(dir: Vector2):
 		.is_hit(dir)
 
 func draw() -> void:
-	var t_pos = self.SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
+	var pos = get_pos()
+	var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
 	self.transform.origin.x = float(t_pos.x)
 	self.transform.origin.y = float(t_pos.y)
 	if self.blocking:

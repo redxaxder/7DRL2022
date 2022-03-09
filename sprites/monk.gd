@@ -13,7 +13,7 @@ func on_turn():
 		attack()
 	else:
 		var next = .seek_to_player()
-		self.pos = next
+		set_pos(next)
 
 func attack():
 	#monk stuff i dunno
@@ -24,6 +24,7 @@ func is_hit(dir: Vector2):
 	pass
 
 func draw() -> void:
-	var t_pos = self.SCREEN.dungeon_to_screen(self.pos.x,self.pos.y)
+	var pos = get_pos()
+	var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
 	self.transform.origin.x = float(t_pos.x)
 	self.transform.origin.y = float(t_pos.y)

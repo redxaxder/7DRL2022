@@ -20,7 +20,7 @@ func lookup(p: Vector2, group: String = "") -> Array:
 	else:
 		var ret = []
 		for res in results:
-			if res.is_in_group(group):
+			if res && res.is_in_group(group):
 				ret.append(res)
 		return ret
 
