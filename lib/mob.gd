@@ -4,6 +4,7 @@ class_name Mob
 
 var pc
 signal enemy_hit(dir)
+signal killed_by_pc(label)
 
 func _ready():
 	randomize()
@@ -24,6 +25,8 @@ func die():
 	if is_in_group(self.constants.MOBS):
 		emit_signal(constants.DESCHEDULE, self)
 	self.locationService.delete_node(self)
+	#TODO: handle if it was killed by someone else (eg: wizard)
+	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
 
 func seek_to_player() -> Vector2:

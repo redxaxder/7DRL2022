@@ -6,6 +6,7 @@ var PLAYER_DIED = "player_died"
 var PLAYER_STATUS_CHANGED = "status_changed"
 var PLAYER_LEVEL_UP = "level_up"
 var ENEMY_HIT = "enemy_hit"
+var KILLED_BY_PC = "killed_by_pc"
 var DESCHEDULE = "deschedule"
 
 #groups
