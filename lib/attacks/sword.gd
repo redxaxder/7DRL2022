@@ -7,7 +7,7 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int):
 		return true
 	var forward = pos + DIR.dir_to_vec(dir)
 	for b in [true, false]:
-		var dir2 = DIR.rot(dir,xor(b,southpaw))
+		var dir2 = flip(DIR.rot(dir))
 		attacked = .try_attack(ls, forward, dir2)
 		if attacked:
 			return true

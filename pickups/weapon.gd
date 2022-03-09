@@ -7,7 +7,7 @@ var attack: Attack
 
 var sword_attack: Attack = preload("res://lib/attacks/sword.gd").new()
 var spear_attack: Attack = preload("res://lib/attacks/spear.gd").new()
-var broadsword_attack: Attack = preload("res://lib/attacks/sword.gd").new()
+var broadsword_attack: Attack = preload("res://lib/attacks/broadsword.gd").new()
 
 enum WEAPON_TYPE{ SWORD, SPEAR, BROADSWORD }
 
