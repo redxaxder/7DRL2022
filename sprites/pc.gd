@@ -12,6 +12,8 @@ var running: int = 0
 var run_dir: int = 0
 var attack: Attack
 
+var pickup: Pickup = null
+var weapon: Weapon = null
 
 var punch = preload("res://lib/attacks/punch.gd").new()
 
@@ -65,3 +67,9 @@ func try_attack(dir) -> bool:
 		return attack.try_attack(locationService, get_pos(), dir)
 	else:
 		return false
+
+func pick_up(p: Pickup, l: Vector2):
+	if pickup != null:
+		pickup.drop(l)
+	pickup = p
+	p.take()

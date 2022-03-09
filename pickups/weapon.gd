@@ -1,8 +1,7 @@
-#extends Pickup
-#
-#class_name Weapon
-#
-#
+extends Pickup
+
+class_name Weapon
+
 #var weapon_type
 ##var attack: Attack
 #

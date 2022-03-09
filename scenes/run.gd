@@ -52,6 +52,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 
 func spawn_random_consumable(p: Vector2):
 	var item = pickup_scene.instance() as Pickup
+	item.locationService = locationService
 	item.random_consumable()
 	add_child(item)
 	item.drop(p)
@@ -83,12 +84,21 @@ func _unhandled_input(event):
 			var p = pc.get_pos() + DIR.dir_to_vec(dir)
 			acted = pc.try_move(p.x,p.y)
 			if acted:
+				var items = locationService.lookup(p, constants.PICKUPS)
+				if items.size() > 0:
+					pc.pick_up(items[0],p)
 				update_pan(dir)
 			
 		if acted:
 			tick += 1
 			pc.tick()
 			var status_text = ""
+			if pc.pickup != null || pc.weapon != null:
+				status_text += "holding:\n"
+				if pc.pickup != null:
+					status_text += "  {0}\n".format([pc.pickup.label]) 
+				if pc.weapon != null:
+					status_text += "  {0}\n".format([pc.weapon.label]) 
 			if pc.rage > 0:
 				status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
 				status_text += "fatigue {0}\n".format([pc.fatigue])
