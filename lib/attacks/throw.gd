@@ -1,6 +1,6 @@
 extends Attack
 
-func try_attack(ls: LocationService, pos: Vector2, dir: int, terrain: Terrain = null):
+func try_attack(ls: LocationService, pos: Vector2, dir: int, terrain: Terrain = null) -> bool:
 	if terrain == null:
 		return false
 	var did_attack = false
