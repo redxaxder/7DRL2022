@@ -12,8 +12,8 @@ var running: int = 0
 var run_dir: int = 0
 
 func _ready():
-	player = true
-	speed = 6
+	self.player = true
+	self.speed = 6
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10
@@ -23,10 +23,10 @@ func injure():
 	if rage > 0:
 		rage += rage_on_got_hit
 		fatigue += fatigue_on_got_hit
-		combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
+		self.combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
-		combatLog.say("You die.")
-		emit_signal(constants.PLAYER_DIED)
+		self.combatLog.say("You die.")
+		emit_signal(self.constants.PLAYER_DIED)
 	else:
 		combatLog.say("You fly into a rage!")
 		rage += rage_on_got_hit + starting_rage

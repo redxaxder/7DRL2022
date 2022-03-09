@@ -17,12 +17,14 @@ func lookup(p: Vector2, group: String = "") -> Array:
 	var results = __forward.get(l,[]).duplicate()
 	if group == "":
 		return results
-	else:
+	elif results.size() > 0:
 		var ret = []
 		for res in results:
 			if res && res.is_in_group(group):
 				ret.append(res)
 		return ret
+	else:
+		return results
 
 func delete_node(n: Node):
 	var l = lookup_backward(n)

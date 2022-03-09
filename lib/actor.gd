@@ -12,12 +12,25 @@ var locationService: LocationService
 
 var player: bool = false
 var speed: int = 3
+var door: bool = false
 
 func try_move(i,j) -> bool:
 	var pos = Vector2(i,j)
+	var blockers = locationService.lookup(pos, constants.BLOCKER)
 	if terrain.at(i,j) == '#':
 		return false
-	if locationService.lookup(pos, constants.BLOCKER).size() > 0:
+	elif blockers.size() > 0:
+		if blockers.size() == 1 && blockers[0].door:
+			var d = blockers[0]
+			if player:
+				if self.rage > 0:
+					d.knockback(d.get_pos() - get_pos())
+					combatLog.say("the door goes flying!")
+				else:
+					combatLog.say("you cautiously open the door.")
+				self.locationService.delete_node(d)
+				d.queue_free()
+				return true
 		return false
 	else:
 		set_pos(pos)
@@ -38,6 +51,8 @@ func knockback(dir: Vector2):
 	var j: int = pos.y + dir.y
 	var c: bool = try_move(i, j)
 	while c:
+		pos = get_pos()
 		i = pos.x + dir.x
 		j = pos.y + dir.y
 		c = try_move(i, j)
+	print(pos)

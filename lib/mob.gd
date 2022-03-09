@@ -2,7 +2,7 @@ extends Actor
 
 class_name Mob
 
-var pc: PC
+var pc
 signal enemy_hit(dir)
 
 func _ready():
@@ -44,6 +44,7 @@ func seek_to_player() -> Vector2:
 
 func draw() -> void:
 	var pos = get_pos()
-	var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-	self.transform.origin.x = float(t_pos.x)
-	self.transform.origin.y = float(t_pos.y)
+	if pos != null:
+		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		self.position.x = float(t_pos.x)
+		self.position.y = float(t_pos.y)
