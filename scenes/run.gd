@@ -153,7 +153,7 @@ func update_pan(dir) -> void:
 	else:
 		pan = scale(pan, SCREEN.TILE_HEIGHT)
 	var ppos = pc.get_pos()
-	$camera.position = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + SCREEN.CENTER + pan
+	$camera.position = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + pan
 
 var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
 func _handle_death():

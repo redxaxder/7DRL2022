@@ -163,7 +163,7 @@ func throw_item() -> bool:
 		if !did_throw:
 			did_throw = throw.try_attack(locationService, get_pos(), d, terrain)
 	if did_throw:
-		pickup.queue_freee()
+		pickup.queue_free()
 		pickup = null
 	if !did_throw: #otherwise, throw it on the ground!
 		combatLog.say("You throw the {0} on the ground!".format([pickup.label]))
