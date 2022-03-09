@@ -39,8 +39,11 @@ func seek_to_player() -> Vector2:
 	
 	var final_candidates = []
 	for c in candidates:
+		var mobs = self.locationService.lookup(c, constants.MOBS)
+		var blockers = self.locationService.lookup(c, constants.BLOCKER)
 		if d_map[terrain.to_linear(c.x,c.y)] == smallest_val:
-			final_candidates.append(c)
+			if mobs.size() == 0 and blockers.size() == 0:
+				final_candidates.append(c)
 	
 	if final_candidates.size() == 0:
 		final_candidates = candidates

@@ -107,7 +107,7 @@ func load_map_resource(ix):
 	return load(path)
 	
 func spawn_door(x: int, y: int):
-	contents[to_linear(x, y)] = ' '
+	contents[to_linear(x, y)] = '.'
 	var root = get_parent()
 	root.spawn_door(Vector2(x, y))
 
@@ -168,4 +168,4 @@ func _draw():
 			if tile == '#':
 				draw_texture(wall_txtr,pos + offset)
 			elif tile == null:
-				draw_texture(floor_txtr,pos + offset)
+				draw_texture(floor_txtr,pos + offset, Color(0.300781, 0.300781, 0.300781))

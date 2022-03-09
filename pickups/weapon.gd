@@ -22,15 +22,15 @@ func init(type: int, southpaw: bool = false):
 		WEAPON_TYPE.SWORD:
 			attack = sword_attack
 			label = "sword"
-			pickup_text = "You pick up a sword"
+			pickup_text = "You pick up a sword."
 		WEAPON_TYPE.SPEAR:
 			attack = spear_attack
 			label = "spear"
-			pickup_text = "You pick up a spear"
+			pickup_text = "You pick up a spear."
 		WEAPON_TYPE.BROADSWORD:
 			attack = broadsword_attack
 			label = "broadsword"
-			pickup_text = "You pick up a broadsword"
+			pickup_text = "You pick up a broadsword."
 	attack.southpaw = southpaw
 
 func random_weapon(southpaw: bool = false):

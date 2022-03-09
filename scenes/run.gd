@@ -163,4 +163,4 @@ func _handle_death():
 	set_process_unhandled_input(false)
 
 func _on_level_up():
-	combatLog.say("level up!")
+	combatLog.say("Level up!")
