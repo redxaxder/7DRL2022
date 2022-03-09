@@ -16,7 +16,12 @@ func pc_adjacent() -> bool:
 	
 func is_hit(dir: Vector2):
 	emit_signal(constants.ENEMY_HIT, dir)
-	emit_signal(constants.DESCHEDULE, self)
+	die()
+	
+func die():
+	if is_in_group(self.constants.MOBS):
+		emit_signal(constants.DESCHEDULE, self)
+	self.locationService.delete_node(self)
 	queue_free()
 
 func seek_to_player() -> Vector2:
@@ -46,3 +51,24 @@ func draw() -> void:
 		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
 		self.position.x = float(t_pos.x)
 		self.position.y = float(t_pos.y)
+
+func knockback(dir: Vector2):
+	var pos = get_pos()
+	var i: int = pos.x + dir.x
+	var j: int = pos.y + dir.y
+	var mobs_at = locationService.lookup(Vector2(i, j), constants.MOBS)
+	var obstacles_at = locationService.lookup(Vector2(i, j), constants.BLOCKER)
+	for m in mobs_at:
+		if m.knight and m.blocking:
+			m.knockback(dir)
+		else:
+			m.die()
+	for o in obstacles_at:
+		o.die()
+	if mobs_at.size() > 0 or obstacles_at.size() > 0:
+		if not (self.knight and self.blocking):
+			self.die()
+		else:
+			return
+	if try_move(i, j):
+		knockback(dir)

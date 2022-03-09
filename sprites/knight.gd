@@ -8,7 +8,7 @@ const block_duration: int = 2
 var cur_block_duration: int = 0
 
 func _ready():
-	self.name = "knight"
+	self.knight = true
 	._ready()
 
 func on_turn():
@@ -39,11 +39,12 @@ func attack():
 func is_hit(dir: Vector2):
 	if self.blocking:
 		emit_signal(constants.ENEMY_HIT, dir)
-		self.blocking = false
-		self.cur_block_cooldown = self.block_cooldown
 		self.combatLog.say("the knight blocks your attack!")
 		self.combatLog.say("the knight goes flying!")
 		self.knockback(dir)
+		self.blocking = false
+		self.cur_block_cooldown = self.block_cooldown
+
 	else:
 		.is_hit(dir)
 
@@ -56,3 +57,6 @@ func draw() -> void:
 		self.modulate = Color(0.460938, 0.460938, 1)
 	else:
 		self.modulate = Color(1, 1, 1)
+		
+func die():
+	self.combatLog.say("the knight dies.")

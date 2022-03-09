@@ -13,6 +13,7 @@ var locationService: LocationService
 var player: bool = false
 var speed: int = 3
 var door: bool = false
+var knight: bool = false
 
 func try_move(i,j) -> bool:
 	var pos = Vector2(i,j)
@@ -26,10 +27,10 @@ func try_move(i,j) -> bool:
 				if self.rage > 0:
 					d.knockback(d.get_pos() - get_pos())
 					combatLog.say("the door goes flying!")
+					combatLog.say("the door is smashed to pieces!")
 				else:
 					combatLog.say("you cautiously open the door.")
-				self.locationService.delete_node(d)
-				d.queue_free()
+				d.die()
 				return true
 		return false
 	else:
@@ -45,14 +46,4 @@ func get_pos(default = null) -> Vector2:
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
 
-func knockback(dir: Vector2):
-	var pos = get_pos()
-	var i: int = pos.x + dir.x
-	var j: int = pos.y + dir.y
-	var c: bool = try_move(i, j)
-	while c:
-		pos = get_pos()
-		i = pos.x + dir.x
-		j = pos.y + dir.y
-		c = try_move(i, j)
-	print(pos)
+
