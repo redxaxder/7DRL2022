@@ -69,7 +69,13 @@ func try_attack(dir) -> bool:
 		return false
 
 func pick_up(p: Pickup, l: Vector2):
-	if pickup != null:
-		pickup.drop(l)
-	pickup = p
-	p.take()
+	if p.is_weapon:
+		if weapon != null:
+			weapon.drop(l)
+		weapon = p
+		p.take()
+	else:
+		if pickup != null:
+			pickup.drop(l)
+		pickup = p
+		p.take()

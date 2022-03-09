@@ -10,7 +10,7 @@ region = Rect2( 88, 72, 8, 12 )
 
 [node name="knight" type="Sprite"]
 position = Vector2( 64, 64 )
-z_index = 2
+z_index = 6
 texture = SubResource( 1 )
 script = ExtResource( 3 )
 

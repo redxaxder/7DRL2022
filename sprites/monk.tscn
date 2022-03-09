@@ -13,10 +13,12 @@ atlas = ExtResource( 2 )
 region = Rect2( 88, 156, 8, 12 )
 
 [node name="monk" type="Sprite"]
-z_index = 2
+z_index = 6
 texture = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="backstop" parent="." instance=ExtResource( 1 )]
 position = Vector2( 7.62939e-06, -3.8147e-06 )
+z_index = -1
+z_as_relative = true
 texture = SubResource( 2 )
