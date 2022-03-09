@@ -10,10 +10,17 @@ var fatigue: int = 0
 var recovery: int = 0
 var running: int = 0
 var run_dir: int = 0
+var attack: Attack
+
+var pickup: Pickup = null
+var weapon: Weapon = null
+
+var punch = preload("res://lib/attacks/punch.gd").new()
 
 func _ready():
 	self.player = true
 	self.speed = 6
+	self.attack = punch
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10
@@ -47,7 +54,22 @@ func tick():
 		recovery = 0
 		
 func enemy_hit(dir):
-	#back out of the enemy's spot
-	var pos = get_pos()
-	try_move(pos.x - dir.x, pos.y - dir.y)
+	#you've just hit an enemy!
+	pass
 
+func try_attack(dir) -> bool:
+	var can_attack = false
+	if rage > 0:
+		can_attack = true
+	elif fatigue <= 0:
+		can_attack = true
+	if can_attack:
+		return attack.try_attack(locationService, get_pos(), dir)
+	else:
+		return false
+
+func pick_up(p: Pickup, l: Vector2):
+	if pickup != null:
+		pickup.drop(l)
+	pickup = p
+	p.take()
