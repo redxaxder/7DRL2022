@@ -66,7 +66,7 @@ func spawn_random_consumable(p: Vector2):
 	item.drop(p)
 
 func spawn_random_weapon(p: Vector2):
-	var item = weapon_scene.instance() as Weapon
+	var item = weapon_scene.instance()
 	item.locationService = locationService
 	item.random_weapon()
 	add_child(item)

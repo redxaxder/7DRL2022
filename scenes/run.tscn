@@ -9,7 +9,6 @@
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
 
 [sub_resource type="DynamicFont" id=1]
-size = 14
 font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -80,15 +79,12 @@ __meta__ = {
 
 [node name="CombatLog" type="PanelContainer" parent="hud"]
 self_modulate = Color( 0.580392, 0.580392, 0.580392, 1 )
-margin_left = 795.0
-margin_top = -3.0
-margin_right = 1028.0
-margin_bottom = 603.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -233.0
+margin_bottom = 606.0
 rect_clip_content = true
 script = ExtResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="log" type="Label" parent="hud/CombatLog"]
 margin_left = 7.0
