@@ -2,7 +2,6 @@ extends Actor
 
 class_name Mob
 
-var pc
 signal enemy_hit(dir)
 signal killed_by_pc(label)
 
@@ -20,14 +19,6 @@ func pc_adjacent() -> bool:
 func is_hit(dir: Vector2):
 	emit_signal(constants.ENEMY_HIT, dir)
 	die()
-	
-func die():
-	if is_in_group(self.constants.MOBS):
-		emit_signal(constants.DESCHEDULE, self)
-	self.locationService.delete_node(self)
-	#TODO: handle if it was killed by someone else (eg: wizard)
-	emit_signal(constants.KILLED_BY_PC, label)
-	queue_free()
 
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
@@ -60,23 +51,3 @@ func draw() -> void:
 		self.position.x = float(t_pos.x)
 		self.position.y = float(t_pos.y)
 
-func knockback(dir: Vector2):
-	var pos = get_pos()
-	var i: int = pos.x + dir.x
-	var j: int = pos.y + dir.y
-	var mobs_at = locationService.lookup(Vector2(i, j), constants.MOBS)
-	var obstacles_at = locationService.lookup(Vector2(i, j), constants.BLOCKER)
-	for m in mobs_at:
-		if m.knight and m.blocking:
-			m.knockback(dir)
-		else:
-			m.die()
-	for o in obstacles_at:
-		o.die()
-	if mobs_at.size() > 0 or obstacles_at.size() > 0:
-		if not (self.knight and self.blocking):
-			self.die()
-		else:
-			return
-	if try_move(i, j):
-		knockback(dir)

@@ -16,12 +16,15 @@ func on_turn():
 		set_pos(next)
 
 func attack():
-	#monk stuff i dunno
-	pass
-				
-func is_hit(dir: Vector2):
-	# todo after we redo targetting
-	pass
+	if cur_knockback_cooldown == 0 and rand_range(0, 1) < knockback_chance:
+		self.combatLog.say("The monk yells something in Japanese and kicks you.")
+		self.combatLog.say("You go flying!")
+		self.pc.knockback(self.pc.get_pos() - get_pos())		
+	else:
+		self.combatLog.say("The monk punches you!")
+		self.pc.injure()
+		if cur_knockback_cooldown > 0:
+			cur_knockback_cooldown -= 1
 	
 func die():
 	self.combatLog.say("the monk dies.")

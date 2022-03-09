@@ -3,12 +3,13 @@ extends Sprite
 class_name Actor
 signal deschedule(actor)
 
-var constants: Const = preload("res://lib/const.gd").new()
+var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 
 var terrain: Terrain
 var combatLog: CombatLog
 var locationService: LocationService
+var pc
 
 var player: bool = false
 var speed: int = 3
@@ -47,4 +48,34 @@ func get_pos(default = null) -> Vector2:
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
 
-
+func die():
+	if is_in_group(self.constants.MOBS):
+		emit_signal(constants.DESCHEDULE, self)
+	self.locationService.delete_node(self)
+	#TODO: handle if it was killed by someone else (eg: wizard)
+	emit_signal(constants.KILLED_BY_PC, label)
+	queue_free()
+	
+func knockback(dir: Vector2):
+	var pos = get_pos()
+	var i: int = pos.x + dir.x
+	var j: int = pos.y + dir.y
+	var mobs_at = locationService.lookup(Vector2(i, j), constants.MOBS)
+	var obstacles_at = locationService.lookup(Vector2(i, j), constants.BLOCKER)
+	for m in mobs_at:
+		if m.knight and m.blocking:
+			m.knockback(dir)
+		else:
+			m.die()
+	for o in obstacles_at:
+		o.die()
+	if mobs_at.size() > 0 or obstacles_at.size() > 0:
+		if not (self.knight and self.blocking):
+			if not self.player:
+				self.die()
+		else:
+			return
+	if try_move(i, j):
+		knockback(dir)
+	elif self.player:
+		self.pc.injure()

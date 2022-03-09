@@ -37,6 +37,7 @@ var DIR = preload("res://lib/dir.gd").new()
 func _ready():
 	self.player = true
 	self.speed = 6
+	self.pc = self
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10

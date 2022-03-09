@@ -49,7 +49,6 @@ func is_hit(dir: Vector2):
 		self.knockback(dir)
 		self.blocking = false
 		self.cur_block_cooldown = self.block_cooldown
-
 	else:
 		.is_hit(dir)
 
