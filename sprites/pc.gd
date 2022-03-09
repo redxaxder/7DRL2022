@@ -15,7 +15,9 @@ var pickup: Pickup = null
 var weapon = null
 
 var punch = preload("res://lib/attacks/punch.gd").new()
+var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
+var DIR = preload("res://lib/dir.gd").new()
 
 func _ready():
 	self.player = true
@@ -43,6 +45,8 @@ func make_shards() -> Pickup:
 	var shards = pickup_scene.instance()
 	shards.init(shards.ITEM_TYPE.SHARDS)
 	shards.locationService = locationService
+	get_parent().add_child(shards)
+	shards.take()
 	return shards
 
 func tick():
@@ -127,8 +131,21 @@ func consume_calm(p: Pickup) -> bool:
 	return true
 
 func throw_item() -> bool:
-	#TODO
-	return true
+	var did_throw := false
+	var dirs = [Dir.DIR.UP, Dir.DIR.LEFT, Dir.DIR.DOWN, Dir.DIR.RIGHT]
+	dirs.shuffle()
+	for d in dirs: #first, try to throw at an enemy
+		if !did_throw:
+			did_throw = throw.try_attack(locationService, get_pos(), d, terrain)
+	if did_throw:
+		pickup.queue_freee()
+		pickup = null
+	if !did_throw: #otherwise, throw it on the ground!
+		combatLog.say("You throw the {0} on the ground!".format([pickup.label]))
+		pickup.place(get_pos())
+		pickup = null
+		did_throw = true
+	return did_throw
 
 func consume_angry(p: Pickup) -> bool:
 	match p.type:
@@ -142,12 +159,14 @@ func consume_angry(p: Pickup) -> bool:
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
 			pickup =	 make_shards()
+			make_shards().place(get_pos())
 			#TODO: put out fire. maybe add wet?
 			return true
 		p.ITEM_TYPE.BRANDY:
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
 			pickup =	 make_shards()
+			make_shards().place(get_pos())
 			return true
 			#TODO: soak in alchohol
 	return true

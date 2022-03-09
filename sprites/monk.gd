@@ -5,6 +5,7 @@ var cur_knockback_cooldown: int = 0
 const knockback_chance: float = 0.25
 
 func _ready():
+	label = "knight"
 	._ready()
 
 func on_turn():

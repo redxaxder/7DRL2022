@@ -5,13 +5,10 @@ var DIR: Dir = preload("res://lib/dir.gd").new()
 var southpaw = false
 
 #returns true if an attack was made
-func try_attack(ls: LocationService, pos: Vector2, dir: int) -> bool:
-	var attacked = false
-	var d = DIR.dir_to_vec(dir)
-	var target = pos + d
-	return try_attack_at(ls, target, dir)
+func try_attack(ls: LocationService, pos: Vector2, dir: int, terr: Terrain = null) -> bool:
+	return false
 
-func try_attack_at(ls: LocationService, target: Vector2, dir: int) -> bool:
+func try_attack_at(ls: LocationService, target: Vector2, dir: int, terr: Terrain = null) -> bool:
 	var attacked = false
 	var mobs = ls.lookup(target, constants.MOBS)
 	var d = DIR.dir_to_vec(dir)

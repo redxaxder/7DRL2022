@@ -9,6 +9,7 @@ var cur_block_duration: int = 0
 
 func _ready():
 	self.knight = true
+	label = "knight"
 	._ready()
 
 func on_turn():

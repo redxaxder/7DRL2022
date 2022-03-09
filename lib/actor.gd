@@ -12,6 +12,7 @@ var locationService: LocationService
 
 var player: bool = false
 var speed: int = 3
+var label: String = ""
 var door: bool = false
 var knight: bool = false
 

@@ -1,6 +1,6 @@
 extends Attack
 
-func try_attack(ls: LocationService, pos: Vector2, dir: int):
+func try_attack(ls: LocationService, pos: Vector2, dir: int, _terrain: Terrain = null):
 	var attacked = false
 	var swing_dir = flip(DIR.rot(dir))
 	var opposite_dir = DIR.invert(swing_dir)

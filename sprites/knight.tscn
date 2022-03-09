@@ -16,3 +16,5 @@ script = ExtResource( 3 )
 
 [node name="backstop" parent="." instance=ExtResource( 2 )]
 position = Vector2( 7.62939e-06, -3.8147e-06 )
+z_index = -1
+z_as_relative = true
