@@ -13,7 +13,7 @@ var run_dir: int = 0
 var attack: Attack
 
 var pickup: Pickup = null
-var weapon: Weapon = null
+var weapon = null
 
 var punch = preload("res://lib/attacks/punch.gd").new()
 
