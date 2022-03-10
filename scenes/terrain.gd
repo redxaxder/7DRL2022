@@ -128,12 +128,18 @@ func can_be_door(loc: Vector2) -> bool:
 	if loc.y <= 0 || loc.y >= height-1: return false
 	return map.count_rooms(loc,1) == 2
 
-func _place_a_door(start: Vector2, dir: Vector2, size: int):
+func has_door(cells: Array) -> bool:
+	var door_placed = false
+	for t in cells:
+		if atv(t) == '.':
+			door_placed = true
+	return door_placed
+
+func place_a_door(cells: Array) -> bool:
 	# first, check if a door is already placed:
 	var candidates: Array = []
 	var door_placed = false
-	for i in range(size):
-		var t = start + (i * dir)
+	for t in cells:
 		var tile = atv(t)
 		if tile == '.':
 			door_placed = true
@@ -145,6 +151,29 @@ func _place_a_door(start: Vector2, dir: Vector2, size: int):
 		var v = candidates[randi() % candidates.size()]
 		door_placed = spawn_door(v.x,v.y)
 	return door_placed
+
+func room_side(room: Vector3, dir: int) -> Array:
+	var results = []
+	var topleft=Vector2(room.x, room.y)
+	var bottomright=Vector2(room.x + room.z, room.y + room.z)
+	var corner
+	var v
+	match dir:
+		Dir.DIR.UP:
+			corner = topleft
+			v = Vector2(1,0)
+		Dir.DIR.LEFT:
+			corner = topleft
+			v = Vector2(0,1)
+		Dir.DIR.DOWN:
+			corner = bottomright
+			v = Vector2(-1,0)
+		Dir.DIR.RIGHT:
+			corner = bottomright
+			v = Vector2(0,-1)
+	for i in range(room.z):
+		results.append(corner + (i * v))
+	return results
 
 func load_map(ix): # max index: 26460
 	map = load_map_resource(ix)
@@ -162,14 +191,20 @@ func load_map(ix): # max index: 26460
 	for i in blood_map.size():
 		blood_map[i] = 0
 	#spawn the doors:
+	map.rooms.shuffle()
 	for room in map.rooms:
-		var topleft=Vector2(room.x, room.y)
-		var bottomright=Vector2(room.x + room.z, room.y + room.z)
-		_place_a_door(topleft, Vector2(1,0), room.z) # top
-		_place_a_door(topleft, Vector2(0,1), room.z) # bottom
-		_place_a_door(bottomright, Vector2(-1,0), room.z) # left
-		_place_a_door(bottomright, Vector2(0,-1), room.z) # right
-	#nfill non-doors with walls
+		var sides = [] # room sides lacking a door
+		for dir in [Dir.DIR.UP,Dir.DIR.DOWN,Dir.DIR.RIGHT,Dir.DIR.LEFT]:
+			var side = room_side(room,dir)
+			if !has_door(side):
+				sides.append(room_side(room,dir))
+		sides.shuffle()
+		var n = 4 - sides.size() # number of walls with a door
+		while n < 3 && sides.size() > 0:
+			var side = sides.pop_back()
+			if place_a_door(side):
+				n += 1
+	#fill non-doors with walls
 	for room in map.rooms:
 		for i in range(room.z+1):
 			for ix in [ \
