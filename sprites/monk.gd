@@ -28,5 +28,5 @@ func attack():
 			cur_knockback_cooldown -= 1
 	
 func die(dir: Vector2):
-	self.combatLog.say("the monk dies.")
+	self.combatLog.say("The monk dies.")
 	.die(dir)

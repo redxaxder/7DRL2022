@@ -13,6 +13,9 @@ var map: Map
 var contents: Array = []
 var dijkstra_map: Array = []
 var blood_map: Array = []
+var active_rooms: Dictionary # room -> bool
+
+const dijstra_map_limit = 70
 
 const cosmetic_map_seed: int = 68000
 
@@ -77,7 +80,7 @@ func update_dijkstra_map(dest: Array):
 						var m: int = array_min(neighs)
 						if d_map[i] and d_map[i] > m + 1:
 							d_map[i] = array_min(neighs) + 1
-							if m <= 70:
+							if m <= dijstra_map_limit:
 								for n in ns:
 									next.append(n)
 		tmp = live

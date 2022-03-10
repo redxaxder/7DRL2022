@@ -31,23 +31,23 @@ func init(item_type: int):
 		ITEM_TYPE.APPLE:
 			sprite = apple_sprite.instance()
 			label = "apple"
-			pickup_text = "You pick up an apple"
+			pickup_text = "You pick up an apple."
 		ITEM_TYPE.TURKEY:
 			sprite = turkey_sprite.instance()
 			label = "turkey"
-			pickup_text = "You pick up a turkey"
+			pickup_text = "You pick up a turkey."
 		ITEM_TYPE.WATER:
 			sprite = water_sprite.instance()
 			label = "water"
-			pickup_text = "You pick up a bottle of water"
+			pickup_text = "You pick up a bottle of water."
 		ITEM_TYPE.BRANDY:
-			sprite = apple_sprite.instance()
+			sprite = brandy_sprite.instance()
 			label = "brandy"
-			pickup_text = "You pick up a bottle of brandy"
+			pickup_text = "You pick up a bottle of brandy."
 		ITEM_TYPE.SHARDS:
 			sprite = shards_sprite.instance()
 			label = "glass shards"
-			pickup_text = "You pick up a handful of glass shards"
+			pickup_text = "You pick up a handful of glass shards."
 	add_child(sprite)
 
 func take():

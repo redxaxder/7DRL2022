@@ -69,6 +69,14 @@ other important things:
   - running mechanic
   - visibility
   - blood through doors/walls
+  - update display after start
+  - samurai behind open door waits in place
+  - enemies pass through each other
+  - enemy walks through door
+  - consistent punctuation
+  - attack passes through door
+  - throw passes through door
+  - sometimes can't throw??
 
 - third pass:
   - wizard enemy sets things on fire
