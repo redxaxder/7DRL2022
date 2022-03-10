@@ -43,10 +43,4 @@ func seek_to_player() -> Vector2:
 	
 	return final_candidates[randi() % final_candidates.size()]
 
-func draw() -> void:
-	var pos = get_pos()
-	if pos != null:
-		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-		self.position.x = float(t_pos.x)
-		self.position.y = float(t_pos.y)
 

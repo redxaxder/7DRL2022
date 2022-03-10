@@ -27,11 +27,11 @@ func try_move(i,j) -> bool:
 			var d = blockers[0]
 			if player:
 				if self.rage > 0:
+					combatLog.say("The door goes flying!")
 					d.knockback(d.get_pos() - get_pos())
-					combatLog.say("the door goes flying!")
-					combatLog.say("the door is smashed to pieces!")
+					combatLog.say("The door is smashed to pieces!")
 				else:
-					combatLog.say("you cautiously open the door.")
+					combatLog.say("You cautiously open the door.")
 				d.die(Vector2(0,0))
 				return true
 		return false
@@ -80,3 +80,10 @@ func knockback(dir: Vector2, distance: int = -1):
 		knockback(dir, distance - 1)
 	elif self.player:
 		self.pc.injure()
+
+func _draw() -> void:
+	var pos = get_pos()
+	if pos != null:
+		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		self.position.x = float(t_pos.x)
+		self.position.y = float(t_pos.y)

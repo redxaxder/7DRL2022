@@ -30,8 +30,6 @@ func unregister_actor(actor: Actor):
 	turns_per_round.erase(actor)
 	
 func next_turn():
-	get_tree().call_group(constants.MOBS, "draw")
-	get_tree().call_group(constants.BLOCKER, "draw")
 	var largest: int = 0
 	for actor in turns_per_round.keys():
 		if priority(actor) > largest:
@@ -47,6 +45,7 @@ func next_turn():
 				self.player_turn = true
 				return
 			actor.on_turn()
+			actor.update()
 			next_turn()
 
 func priority(a) -> int:

@@ -22,6 +22,8 @@ const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene: PackedScene = preload("res://sprites/door.tscn")
 #########################################
 
+#to use for map selection later
+var area_seen: int = 0
 
 func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s: Scheduler):
 	pc = p
@@ -30,9 +32,29 @@ func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s: Sc
 	combatLog = cl
 	parent = n
 	scheduler = s
+	randomize()
 
-func spawn_door(pos: Vector2):
-	spawn_mob(door_scene, pos)
+
+func load_next_map():
+	terrain.load_random_map()
+	area_seen += terrain.width * terrain.height
+	for room in terrain.map.rooms:
+		room_doors(room)
+
+func room_doors(room):
+	for cell in terrain.map.room_outline(room):
+		if terrain.atv(cell) == '.':
+			spawn_door(cell)
+
+func spawn_door(pos: Vector2) -> Actor:
+	if locationService.lookup(pos).size() > 0:
+		return null
+	var door = door_scene.instance() as Actor
+	door.locationService = locationService
+	door.terrain = terrain
+	door.set_pos(pos)
+	parent.add_child(door)
+	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
 	if terrain.atv(pos) != '#' && locationService.lookup(pos, constants.BLOCKER).size() == 0:

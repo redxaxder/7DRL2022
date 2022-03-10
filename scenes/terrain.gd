@@ -118,9 +118,8 @@ func load_map_resource(ix):
 	return load(path)
 	
 func spawn_door(x: int, y: int):
+	#terrain marks door spawn locations with '.' and they get filled later
 	contents[to_linear(x, y)] = '.'
-	var root = get_parent()
-	root.spawn_door(Vector2(x, y))
 	return true
 
 func can_be_door(loc: Vector2) -> bool:
@@ -207,14 +206,10 @@ func load_map(ix): # max index: 26460
 	#fill non-doors with walls
 	for room in map.rooms:
 		for i in range(room.z+1):
-			for ix in [ \
-				to_linear(room.x + i, room.y), # top \
-				to_linear(room.x + i, room.y + room.z), # bottom \
-				to_linear(room.x, room.y + i), # left \
-				to_linear(room.x + room.z, room.y + i), # right \
-				]:
-				if contents[ix] == null:
-					contents[ix] = '#'
+			for v in map.room_outline(room):
+				var t = to_linear(v.x,v.y)
+				if contents[t] == null:
+					contents[t] = '#'
 
 func splatter_blood(pos: Vector2, dir: Vector2):
 	blood_map[to_linear(pos.x, pos.y)] += 11

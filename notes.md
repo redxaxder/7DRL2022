@@ -77,6 +77,7 @@ other important things:
   - attack passes through door
   - throw passes through door
   - sometimes can't throw??
+  - knockback should open doors
 
 - third pass:
   - wizard enemy sets things on fire

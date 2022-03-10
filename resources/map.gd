@@ -21,6 +21,16 @@ func room_cells(room: Vector3, fudge: int = 0) -> Array:
 			cells.append(Vector2(i,j))
 	return cells
 
+func room_outline(room: Vector3) -> Array:
+	var results = []
+	for i in room.z + 1:
+		results.append(Vector2(room.x + i, room.y)) # top
+		results.append(Vector2(room.x + i, room.y + room.z)) # bottom
+	for i in range(1,room.z):
+		results.append(Vector2(room.x, room.y + i)) # left
+		results.append(Vector2(room.x + room.z, room.y + i)) # tight
+	return results
+
 func count_rooms(p: Vector2, fudge: int = 0) -> int:
 	var n = 0
 	for r in rooms:

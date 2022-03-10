@@ -25,7 +25,7 @@ const door_scene = preload("res://sprites/door.tscn")
 
 func _ready():
 	randomize()
-	terrain.load_random_map()
+#	terrain.load_random_map()
 #	terrain.blood_map[terrain.to_linear(13, 9)] = 31
 #	terrain.blood_map[terrain.to_linear(13, 10)] = 21
 #	terrain.blood_map[terrain.to_linear(13, 11)] = 11
@@ -41,61 +41,27 @@ func _ready():
 	pc.combatLog = combatLog
 	pc.locationService = locationService
 	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler)
+	director.load_next_map()
 	pc.set_pos(pcpos)
 	scheduler.register_actor(pc)
-	spawn_dynamic_mob(knight_scene, Vector2(10,10))
-	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
-	spawn_dynamic_mob(samurai_scene, Vector2(15, 15))
-	spawn_random_consumable(Vector2(15,15))
-	spawn_random_consumable(Vector2(16,15))
-	spawn_random_consumable(Vector2(17,15))
-	spawn_random_consumable(Vector2(18,15))
-	spawn_random_consumable(Vector2(19,15))
-	spawn_random_consumable(Vector2(20,15))
-	spawn_random_weapon(Vector2(20,20))
-	spawn_random_weapon(Vector2(20,21))
-	spawn_random_weapon(Vector2(20,22))
-	spawn_random_weapon(Vector2(20,23))
-	spawn_random_weapon(Vector2(20,24))
-	spawn_random_weapon(Vector2(20,25))
-	spawn_random_weapon(Vector2(20,26))
-	
-func spawn_door(pos: Vector2):
-	spawn_mob(door_scene, pos)
-
-func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
-	if terrain.atv(pos) != '#' && locationService.lookup(pos, constants.BLOCKER).size() == 0:
-		var mob = spawn_mob(prefab, pos)
-		$Scheduler.register_actor(mob)
-		mob.connect(constants.DESCHEDULE, $Scheduler, "unregister_actor")
-		mob.connect(constants.KILLED_BY_PC, $pc, "_on_enemy_killed")
-
-func spawn_mob(prefab: PackedScene, pos: Vector2):
-	if terrain.atv(pos) != '#' && locationService.lookup(pos, constants.BLOCKER).size() == 0:
-		var mob = prefab.instance() as Mob
-		mob.pc = pc
-		mob.terrain = terrain
-		mob.combatLog = combatLog
-		mob.locationService = locationService
-		mob.set_pos(pos)
-		add_child(mob)
-		return mob
-
-func spawn_random_consumable(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p, constants.BLOCKER).size() == 0:
-		var item = pickup_scene.instance() as Pickup
-		item.locationService = locationService
-		item.random_consumable()
-		add_child(item)
-		item.place(p)
-
-func spawn_random_weapon(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p, constants.BLOCKER).size() == 0:
-		var item = weapon_scene.instance()
-		item.locationService = locationService
-		item.random_weapon(pc.southpaw)
-		add_child(item)
-		item.place(p)
+	director.spawn_dynamic_mob(knight_scene, Vector2(10,10))
+	director.spawn_dynamic_mob(monk_scene, Vector2(5, 5))
+	director.spawn_dynamic_mob(samurai_scene, Vector2(15, 15))
+	director.spawn_random_consumable(Vector2(15,15))
+	director.spawn_random_consumable(Vector2(16,15))
+	director.spawn_random_consumable(Vector2(17,15))
+	director.spawn_random_consumable(Vector2(18,15))
+	director.spawn_random_consumable(Vector2(19,15))
+	director.spawn_random_consumable(Vector2(20,15))
+	director.spawn_random_weapon(Vector2(20,20))
+	director.spawn_random_weapon(Vector2(20,21))
+	director.spawn_random_weapon(Vector2(20,22))
+	director.spawn_random_weapon(Vector2(20,23))
+	director.spawn_random_weapon(Vector2(20,24))
+	director.spawn_random_weapon(Vector2(20,25))
+	director.spawn_random_weapon(Vector2(20,26))
+	update_status()
+	update_pan(-1)
 
 var tick = 0
 
