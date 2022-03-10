@@ -17,12 +17,19 @@ func on_turn():
 		set_pos(next)
 
 func attack():
-	if cur_knockback_cooldown == 0 and rand_range(0, 1) < knockback_chance:
+	if cur_knockback_cooldown == 0:
 		self.combatLog.say("The monk yells something in Japanese and kicks you.")
 		self.combatLog.say("You go flying!")
 		self.pc.knockback(self.pc.get_pos() - get_pos(), knockback_distance)
+		self.cur_knockback_cooldown = knockback_cooldown
 	else:
 		self.combatLog.say("The monk punches you!")
 		self.pc.injure()
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1
+			
+func _draw():
+	if cur_knockback_cooldown == 0:
+		self.modulate = Color(0.789062, 0.443848, 0)
+	else:
+		self.modulate = Color(1, 1, 1)

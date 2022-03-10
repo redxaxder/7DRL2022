@@ -119,7 +119,7 @@ func try_kick_furniture(dir) -> bool:
 
 
 func pick_up(p: Pickup, l: Vector2):
-	if debuffs[self.constants.FUMBLE] > 0:
+	if debuffs.has(self.constants.FUMBLE) and debuffs[self.constants.FUMBLE] > 0:
 		self.combatLog.say("You're too weak to pick up the {0}".format([p.label]))
 		return
 	if p.is_weapon:
