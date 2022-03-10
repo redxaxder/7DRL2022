@@ -30,13 +30,13 @@ TODO:
 
 
 - second pass:
-   - 3 enemies
-     - knight
-     - monk
-     - samurai
+   + 3 enemies
+     + knight
+     + monk
+     + samurai
    - 3 levels
      - path to next level activates if you step on it
-   - handle knockback
+   + handle knockback
    + HUD: equipped weapon / item
    + yes to weapons
      + necrodancer style weapon use and management
@@ -57,7 +57,7 @@ TODO:
       - only boost speed for player in rage
    - more fatigue effects
      - cant pick up items
-   - exp and leveling system
+   + exp and leveling system
        + triggered on exiting rage
    + a couple of perks:
        + when entering rage, start with more [10/20/30]
@@ -73,11 +73,13 @@ other important things:
   - samurai behind open door waits in place
   - enemies pass through each other
   - enemy walks through door
+  - enemy inside wall??
   - consistent punctuation
   - attack passes through door
   - throw passes through door
   - sometimes can't throw??
   - knockback should open doors
+  - animate
 
 - third pass:
   - wizard enemy sets things on fire
