@@ -1,7 +1,7 @@
 extends PanelContainer
 
 signal exit_level_up
-
+signal pick_perk(perk)
 
 var perks: Array = [
 	preload("res://lib/perks/short_tempered.gd").new(),
@@ -35,6 +35,7 @@ func display_perk(i: int, n: Node):
 	n.get_node("vbox/header").text = perks[i].title
 
 func _on_perk_picked(p: Perk):
+	emit_signal("pick_perk", p)
 	if !p.evolve_perk():
 		perks.erase(p)
 	prepare()
@@ -49,8 +50,3 @@ func focus():
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"):
 		exit()
-		print("asdfasfa")
-#	if event.is_action_pressed("level_up"):
-#		var b: Button = get_focus_owner() as Button
-#		print("asdfasfa")
-#		b.pressed = true

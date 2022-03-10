@@ -8,6 +8,7 @@ signal status_changed()
 var rage: int = 0
 var rage_decay: int = 0
 var fatigue: int = 0
+var starting_recovery: int = 0
 var recovery: int = 0
 
 const base_experience_gain_rate: int = 10
@@ -17,7 +18,7 @@ const max_experience_gain_rate: int = 200
 var experience_gain_rate: int = base_experience_gain_rate
 var experience: int = 0
 
-const base_experience_needed = 800
+const base_experience_needed = 200
 const experience_needed_step = 400
 var experience_needed = base_experience_needed
 
@@ -55,7 +56,7 @@ func injure():
 		combatLog.say("You fly into a rage!")
 		rage += rage_on_got_hit + starting_rage
 		fatigue += fatigue_on_got_hit
-		recovery = 0
+		recovery = starting_recovery
 	rage_decay = 1 + fatigue / 40
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
@@ -194,6 +195,18 @@ func consume_angry(p: Pickup) -> bool:
 			#TODO: soak in alchohol
 	return true
 
+func _on_pick_perk(p: Perk):
+	experience -= experience_needed
+	experience_needed += experience_needed_step
+	match p.perk_type:
+		p.PERK_TYPE.BLOODLUST:
+			rage_on_kill += p.bonus
+		p.PERK_TYPE.VENGEANCE:
+			rage_on_got_hit += p.bonus
+		p.PERK_TYPE.ENDURANCE:
+			starting_recovery += p.bonus
+		p.PERK_TYPE.SHORT_TEMPERED:
+			starting_rage += p.bonus
 func _on_enemy_killed(label: String):
 	experience += experience_gain_rate
 	experience_gain_rate += experience_gain_step

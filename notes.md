@@ -3,17 +3,17 @@ TODO:
 - Make todo list
 
 
-- first pass of impl has:
++ first pass of impl has:
   + only knights
     +t but no knockback
   + 1 level randomly chosen from a squaring
   + no items
-  - rage
+  + rage
     + on entering rage: gain 20 rage
-    - enter rage by either attacking or being attacked
+    + enter rage by either attacking or being attacked
     + when player is attacked: gain 10 rage and 5 fatigue
-      - if fatigued and not in rage, dies
-    - when player slays an enemy: gain 10 rage
+      + if fatigued and not in rage, dies
+    + when player slays an enemy: gain 10 rage
   + fatigue
     + recover 1 fatigue per turn, and increase recovery rate each turn
     + just blocks rage
@@ -51,19 +51,19 @@ TODO:
       + turkey: recover all fatigue
       + water: adds 5 to fatigue recovery rate
       + space to use item
-   - add doors
-   - door handling when raged/calm
+   + add doors
+   + door handling when raged/calm
    - time system
       - only boost speed for player in rage
    - more fatigue effects
      - cant pick up items
    - exp and leveling system
        + triggered on exiting rage
-   - a couple of perks:
-       - when entering rage, start with more [10/20/30]
-       - gain more rage from killing  [+1/2/3]
-       - gain more rage from getting hit  [+3/6/9]
-       - recovery: [+1/+1/+1] starting recovery after rage ends
+   + a couple of perks:
+       + when entering rage, start with more [10/20/30]
+       + gain more rage from killing  [+1/2/3]
+       + gain more rage from getting hit  [+3/6/9]
+       + recovery: [+1/+1/+1] starting recovery after rage ends
 
 - third pass:
   - wizard enemy sets things on fire

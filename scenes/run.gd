@@ -34,6 +34,7 @@ func _ready():
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
+	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
 	var pcpos = Vector2(30,30)
 	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
