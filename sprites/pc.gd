@@ -85,25 +85,22 @@ func tick():
 		recovery = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
-func _did_level_up(_perk):
-	experience -= experience_needed
-	experience_needed += experience_needed_step
-	emit_signal(constants.PLAYER_STATUS_CHANGED)
-	emit_signal(constants.PLAYER_LEVEL_UP)
-
 func try_attack(dir) -> bool:
 	var can_attack = false
+	var did_attack = false
+	var calm = rage <= 0
 	if rage > 0:
 		can_attack = true
 	elif fatigue <= 0:
 		can_attack = true
 	if can_attack:
 		if weapon != null:
-			return weapon.attack.try_attack(locationService, get_pos(), dir)
+			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir)
 		else:
-			return punch.try_attack(locationService, get_pos(), dir)
-	else:
-		return false
+			did_attack = punch.try_attack(locationService, get_pos(), dir)
+	if calm && did_attack:
+		rage += starting_rage
+	return did_attack
 
 func try_kick_furniture(dir) -> bool:
 	var acted = false
@@ -222,6 +219,9 @@ func _on_pick_perk(p: Perk):
 			starting_recovery += p.bonus
 		p.PERK_TYPE.SHORT_TEMPERED:
 			starting_rage += p.bonus
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
+	emit_signal(constants.PLAYER_LEVEL_UP)
+
 func _on_enemy_killed(label: String):
 	experience += experience_gain_rate
 	experience_gain_rate += experience_gain_step

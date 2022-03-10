@@ -68,18 +68,17 @@ TODO:
 other important things:
   - running mechanic
   - visibility
-  - blood through doors/walls
-  - update display after start
+  - blood through doors
   - samurai behind open door waits in place
   - enemies pass through each other
-  - enemy walks through door
-  - enemy inside wall??
-  - consistent punctuation
   - attack passes through door
   - throw passes through door
   - sometimes can't throw??
   - knockback should open doors
+  - kicking door into blocking knight doesnt knock them back
   - animate
+  - telegraph monk knockback
+
 
 - third pass:
   - wizard enemy sets things on fire

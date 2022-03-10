@@ -97,14 +97,14 @@ func spawn_door(pos: Vector2) -> Actor:
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
-	if terrain.atv(pos) != '#' && locationService.lookup(pos, constants.BLOCKER).size() == 0:
+	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
 		scheduler.register_actor(mob)
 		mob.connect(constants.DESCHEDULE, scheduler, "unregister_actor")
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
-	if terrain.atv(pos) != '#' && locationService.lookup(pos, constants.BLOCKER).size() == 0:
+	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
 		var mob = prefab.instance() as Mob
 		mob.pc = pc
 		mob.terrain = terrain
@@ -115,7 +115,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		return mob
 
 func spawn_random_consumable(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p, constants.BLOCKER).size() == 0:
+	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
 		var item = pickup_scene.instance() as Pickup
 		item.locationService = locationService
 		item.random_consumable()
@@ -123,7 +123,7 @@ func spawn_random_consumable(p: Vector2):
 		item.place(p)
 
 func spawn_random_weapon(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p, constants.BLOCKER).size() == 0:
+	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
 		var item = weapon_scene.instance()
 		item.locationService = locationService
 		item.random_weapon(pc.southpaw)
