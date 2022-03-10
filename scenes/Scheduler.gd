@@ -27,7 +27,7 @@ func register_actor(actor: Actor):
 
 func next_turn() -> bool:
 	var largest: int = 0
-	for actor in actors:
+	for actor in actors.keys():
 		if legit(actor):
 			if priority(actor) > largest:
 				largest = priority(actor)
@@ -35,7 +35,7 @@ func next_turn() -> bool:
 		# time to recalculate
 		recalculate_turns()
 		return true
-	for actor in actors:
+	for actor in actors.keys():
 		if legit(actor):
 			if priority(actor) == largest:
 				actors[actor] -= 1
@@ -54,17 +54,13 @@ func priority(a) -> int:
 		return -1
 
 func legit(a) -> bool:
-	return a != null && a.get_pos() != null
+	return a != null && is_instance_valid(a) && a.get_pos() != null
 
 func recalculate_turns():
-	var valid_actors = 0
-	var n_actors = actors.size()
 	var actors2 = {}
-	for a in actors:
+	for a in actors.keys():
 		if legit(a):
 			actors2[a] = a.speed
-			valid_actors += 1
-	print("actors {0} {1}".format([valid_actors, n_actors]))
 	actors = actors2
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

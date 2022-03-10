@@ -53,7 +53,6 @@ func injure():
 		fatigue += fatigue_on_got_hit
 		self.combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
-		self.combatLog.say("You die.")
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
 		combatLog.say("You fly into a rage!")
@@ -227,3 +226,5 @@ func _on_enemy_killed(label: String):
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)
 	rage += rage_on_kill
+	combatLog.say("+{0} rage".format([rage_on_kill]))
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
