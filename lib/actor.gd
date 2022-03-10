@@ -1,7 +1,6 @@
 extends Sprite
 
 class_name Actor
-signal deschedule(actor)
 
 var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
@@ -43,7 +42,6 @@ func die(dir: Vector2):
 		# splatter blood everywhere
 		var pos = get_pos()
 		terrain.splatter_blood(pos, dir)
-		emit_signal(constants.DESCHEDULE, self)
 	self.locationService.delete_node(self)
 	#TODO: handle if it was killed by someone else (eg: wizard)
 	emit_signal(constants.KILLED_BY_PC, label)
