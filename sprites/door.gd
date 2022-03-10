@@ -2,6 +2,8 @@ extends Actor
 
 class_name Door
 
+signal door_opened(pos)
+
 func _ready():
 	self.door = true
 	add_to_group(self.constants.FURNITURE)
@@ -19,3 +21,7 @@ func nudge(_dir: int) -> bool:
 	combatLog.say("You cautiously open the door.")
 	die(Vector2(0,0))
 	return true
+
+func die(dir: Vector2):
+	emit_signal("door_opened",get_pos())
+	.die(dir)

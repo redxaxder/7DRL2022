@@ -19,8 +19,8 @@ const max_experience_gain_rate: int = 200
 var experience_gain_rate: int = base_experience_gain_rate
 var experience: int = 0
 
-const base_experience_needed = 200
-const experience_needed_step = 400
+const base_experience_needed = 1000
+const experience_needed_step = 600
 var experience_needed = base_experience_needed
 
 

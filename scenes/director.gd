@@ -48,9 +48,20 @@ func load_next_map():
 	var candidates = terrain.map.room_cells(starting_room)
 	var start = candidates[randi() % candidates.size()]
 	pc.set_pos(start)
+	activate_room(starting_room)
 	# fill the rooms!
 	for room in terrain.map.rooms:
 		populate_room(room)
+
+func activate_room(room: Vector3):
+	terrain.active_rooms[room] = 0 # add it to the dict. the 0 is meaningless.
+	for cell in terrain.map.room_cells(room, 1):
+		for node in locationService.lookup(cell):
+			node.visible = true
+			if node.is_in_group(constants.MOBS):
+				scheduler.register_actor(node)
+				node.connect(constants.DESCHEDULE, scheduler, "unregister_actor")
+	terrain.update()
 
 func populate_room(room: Vector3):
 	#place doors as needed
@@ -94,13 +105,14 @@ func spawn_door(pos: Vector2) -> Actor:
 	door.pc = pc
 	door.set_pos(pos)
 	parent.add_child(door)
+	door.visible = false
+	door.connect(constants.DOOR_OPENED,self,"_on_door_opened")
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
 	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
-		scheduler.register_actor(mob)
-		mob.connect(constants.DESCHEDULE, scheduler, "unregister_actor")
+		mob.visible = false
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
@@ -121,6 +133,7 @@ func spawn_random_consumable(p: Vector2):
 		item.random_consumable()
 		parent.add_child(item)
 		item.place(p)
+		item.visible = false
 
 func spawn_random_weapon(p: Vector2):
 	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
@@ -129,3 +142,8 @@ func spawn_random_weapon(p: Vector2):
 		item.random_weapon(pc.southpaw)
 		parent.add_child(item)
 		item.place(p)
+		item.visible = false
+
+func _on_door_opened(pos: Vector2):
+	for room in terrain.map.get_rooms(pos,1):
+		activate_room(room)

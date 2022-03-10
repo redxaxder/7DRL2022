@@ -13,7 +13,7 @@ var map: Map
 var contents: Array = []
 var dijkstra_map: Array = []
 var blood_map: Array = []
-var active_rooms: Dictionary # room -> bool
+var active_rooms: Dictionary = {} # used as a set. room -> 0
 
 const dijstra_map_limit = 70
 
@@ -245,13 +245,14 @@ func _draw():
 	#instead of managing a bajillion sprites in here we manually
 	#draw walls and floors
 	var r: Array = rand_seed(cosmetic_map_seed)
-	for i in range(width):
-		for j in range(height):
-			var blood = blood_map[to_linear(i, j)]
+	for room in active_rooms:
+		for cell in map.room_cells(room, 1):
+			var ix = to_linear(cell.x,cell.y)
+			var blood = blood_map[ix]
 			var n: int = r[0]
 			r = rand_seed(r[1])
-			var pos = SCREEN.dungeon_to_screen(i,j)
-			var tile = at(i,j)
+			var pos = SCREEN.dungeon_to_screen(cell.x,cell.y)
+			var tile = atv(cell)
 			if tile == '#':
 				if blood == 0:
 					draw_texture(wall_txtr,pos + offset)
