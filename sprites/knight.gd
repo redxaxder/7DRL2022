@@ -53,7 +53,7 @@ func is_hit(dir: Vector2):
 	else:
 		.is_hit(dir)
 
-func draw() -> void:
+func _draw() -> void:
 	var pos = get_pos()
 	if pos:
 		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)

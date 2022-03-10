@@ -41,7 +41,7 @@ func _ready():
 	self.speed = 6
 	self.pc = self
 	southpaw = randi() % 4 == 0
-
+	add_to_group(constants.PLAYER)
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10

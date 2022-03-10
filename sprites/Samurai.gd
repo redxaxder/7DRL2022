@@ -25,11 +25,10 @@ func on_turn():
 				# hit a wall before player
 				break
 			else:
-				var stuff_at = self.locationService.lookup(cursor)
-				for item in stuff_at:
-					if item.player:
-						dash_attack(cursor - step)
-						return
+				var stuff_at = self.locationService.lookup(cursor, constants.PLAYER)
+				for player in stuff_at:
+					dash_attack(cursor - step)
+					return
 	else:
 		var next = .seek_to_player()
 		set_pos(next)

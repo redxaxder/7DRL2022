@@ -19,7 +19,8 @@ func _ready():
 
 func _end_player_turn():
 	self.player_turn = false
-	next_turn()
+	while next_turn():
+		pass
 	
 func register_actor(actor: Actor):
 	actors.push_back(actor)
@@ -29,7 +30,7 @@ func unregister_actor(actor: Actor):
 	actors.erase(actor)
 	turns_per_round.erase(actor)
 	
-func next_turn():
+func next_turn() -> bool:
 	var largest: int = 0
 	for actor in turns_per_round.keys():
 		if priority(actor) > largest:
@@ -37,16 +38,17 @@ func next_turn():
 	if largest == 0:
 		# time to recalculate
 		recalculate_turns()
-		return next_turn()
+		return true
 	for actor in turns_per_round.keys():
 		if priority(actor) == largest:
 			turns_per_round[actor] -= 1
 			if actor.player:
 				self.player_turn = true
-				return
+				return false
 			actor.on_turn()
 			actor.update()
-			next_turn()
+			return true
+	return true
 
 func priority(a) -> int:
 	return turns_per_round[a] * 30 / a.speed

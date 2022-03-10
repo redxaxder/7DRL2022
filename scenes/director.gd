@@ -38,10 +38,46 @@ func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s: Sc
 func load_next_map():
 	terrain.load_random_map()
 	area_seen += terrain.width * terrain.height
+	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
-		room_doors(room)
+		if room.z > 1:
+			room_doors(room)
+			if room.z < starting_room.z:
+				starting_room = room
+	#put pc in starting room
+	var candidates = terrain.map.room_cells(starting_room)
+	var start = candidates[randi() % candidates.size()]
+	pc.set_pos(start)
+	# fill the rooms!
+	for room in terrain.map.rooms:
+		populate_room(room)
 
-func room_doors(room):
+func populate_room(room: Vector3):
+	#place doors as needed
+	room_doors(room)
+	var sz = int(room.z)
+	#fill with enemies
+	var area = sz * sz
+	var max_enemies: int = max(area / 3, 1)
+	var cells = terrain.map.room_cells(room)
+	cells.shuffle()
+	for _i in 1 + (randi() % max_enemies):
+		var c = cells.pop_back()
+		if c: spawn_random_enemy(c)
+	# add some weapons
+	for _i in 1 + (randi() % sz):
+		var c = cells.pop_back()
+		if c: spawn_random_weapon(c)
+	# add some consumables
+	for _i in 1 + (randi() % sz):
+		var c = cells.pop_back()
+		if c: spawn_random_consumable(c)
+
+func spawn_random_enemy(pos: Vector2):
+	var enemy = enemies[randi() % enemies.size()]
+	spawn_dynamic_mob(enemy, pos)
+
+func room_doors(room: Vector3):
 	for cell in terrain.map.room_outline(room):
 		if terrain.atv(cell) == '.':
 			spawn_door(cell)

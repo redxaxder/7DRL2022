@@ -11,6 +11,7 @@ var DESCHEDULE = "deschedule"
 var INJURE_PC = "injure_pc"
 
 #groups
+var PLAYER = "player"
 var MOBS = "mobs"
 var PICKUPS = "pickups"
 var BLOCKER = "blocker"

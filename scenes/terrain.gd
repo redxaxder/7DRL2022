@@ -23,12 +23,18 @@ func at(x,y):
 	return atv(Vector2(x,y))
 
 func atv(v: Vector2):
-	if v.x >= 0 && v.x < width && v.y >= 0 && v.y < height:
+	if in_bounds(v):
 		return contents[to_linear(v.x,v.y)]
 	else:
 		return '#'
 
+func in_bounds(v: Vector2) -> bool:
+	return v.x >= 0 && v.x < width && v.y >= 0 && v.y < height
+
 func d_score(v: Vector2) -> int:
+	var ix = to_linear(v.x,v.y)
+	if ix >= dijkstra_map.size():
+		return 100000
 	var x = dijkstra_map[to_linear(v.x,v.y)]
 	if x == null:
 		return 100000
@@ -212,17 +218,16 @@ func load_map(ix): # max index: 26460
 					contents[t] = '#'
 
 func splatter_blood(pos: Vector2, dir: Vector2):
-	blood_map[to_linear(pos.x, pos.y)] += 11
-	pos += dir
-	blood_map[to_linear(pos.x, pos.y)] += 9
-	pos += dir
-	blood_map[to_linear(pos.x, pos.y)] += 7
-	pos += dir
-	blood_map[to_linear(pos.x, pos.y)] += 5
-	pos += dir
-	blood_map[to_linear(pos.x, pos.y)] += 3
-	pos += dir
-	blood_map[to_linear(pos.x, pos.y)] += 1
+	var blood = 11
+	while blood > 0 && in_bounds(pos):
+		var ix = to_linear(pos.x, pos.y)
+		blood_map[ix] += blood
+		if atv(pos) == '#':
+			break
+		var decay = 0.6 + 0.4 / (1 + exp(blood - 11)) 
+		blood = int(blood * decay)
+		blood -= 1
+		pos += dir
 	update()
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
