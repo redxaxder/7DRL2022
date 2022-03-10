@@ -67,7 +67,7 @@ TODO:
 
 other important things:
   - running mechanic
-  - visibility
+  + visibility
   - blood through doors
   - samurai behind open door waits in place
   - enemies pass through each other
@@ -78,6 +78,8 @@ other important things:
   - kicking door into blocking knight doesnt knock them back
   - animate
   - telegraph monk knockback
+  - message if trying to attack but can't
+  - distinct weapon icons
 
 
 - third pass:

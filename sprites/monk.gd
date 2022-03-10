@@ -6,7 +6,7 @@ const knockback_chance: float = 0.25
 const knockback_distance: int = 5
 
 func _ready():
-	label = "knight"
+	label = "monk"
 	._ready()
 
 func on_turn():
@@ -26,7 +26,3 @@ func attack():
 		self.pc.injure()
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1
-	
-func die(dir: Vector2):
-	self.combatLog.say("The monk dies.")
-	.die(dir)
