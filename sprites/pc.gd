@@ -10,6 +10,7 @@ var rage_decay: int = 0
 var fatigue: int = 0
 var starting_recovery: int = 0
 var recovery: int = 0
+var southpaw = false
 
 const base_experience_gain_rate: int = 10
 const experience_gain_step: int = 10
@@ -35,9 +36,12 @@ const pickup_scene = preload("res://pickups/pickup.tscn")
 var DIR = preload("res://lib/dir.gd").new()
 
 func _ready():
+	randomize()
 	self.player = true
 	self.speed = 6
 	self.pc = self
+	southpaw = randi() % 4 == 0
+
 
 var starting_rage: int = 20
 var rage_on_got_hit: int = 10

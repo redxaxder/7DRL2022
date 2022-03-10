@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/dir.gd"
 }, {
+"base": "Reference",
+"class": "Director",
+"language": "GDScript",
+"path": "res://scenes/director.gd"
+}, {
 "base": "Mob",
 "class": "Door",
 "language": "GDScript",
@@ -74,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://pickups/pickup.gd"
 }, {
+"base": "Node",
+"class": "Scheduler",
+"language": "GDScript",
+"path": "res://scenes/Scheduler.gd"
+}, {
 "base": "Reference",
 "class": "Screen",
 "language": "GDScript",
@@ -95,6 +105,7 @@ _global_script_class_icons={
 "CombatLog": "",
 "Const": "",
 "Dir": "",
+"Director": "",
 "Door": "",
 "LocationService": "",
 "Map": "",
@@ -103,6 +114,7 @@ _global_script_class_icons={
 "Perk": "",
 "PerkCard": "",
 "Pickup": "",
+"Scheduler": "",
 "Screen": "",
 "Terrain": "",
 "Weapon": ""

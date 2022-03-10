@@ -7,9 +7,11 @@ var DIR: Dir = preload("res://lib/dir.gd").new()
 
 onready var pc: PC = $pc
 onready var terrain: Terrain = $terrain
-onready var combatLog = $hud/CombatLog
-onready var locationService = $LocationService
+onready var combatLog: CombatLog = $hud/CombatLog
+onready var locationService: LocationService = $LocationService
 onready var level_up_modal = $hud/level_up_modal
+onready var scheduler = $Scheduler
+var director: Director
 
 signal end_player_turn()
 
@@ -21,8 +23,6 @@ const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene = preload("res://sprites/door.tscn")
 
 
-var southpaw = false
-
 func _ready():
 	randomize()
 	terrain.load_random_map()
@@ -30,19 +30,19 @@ func _ready():
 #	terrain.blood_map[terrain.to_linear(13, 10)] = 21
 #	terrain.blood_map[terrain.to_linear(13, 11)] = 11
 #	terrain.blood_map[terrain.to_linear(13, 12)] = 1
-	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
+	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
 	var pcpos = Vector2(30,30)
-	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	pc.locationService = locationService
+	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler)
 	pc.set_pos(pcpos)
-	$Scheduler.register_actor(pc)
+	scheduler.register_actor(pc)
 	spawn_dynamic_mob(knight_scene, Vector2(10,10))
 	spawn_dynamic_mob(monk_scene, Vector2(5, 5))
 	spawn_dynamic_mob(samurai_scene, Vector2(15, 15))
@@ -93,7 +93,7 @@ func spawn_random_weapon(p: Vector2):
 	if terrain.atv(p) != '#' && locationService.lookup(p, constants.BLOCKER).size() == 0:
 		var item = weapon_scene.instance()
 		item.locationService = locationService
-		item.random_weapon(southpaw)
+		item.random_weapon(pc.southpaw)
 		add_child(item)
 		item.place(p)
 
@@ -144,11 +144,11 @@ func update_status():
 		status_text += "Press enter to level up\n"
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
-		if pc.pickup != null && !southpaw:
+		if pc.pickup != null && !pc.southpaw:
 			status_text += "  {0}\n".format([pc.pickup.label]) 
 		if pc.weapon != null:
 			status_text += "  {0}\n".format([pc.weapon.label]) 
-		if pc.pickup != null && southpaw:
+		if pc.pickup != null && pc.southpaw:
 			status_text += "  {0}\n".format([pc.pickup.label]) 
 	if pc.rage > 0:
 		status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
