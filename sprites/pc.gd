@@ -7,6 +7,8 @@ signal status_changed()
 
 var rage: int = 0
 var rage_decay: int = 0
+const rage_speed: int = 6
+const normal_speed: int = 3
 var fatigue: int = 0
 var starting_recovery: int = 0
 var recovery: int = 0
@@ -82,7 +84,9 @@ func tick():
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = debuff_effects.get_fatigue_effects(fatigue)
+			speed = rage_speed
 	elif fatigue > 0:
+		speed = normal_speed
 		recover(recovery)
 		recovery += 1
 	else:
