@@ -22,41 +22,49 @@ func _end_player_turn():
 		pass
 
 func register_actor(actor: Actor):
-	actors[actor] = 0
+	if !actors.has(actor):
+		actors[actor] = 0
 
 func next_turn() -> bool:
 	var largest: int = 0
 	for actor in actors:
-		if priority(actor) > largest:
-			largest = priority(actor)
-	if largest == 0:
+		if legit(actor):
+			if priority(actor) > largest:
+				largest = priority(actor)
+	if largest <= 0:
 		# time to recalculate
 		recalculate_turns()
 		return true
 	for actor in actors:
-		if priority(actor) == largest:
-			actors[actor] -= 1
-			if actor.player:
-				self.player_turn = true
-				return false
-			actor.on_turn()
-			actor.update()
-			return true
+		if legit(actor):
+			if priority(actor) == largest:
+				actors[actor] -= 1
+				if actor.player:
+					self.player_turn = true
+					return false
+				actor.on_turn()
+				actor.update()
+				return true
 	return true
 
 func priority(a) -> int:
 	if is_instance_valid(a): 
 		return actors[a] * 30 / a.speed
 	else:
-		print("whaaa")
-		return 0
+		return -1
+
+func legit(a) -> bool:
+	return a != null && a.get_pos() != null
 
 func recalculate_turns():
-	print("rrr")
+	var valid_actors = 0
+	var n_actors = actors.size()
 	var actors2 = {}
 	for a in actors:
-		if is_instance_valid(a):
+		if legit(a):
 			actors2[a] = a.speed
+			valid_actors += 1
+	print("actors {0} {1}".format([valid_actors, n_actors]))
 	actors = actors2
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

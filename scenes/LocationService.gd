@@ -43,4 +43,3 @@ func insert(n: Node, p: Vector2):
 	var here = __forward.get(l,[]) #insert forward
 	here.append(n)
 	__forward[l] = here
-
