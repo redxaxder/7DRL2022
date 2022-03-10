@@ -42,9 +42,9 @@ func _ready():
 	southpaw = randi() % 4 == 0
 	add_to_group(constants.PLAYER)
 
-var starting_rage: int = 20
-var rage_on_got_hit: int = 10
-var rage_on_kill: int = 10
+var starting_rage: int = 40
+var rage_on_got_hit: int = 6
+var rage_on_kill: int = 2
 var fatigue_on_got_hit: int = 5
 
 func injure():

@@ -218,15 +218,15 @@ func load_map(ix): # max index: 26460
 					contents[t] = '#'
 
 func splatter_blood(pos: Vector2, dir: Vector2):
-	var blood = 11
+	var blood = 15
 	while blood > 0 && in_bounds(pos):
 		var ix = to_linear(pos.x, pos.y)
-		blood_map[ix] += blood
+		var pool = blood_map[ix]
+		var deposit = max(int((blood - pool) * 0.6),1) + 1
+		blood_map[ix] += deposit
+		blood -= deposit
 		if atv(pos) == '#':
 			break
-		var decay = 0.6 + 0.4 / (1 + exp(blood - 11)) 
-		blood = int(blood * decay)
-		blood -= 1
 		pos += dir
 	update()
 

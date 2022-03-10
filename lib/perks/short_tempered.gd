@@ -16,5 +16,5 @@ func evolve_perk() -> bool:
 var titles = ["Short Tempered", "Quick Tempered", "Hot Tempered"]
 func config():
 	title = titles[level]
-	bonus = 10 * (level + 1)
+	bonus = 30 * (level + 1)
 	description = "On entering rage, gain {0} additional rage.".format([bonus])
