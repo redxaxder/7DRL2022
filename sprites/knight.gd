@@ -3,12 +3,10 @@ extends Mob
 const block_cooldown: int = 1
 var cur_block_cooldown: int = 0
 const max_block_chance: float = 0.25
-var blocking = false
 const block_duration: int = 2
 var cur_block_duration: int = 0
 
 func _ready():
-	self.knight = true
 	label = "knight"
 	._ready()
 

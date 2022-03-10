@@ -79,7 +79,7 @@ func tick():
 		debuffs[d] = max(0, debuffs[d] - 1)
 	if rage > 0:
 		rage -= rage_decay
-		rage = max(rage,0)
+		rage = max(rage,int(0))
 		rage_decay = 1 + fatigue / 40
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
@@ -121,6 +121,26 @@ func try_kick_furniture(dir) -> bool:
 			acted = t.nudge(dir)
 	return acted
 
+func try_move(dir) -> bool:
+	var pos = get_pos() + DIR.dir_to_vec(dir)
+	var mobs = locationService.lookup(pos, constants.MOBS)
+	if mobs.size() > 0 && fatigue > 0 && rage == 0:
+		combatLog.say("You are too exhausted to fight.")
+		return false
+	var blockers = locationService.lookup(pos, constants.BLOCKER)
+	if terrain.atv(pos) == '#':
+		if rage > 0:
+			combatLog.say("The wall blocks your path.")
+		else:
+			combatLog.say("The wall looms over you.")
+		return false
+	elif blockers.size() > 0:
+		return false
+	else:
+		set_pos(pos)
+		terrain.update_dijkstra_map([pos])
+		update()
+		return true
 
 func pick_up(p: Pickup, l: Vector2):
 	if debuffs.has(self.constants.FUMBLE) and debuffs[self.constants.FUMBLE] > 0:

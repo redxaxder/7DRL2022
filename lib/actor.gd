@@ -15,21 +15,7 @@ var player: bool = false
 var speed: int = 3
 var label: String = ""
 var door: bool = false
-var knight: bool = false
-
-func try_move(i,j) -> bool:
-	var pos = Vector2(i,j)
-	var blockers = locationService.lookup(pos, constants.BLOCKER)
-	if terrain.at(i,j) == '#':
-		return false
-	elif blockers.size() > 0:
-		return false
-	else:
-		set_pos(pos)
-		if player:
-			terrain.update_dijkstra_map([pos])
-		position = self.SCREEN.dungeon_to_screen(pos.x ,pos.y)
-		return true
+var blocking: bool = false
 
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
@@ -47,27 +33,41 @@ func die(dir: Vector2):
 	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
 	
-func knockback(dir: Vector2, distance: int = -1):
-	var pos = get_pos()
-	var i: int = pos.x + dir.x
-	var j: int = pos.y + dir.y
-	var mobs_at = locationService.lookup(Vector2(i, j), constants.MOBS)
-	var obstacles_at = locationService.lookup(Vector2(i, j), constants.BLOCKER)
-	for m in mobs_at:
-		if m.knight and m.blocking:
-			m.knockback(dir)
+func knockback(dir: Vector2, distance: int = 1000000, power = 1):
+	var landed = get_pos()
+	var next
+	var collision = false
+	while distance > 0 && power > 0:
+		distance -= 1
+		next = landed + dir
+		if terrain.atv(next) == '#':
+			combatLog.say("The {0} collides with the wall.".format([self.label]))
+			collision = true
+			break
+		var blockers = locationService.lookup(next, constants.BLOCKER)
+		if blockers.size() > 0:
+			combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
+			collision = true
+			for b in blockers:
+				power -= 1
+				if b.blocking:
+					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
+					b.knockback(dir, distance)
+					break
+				elif b.player:
+					b.injure()
+				else:
+					b.die(dir)
+		landed = next
+	set_pos(landed)
+	if collision:
+		if self.blocking:
+			pass
+		elif self.player:
+			self.pc.injure()
 		else:
-			m.die(dir)
-	if mobs_at.size() > 0 or obstacles_at.size() > 0:
-		if not (self.knight and self.blocking):
-			if not self.player:
-				self.die(dir)
-		else:
-			return
-	if try_move(i, j) and abs(distance) > 0:
-		knockback(dir, distance - 1)
-	elif self.player:
-		self.pc.injure()
+			self.die(dir)
+	update()
 
 func _draw() -> void:
 	var pos = get_pos()

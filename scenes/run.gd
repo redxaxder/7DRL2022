@@ -75,7 +75,7 @@ func _unhandled_input(event):
 			acted = pc.try_kick_furniture(dir)
 		if dir >= 0 && !acted:
 			var p = pc.get_pos() + DIR.dir_to_vec(dir)
-			acted = pc.try_move(p.x,p.y)
+			acted = pc.try_move(dir)
 			if acted:
 				var items = locationService.lookup(p, constants.PICKUPS)
 				if items.size() > 0:
