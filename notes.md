@@ -80,6 +80,8 @@ other important things:
   - telegraph monk knockback
   - message if trying to attack but can't
   - distinct weapon icons
+  - smooth camera tracking
+  - more clearly indicate rage / fatigue state
 
 
 - third pass:
