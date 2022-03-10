@@ -7,7 +7,7 @@ signal killed_by_pc(label)
 
 func _ready():
 	randomize()
-	add_to_group(constants.MOBS)
+	add_to_group(self.constants.MOBS)
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
 	connect(constants.ENEMY_HIT, pc, constants.ENEMY_HIT)

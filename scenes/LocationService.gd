@@ -2,7 +2,7 @@ extends Node
 
 class_name LocationService
 
-var constants: Const = preload("res://lib/const.gd").new()
+var constants = preload("res://lib/const.gd").new()
 
 # a map from position to array of Node
 var __forward: Dictionary = {}

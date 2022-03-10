@@ -1,14 +1,14 @@
 class_name Attack
 
-var constants: Const = preload("res://lib/const.gd").new()
+var constants = preload("res://lib/const.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
 var southpaw = false
 
 #returns true if an attack was made
-func try_attack(_ls: LocationService, _pos: Vector2, _dir: int, _terr: Terrain = null) -> bool:
+func try_attack(_ls: LocationService, _pos: Vector2, _dir: int, _terr = null) -> bool:
 	return false
 
-func try_attack_at(ls: LocationService, target: Vector2, dir: int, _terr: Terrain = null) -> bool:
+func try_attack_at(ls: LocationService, target: Vector2, dir: int, _terr = null) -> bool:
 	var attacked = false
 	var mobs = ls.lookup(target, constants.MOBS)
 	var d = DIR.dir_to_vec(dir)

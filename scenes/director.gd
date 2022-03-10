@@ -1,10 +1,10 @@
 class_name Director
 
 
-var constants: Const = preload("res://lib/const.gd").new()
+var constants = preload("res://lib/const.gd").new()
 
-var pc: PC
-var terrain: Terrain
+var pc
+var terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
@@ -25,7 +25,7 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 #to use for map selection later
 var area_seen: int = 0
 
-func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s):
+func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 	pc = p
 	terrain = t
 	locationService = ls

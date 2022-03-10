@@ -6,7 +6,7 @@ var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
 
-var terrain: Terrain
+var terrain
 var combatLog: CombatLog
 var locationService: LocationService
 var pc
