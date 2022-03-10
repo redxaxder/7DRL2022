@@ -65,6 +65,11 @@ TODO:
        + gain more rage from getting hit  [+3/6/9]
        + recovery: [+1/+1/+1] starting recovery after rage ends
 
+other important things:
+  - running mechanic
+  - visibility
+  - blood through doors/walls
+
 - third pass:
   - wizard enemy sets things on fire
   - status effects

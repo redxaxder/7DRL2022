@@ -3,10 +3,12 @@ extends Node2D
 class_name Terrain
 
 var SCREEN = preload("res://lib/screen.gd").new()
+var DIR = preload("res://lib/dir.gd").new()
 
 var width: int = 20
 var height: int = 6
-var hole_punch_chance: float = 0.1
+var map: Map
+#var hole_punch_chance: float = 0.1
 
 var contents: Array = []
 var dijkstra_map: Array = []
@@ -15,8 +17,11 @@ var blood_map: Array = []
 const cosmetic_map_seed: int = 68000
 
 func at(x,y):
-	if x >= 0 && x < width && y >= 0 && y < height:
-		return contents[to_linear(x,y)]
+	return atv(Vector2(x,y))
+
+func atv(v: Vector2):
+	if v.x >= 0 && v.x < width && v.y >= 0 && v.y < height:
+		return contents[to_linear(v.x,v.y)]
 	else:
 		return '#'
 
@@ -30,7 +35,7 @@ func to_linear(x,y) -> int:
 	return width * y + x
 
 func update_dijkstra_map(dest: Array):
-	var d_map: Array
+	var d_map: Array = []
 	d_map.clear()
 	d_map.resize(contents.size())
 	# initialize all non-wall things to a very high number
@@ -96,7 +101,7 @@ func array_min(arr: Array) -> int:
 	return m
 
 func load_random_map():
-	var ix = 20000 # (randi() % 263 + 1) * 100
+	var ix = 200 # (randi() % 263 + 1) * 100
 	load_map(ix)
 	
 func load_map_resource(ix):
@@ -107,54 +112,66 @@ func spawn_door(x: int, y: int):
 	contents[to_linear(x, y)] = '.'
 	var root = get_parent()
 	root.spawn_door(Vector2(x, y))
+	return true
+
+func can_be_door(loc: Vector2) -> bool:
+	if loc.x <= 0 || loc.x >= width-1: return false
+	if loc.y <= 0 || loc.y >= height-1: return false
+	return map.count_rooms(loc,1) == 2
+
+func _place_a_door(start: Vector2, dir: Vector2, size: int):
+	# first, check if a door is already placed:
+	var candidates: Array = []
+	var door_placed = false
+	for i in range(size):
+		var t = start + (i * dir)
+		var tile = atv(t)
+		if tile == '.':
+			door_placed = true
+		if can_be_door(t):
+#			spawn_door(t.x,t.y)
+			candidates.append(t)
+	#if not, find a place for it
+	if !door_placed && candidates.size() > 0:
+		var v = candidates[randi() % candidates.size()]
+		door_placed = spawn_door(v.x,v.y)
+	return door_placed
 
 func load_map(ix): # max index: 26460
-	var map = load_map_resource(ix)
+	map = load_map_resource(ix)
+	if randi() % 2 == 0:
+		map.flip_v()
+	if randi() % 2 == 0:
+		map.flip_h()
 	width = map.width + 1
 	height = map.height + 1
 	var size = width * height
 	contents.clear()
-	contents.resize(size + 1)
+	contents.resize(size)
 	blood_map.clear()
-	blood_map.resize(size + 1)
+	blood_map.resize(size)
 	for i in blood_map.size():
 		blood_map[i] = 0
+	#spawn the doors:
 	for room in map.rooms:
-		var hole_punched_x: bool = false
-		var hole_punched_y: bool = false
-		var bottom_edge = room.y + room.z
-		var top_edge = room.y
-		var right_edge = room.x + room.z
-		var left_edge = room.x
-		for i in range(room.z):
-			var x = room.x + i
-			# top edge
-			if contents[to_linear(x, top_edge)] == null:
-				contents[to_linear(x, top_edge)] = '#'
-			# bottom edge
-			contents[to_linear(x, bottom_edge)] = '#'
-			if rand_range(0, 1) < hole_punch_chance:
-				spawn_door(x, bottom_edge)
-				hole_punched_x = true
-		# ensure x holes are punched
-		if not hole_punched_x:
-			var x = int(rand_range(room.x+1, right_edge-1))
-			spawn_door(x, bottom_edge)
-		for i in range(room.z):
-			var y = room.y + i
-			# left edge
-			if contents[to_linear(left_edge, y)] == null:
-				contents[to_linear(left_edge, y)] = '#'
-			# right edge
-			contents[to_linear(right_edge, y)] = '#'
-			if rand_range(0, 1) < hole_punch_chance:
-				spawn_door(right_edge, y)
-				hole_punched_y = true
-		# ensure y holes are punched
-		if not hole_punched_y:
-			var y = int(rand_range(room.y+1, bottom_edge-1))
-			spawn_door(right_edge, y)
-			
+		var topleft=Vector2(room.x, room.y)
+		var bottomright=Vector2(room.x + room.z, room.y + room.z)
+		_place_a_door(topleft, Vector2(1,0), room.z) # top
+		_place_a_door(topleft, Vector2(0,1), room.z) # bottom
+		_place_a_door(bottomright, Vector2(-1,0), room.z) # left
+		_place_a_door(bottomright, Vector2(0,-1), room.z) # right
+	#nfill non-doors with walls
+	for room in map.rooms:
+		for i in range(room.z+1):
+			for ix in [ \
+				to_linear(room.x + i, room.y), # top \
+				to_linear(room.x + i, room.y + room.z), # bottom \
+				to_linear(room.x, room.y + i), # left \
+				to_linear(room.x + room.z, room.y + i), # right \
+				]:
+				if contents[ix] == null:
+					contents[ix] = '#'
+
 func splatter_blood(pos: Vector2, dir: Vector2):
 	blood_map[to_linear(pos.x, pos.y)] += 11
 	pos += dir
@@ -196,7 +213,7 @@ func _draw():
 					draw_texture(wall_txtr,pos + offset)
 				else:
 					draw_texture(wall_txtr,pos + offset, blood_color)
-			elif tile == null:
+			else:
 				if blood == 0:
 					var weight: float = float(n % 4) / 4.0
 					var floor_color = min_floor_color.linear_interpolate(max_floor_color, weight)
