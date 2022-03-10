@@ -65,11 +65,13 @@ func populate_room(room: Vector3):
 		var c = cells.pop_back()
 		if c: spawn_random_enemy(c)
 	# add some weapons
-	for _i in 1 + (randi() % sz):
+	var max_weapons: int = max(sz/2,1)
+	for _i in randi() % max_weapons:
 		var c = cells.pop_back()
 		if c: spawn_random_weapon(c)
 	# add some consumables
-	for _i in 1 + (randi() % sz):
+	var max_consumables: int = max(sz/4,1)
+	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
 		if c: spawn_random_consumable(c)
 
