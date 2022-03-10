@@ -4,7 +4,6 @@ class_name PC
 
 signal player_died()
 signal status_changed()
-signal level_up()
 
 var rage: int = 0
 var rage_decay: int = 0
@@ -80,14 +79,13 @@ func tick():
 		recovery += 1
 	else:
 		recovery = 0
-	if rage == 0:
-		while experience > experience_needed:
-			experience -= experience_needed
-			experience_needed += experience_needed_step
-			emit_signal(constants.PLAYER_STATUS_CHANGED)
-			emit_signal(constants.PLAYER_LEVEL_UP)
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
+func _did_level_up(_perk):
+	experience -= experience_needed
+	experience_needed += experience_needed_step
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
+	emit_signal(constants.PLAYER_LEVEL_UP)
 
 func try_attack(dir) -> bool:
 	var can_attack = false

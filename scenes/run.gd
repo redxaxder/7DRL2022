@@ -9,6 +9,7 @@ onready var pc: PC = $pc
 onready var terrain: Terrain = $terrain
 onready var combatLog = $hud/CombatLog
 onready var locationService = $LocationService
+onready var level_up_modal = $hud/level_up_modal
 
 signal end_player_turn()
 
@@ -27,7 +28,7 @@ func _ready():
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
-	pc.connect(constants.PLAYER_LEVEL_UP, self, "_on_level_up")
+	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	var pcpos = Vector2(30,30)
 	southpaw = randi() % 4 == 0
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
@@ -104,6 +105,9 @@ func _unhandled_input(event):
 			acted = true
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
+		elif event.is_action_pressed("level_up"):
+#			if pc.experience >= pc.experience_needed:
+				do_level_up()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)
 		
@@ -125,6 +129,8 @@ func _unhandled_input(event):
 func update_status():
 	var status_text = ""
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
+	if pc.experience >= pc.experience_needed && pc.rage == 0:
+		status_text += "Press enter to level up\n"
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !southpaw:
@@ -163,5 +169,13 @@ func _handle_death():
 	add_child(d)
 	set_process_unhandled_input(false)
 
-func _on_level_up():
-	combatLog.say("Level up!")
+func do_level_up():
+	set_process_unhandled_input(false)
+	level_up_modal.visible = true
+	level_up_modal.set_process_unhandled_input(true)
+	level_up_modal.focus()
+
+func _on_exit_level_up():
+	level_up_modal.set_process_unhandled_input(false)
+	level_up_modal.visible = false
+	set_process_unhandled_input(true)

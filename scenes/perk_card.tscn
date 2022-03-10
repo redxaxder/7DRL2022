@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://resources/fonts/fira_code.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/perk_card.gd" type="Script" id=2]
+
+[node name="perk_card" type="PanelContainer"]
+margin_right = 586.0
+margin_bottom = 357.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="perk" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 579.0
+margin_bottom = 350.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="perk"]
+margin_right = 572.0
+margin_bottom = 14.0
+text = "Cursus"
+align = 1
+
+[node name="button" type="Button" parent="perk"]
+margin_top = 18.0
+margin_right = 572.0
+margin_bottom = 343.0
+size_flags_vertical = 3
+clip_text = true
+
+[node name="description" type="Label" parent="perk/button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.99998
+margin_top = 3.0
+margin_right = -4.0
+margin_bottom = -3.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. Id cursus metus aliquam eleifend. Pretium aenean pharetra magna ac placerat vestibulum lectus mauris ultrices. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci. Tortor at risus viverra adipiscing at in tellus. Egestas purus viverra accumsan in nisl nisi scelerisque eu ultrices. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Turpis massa tincidunt dui ut ornare lectus sit. A diam maecenas sed enim ut sem. Amet risus nullam eget felis eget nunc lobortis mattis. Ut porttitor leo a diam sollicitudin tempor id eu nisl. Tristique risus nec feugiat in fermentum posuere urna."
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

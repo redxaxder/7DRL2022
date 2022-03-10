@@ -46,11 +46,11 @@ TODO:
      + broadsword: as necrodancer
        + direction based on lefthanded/righthanded
        + 70% chance character is right handed
-   - yes to items
-      - apple: recover 30 fatigue
-      - turkey: recover all fatigue
-      - water: adds 5 to fatigue recovery rate
-      - space to use item
+   + yes to items
+      + apple: recover 30 fatigue
+      + turkey: recover all fatigue
+      + water: adds 5 to fatigue recovery rate
+      + space to use item
    - add doors
    - door handling when raged/calm
    - time system
@@ -58,7 +58,7 @@ TODO:
    - more fatigue effects
      - cant pick up items
    - exp and leveling system
-       - triggered on exiting rage
+       + triggered on exiting rage
    - a couple of perks:
        - when entering rage, start with more [10/20/30]
        - gain more rage from killing  [+1/2/3]

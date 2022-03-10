@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/terrain.gd" type="Script" id=3]
 [ext_resource path="res://scenes/Scheduler.gd" type="Script" id=4]
 [ext_resource path="res://scenes/LocationService.gd" type="Script" id=5]
+[ext_resource path="res://scenes/level_up_modal.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/FiraCode-Regular.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
 
@@ -111,11 +112,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="level_up_modal" parent="hud" instance=ExtResource( 6 )]
+visible = false
+
 [node name="Scheduler" type="Node" parent="."]
 script = ExtResource( 4 )
 
 [node name="camera" type="Camera2D" parent="."]
-position = Vector2( 508.517, 297.695 )
+position = Vector2( 511.621, 287.994 )
 current = true
 script = SubResource( 3 )
 
