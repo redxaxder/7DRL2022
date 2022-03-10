@@ -70,7 +70,8 @@ func _unhandled_input(event):
 				do_level_up()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)
-		
+		if dir >= 0 && !acted:
+			acted = pc.try_kick_furniture(dir)
 		if dir >= 0 && !acted:
 			var p = pc.get_pos() + DIR.dir_to_vec(dir)
 			acted = pc.try_move(p.x,p.y)

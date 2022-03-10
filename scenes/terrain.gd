@@ -33,9 +33,9 @@ func in_bounds(v: Vector2) -> bool:
 
 func d_score(v: Vector2) -> int:
 	var ix = to_linear(v.x,v.y)
-	if ix >= dijkstra_map.size():
+	if ix >= dijkstra_map.size() || ix < 0:
 		return 100000
-	var x = dijkstra_map[to_linear(v.x,v.y)]
+	var x = dijkstra_map[ix]
 	if x == null:
 		return 100000
 	return x

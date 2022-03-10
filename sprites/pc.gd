@@ -33,7 +33,6 @@ var weapon = null
 var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
-var DIR = preload("res://lib/dir.gd").new()
 
 func _ready():
 	randomize()
@@ -105,6 +104,18 @@ func try_attack(dir) -> bool:
 			return punch.try_attack(locationService, get_pos(), dir)
 	else:
 		return false
+
+func try_kick_furniture(dir) -> bool:
+	var acted = false
+	var targetCell = get_pos() + DIR.dir_to_vec(dir)
+	var targets = locationService.lookup(targetCell, constants.FURNITURE)
+	for t in targets:
+		if rage > 0:
+			acted = t.kick(dir)
+		else:
+			acted = t.nudge(dir)
+	return acted
+
 
 func pick_up(p: Pickup, l: Vector2):
 	if p.is_weapon:

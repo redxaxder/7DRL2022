@@ -89,7 +89,9 @@ func spawn_door(pos: Vector2) -> Actor:
 		return null
 	var door = door_scene.instance() as Actor
 	door.locationService = locationService
+	door.combatLog = combatLog
 	door.terrain = terrain
+	door.pc = pc
 	door.set_pos(pos)
 	parent.add_child(door)
 	return door

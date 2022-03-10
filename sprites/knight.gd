@@ -13,6 +13,8 @@ func _ready():
 	._ready()
 
 func on_turn():
+	if self.cur_block_cooldown > 0:
+		self.cur_block_cooldown -= 1
 	if blocking:
 		if cur_block_duration < block_duration:
 			cur_block_duration += 1
@@ -39,8 +41,6 @@ func attack():
 	if not self.blocking:
 		self.combatLog.say("The knight stabs you!")
 		self.pc.injure()
-		if self.cur_block_cooldown > 0:
-			self.cur_block_cooldown -= 1
 				
 func is_hit(dir: Vector2):
 	if self.blocking:

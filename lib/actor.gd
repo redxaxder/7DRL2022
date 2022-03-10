@@ -5,6 +5,7 @@ signal deschedule(actor)
 
 var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
+var DIR: Dir = preload("res://lib/dir.gd").new()
 
 var terrain: Terrain
 var combatLog: CombatLog
@@ -23,17 +24,6 @@ func try_move(i,j) -> bool:
 	if terrain.at(i,j) == '#':
 		return false
 	elif blockers.size() > 0:
-		if blockers.size() == 1 && blockers[0].door:
-			var d = blockers[0]
-			if player:
-				if self.rage > 0:
-					combatLog.say("The door goes flying!")
-					d.knockback(d.get_pos() - get_pos())
-					combatLog.say("The door is smashed to pieces!")
-				else:
-					combatLog.say("You cautiously open the door.")
-				d.die(Vector2(0,0))
-				return true
 		return false
 	else:
 		set_pos(pos)

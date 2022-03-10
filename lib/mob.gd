@@ -29,18 +29,23 @@ func seek_to_player() -> Vector2:
 		var t = terrain.d_score(c)
 		if t:
 			smallest_val = min(smallest_val, t)
-	
-	var final_candidates = []
+
+	var legal_candidates = []
 	for c in candidates:
-		var mobs = self.locationService.lookup(c, constants.MOBS)
-		var blockers = self.locationService.lookup(c, constants.BLOCKER)
+		if self.locationService.lookup(c, constants.BLOCKER).size() == 0:
+			if terrain.atv(c) != '#':
+				legal_candidates.append(c)
+	if legal_candidates.size() == 0:
+		return get_pos()
+
+	var final_candidates = []
+	for c in legal_candidates:
 		if terrain.d_score(c) == smallest_val:
-			if mobs.size() == 0 and blockers.size() == 0:
-				final_candidates.append(c)
-	
+			final_candidates.append(c)
+
 	if final_candidates.size() == 0:
-		final_candidates = candidates
-	
+		final_candidates = legal_candidates
+
 	return final_candidates[randi() % final_candidates.size()]
 
 
