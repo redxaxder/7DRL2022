@@ -1,0 +1,68 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/perk_card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/level_up_modal.gd" type="Script" id=2]
+
+[node name="perks" type="PanelContainer"]
+self_modulate = Color( 0.447059, 0.376471, 0.376471, 1 )
+anchor_left = 0.008
+anchor_right = 1.002
+anchor_bottom = 0.987
+margin_left = 182.808
+margin_top = 64.0
+margin_right = -235.048
+margin_bottom = -115.2
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 593.0
+margin_bottom = 406.0
+
+[node name="title" type="Label" parent="vbox"]
+margin_right = 586.0
+margin_bottom = 14.0
+text = "Level up!"
+align = 1
+
+[node name="grid" type="HBoxContainer" parent="vbox"]
+margin_top = 18.0
+margin_right = 586.0
+margin_bottom = 375.0
+size_flags_vertical = 3
+
+[node name="perk_card0" parent="vbox/grid" instance=ExtResource( 1 )]
+margin_right = 192.0
+
+[node name="perk_card1" parent="vbox/grid" instance=ExtResource( 1 )]
+margin_left = 196.0
+margin_right = 389.0
+
+[node name="perk_card2" parent="vbox/grid" instance=ExtResource( 1 )]
+margin_left = 393.0
+
+[node name="bottom" type="HBoxContainer" parent="vbox"]
+margin_top = 379.0
+margin_right = 586.0
+margin_bottom = 399.0
+
+[node name="padding" type="Control" parent="vbox/bottom"]
+margin_right = 257.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="exit" type="Button" parent="vbox/bottom"]
+margin_left = 261.0
+margin_right = 324.0
+margin_bottom = 20.0
+text = "Go back"
+
+[node name="padding2" type="Control" parent="vbox/bottom"]
+margin_left = 328.0
+margin_right = 586.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
