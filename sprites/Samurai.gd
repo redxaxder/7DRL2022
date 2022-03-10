@@ -2,6 +2,7 @@ extends Mob
 
 const dash_cooldown: int = 5
 var cur_dash_cooldown: int = 0
+const dash_distance: int = 5
 
 func _ready():
 	label = "samurai"
@@ -14,7 +15,7 @@ func on_turn():
 		cur_dash_cooldown -= 1
 	if .pc_adjacent():
 		attack()
-	elif cur_dash_cooldown == 0 and (dir.x == 0 or dir.y ==0):
+	elif cur_dash_cooldown == 0 and (dir.x == 0 or dir.y ==0) and dir.length() <= dash_distance:
 		# check if player is on te same line (and not in another room)
 		var step: Vector2 = dir.normalized()
 		var cursor: Vector2 = pos

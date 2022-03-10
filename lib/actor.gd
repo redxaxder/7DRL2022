@@ -56,7 +56,7 @@ func die():
 	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
 	
-func knockback(dir: Vector2):
+func knockback(dir: Vector2, distance: int = -1):
 	var pos = get_pos()
 	var i: int = pos.x + dir.x
 	var j: int = pos.y + dir.y
@@ -75,7 +75,7 @@ func knockback(dir: Vector2):
 				self.die()
 		else:
 			return
-	if try_move(i, j):
-		knockback(dir)
+	if try_move(i, j) and abs(distance) > 0:
+		knockback(dir, distance - 1)
 	elif self.player:
 		self.pc.injure()
