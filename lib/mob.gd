@@ -23,11 +23,10 @@ func is_hit(dir: Vector2):
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
 	var e = get_pos()
-	var d_map = terrain.dijkstra_map
-	var smallest_val = d_map[terrain.to_linear(e.x, e.y)]
+	var smallest_val = terrain.d_score(e)
 	var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	for c in candidates:
-		var t = d_map[terrain.to_linear(c.x,c.y)]
+		var t = terrain.d_score(c)
 		if t:
 			smallest_val = min(smallest_val, t)
 	
@@ -35,7 +34,7 @@ func seek_to_player() -> Vector2:
 	for c in candidates:
 		var mobs = self.locationService.lookup(c, constants.MOBS)
 		var blockers = self.locationService.lookup(c, constants.BLOCKER)
-		if d_map[terrain.to_linear(c.x,c.y)] == smallest_val:
+		if terrain.d_score(c) == smallest_val:
 			if mobs.size() == 0 and blockers.size() == 0:
 				final_candidates.append(c)
 	

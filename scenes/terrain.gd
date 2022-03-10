@@ -25,6 +25,12 @@ func atv(v: Vector2):
 	else:
 		return '#'
 
+func d_score(v: Vector2) -> int:
+	var x = dijkstra_map[to_linear(v.x,v.y)]
+	if x == null:
+		return 100000
+	return x
+
 func _ready():
 	randomize()
 

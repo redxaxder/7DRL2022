@@ -5,7 +5,7 @@ var cur_dash_cooldown: int = 0
 const dash_distance: int = 5
 
 func _ready():
-	label = "samurai"
+	self.label = "samurai"
 	._ready()
 
 func on_turn():
