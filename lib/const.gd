@@ -7,7 +7,6 @@ var PLAYER_STATUS_CHANGED = "status_changed"
 var PLAYER_LEVEL_UP = "level_up"
 var ENEMY_HIT = "enemy_hit"
 var KILLED_BY_PC = "killed_by_pc"
-var DESCHEDULE = "deschedule"
 var INJURE_PC = "injure_pc"
 var DOOR_OPENED = "door_opened"
 

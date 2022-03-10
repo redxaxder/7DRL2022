@@ -60,7 +60,6 @@ func activate_room(room: Vector3):
 			node.visible = true
 			if node.is_in_group(constants.MOBS):
 				scheduler.register_actor(node)
-				node.connect(constants.DESCHEDULE, scheduler, "unregister_actor")
 	terrain.update()
 
 func populate_room(room: Vector3):
