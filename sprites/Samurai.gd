@@ -43,7 +43,3 @@ func dash_attack(pos: Vector2):
 	self.cur_dash_cooldown = dash_cooldown
 	self.set_pos(pos)
 	self.pc.injure()
-		
-func die(dir: Vector2):
-	self.combatLog.say("The samurai dies.")
-	.die(dir)
