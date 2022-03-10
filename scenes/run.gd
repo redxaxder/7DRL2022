@@ -4,11 +4,12 @@ extends Node2D
 var SCREEN = preload("res://lib/screen.gd").new()
 var constants = preload("res://lib/const.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
+var debuffs = preload("res://lib/debuffs.gd").new()
 
 onready var pc: PC = $pc
-onready var terrain: Terrain = $terrain
+onready var terrain = $terrain
 onready var combatLog: CombatLog = $hud/CombatLog
-onready var locationService: LocationService = $LocationService
+onready var locationService = $LocationService
 onready var level_up_modal = $hud/level_up_modal
 onready var scheduler = $Scheduler
 var director: Director
@@ -106,6 +107,10 @@ func update_status():
 	elif pc.fatigue > 0:
 		status_text += "recovery {0}\n".format([pc.recovery])
 		status_text += "fatigue {0}\n".format([pc.fatigue])
+	var effects = pc.debuffs
+	for name in effects.keys():
+		if effects[name] > 0:
+			status_text += "{0} {1}\n".format([name, effects[name]])
 	$hud/status_panel/status.text = status_text
 
 

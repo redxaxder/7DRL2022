@@ -33,6 +33,7 @@ var weapon = null
 var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
+var debuff_effects = preload("res://lib/debuffs.gd").new()
 
 func _ready():
 	randomize()
@@ -46,6 +47,7 @@ var starting_rage: int = 40
 var rage_on_got_hit: int = 6
 var rage_on_kill: int = 2
 var fatigue_on_got_hit: int = 5
+var debuffs: Dictionary = {}
 
 func injure():
 	if rage > 0:
@@ -71,12 +73,15 @@ func make_shards() -> Pickup:
 	return shards
 
 func tick():
+	for d in debuffs.keys():
+		debuffs[d] = max(0, debuffs[d] - 1)
 	if rage > 0:
 		rage -= rage_decay
 		rage = max(rage,0)
 		rage_decay = 1 + fatigue / 40
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
+			debuffs = debuff_effects.get_fatigue_effects(fatigue)
 	elif fatigue > 0:
 		recover(recovery)
 		recovery += 1
@@ -114,6 +119,9 @@ func try_kick_furniture(dir) -> bool:
 
 
 func pick_up(p: Pickup, l: Vector2):
+	if debuffs[self.constants.FUMBLE] > 0:
+		self.combatLog.say("You're too weak to pick up the {0}".format([p.label]))
+		return
 	if p.is_weapon:
 		var wt = -1
 		if weapon != null:

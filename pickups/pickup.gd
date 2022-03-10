@@ -10,6 +10,7 @@ var constants = preload("res://lib/const.gd").new()
 var is_weapon = false
 var label: String = ""
 var pickup_text: String = ""
+const player: bool = false
 
 var locationService: LocationService
 

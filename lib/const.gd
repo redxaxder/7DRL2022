@@ -18,3 +18,7 @@ var BLOCKER = "blocker"
 var PROJECTILE_BLOCKER = "projectile_blocker"
 var FURNITURE = "furniture"
 
+#debuffs
+var THRESH = "threshold"
+var DIV = "divisor"
+var FUMBLE = "fumble"
