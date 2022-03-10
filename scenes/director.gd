@@ -8,7 +8,7 @@ var terrain: Terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
-var scheduler: Scheduler
+var scheduler
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -25,7 +25,7 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 #to use for map selection later
 var area_seen: int = 0
 
-func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s: Scheduler):
+func _init(p: PC, t: Terrain, ls: LocationService, cl: CombatLog, n: Node, s):
 	pc = p
 	terrain = t
 	locationService = ls

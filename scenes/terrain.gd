@@ -7,7 +7,7 @@ var DIR = preload("res://lib/dir.gd").new()
 
 var width: int = 20
 var height: int = 6
-var map: Map
+var map
 #var hole_punch_chance: float = 0.1
 
 var contents: Array = []
