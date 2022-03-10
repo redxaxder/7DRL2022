@@ -27,6 +27,6 @@ func attack():
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1
 	
-func die():
+func die(dir: Vector2):
 	self.combatLog.say("the monk dies.")
-	.die()
+	.die(dir)

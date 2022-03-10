@@ -10,18 +10,15 @@ var hole_punch_chance: float = 0.1
 
 var contents: Array = []
 var dijkstra_map: Array = []
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var blood_map: Array = []
+
+const cosmetic_map_seed: int = 68000
 
 func at(x,y):
 	if x >= 0 && x < width && y >= 0 && y < height:
 		return contents[to_linear(x,y)]
 	else:
 		return '#'
-
-
-# Called when the node enters the scene tree for the first time.
 
 func _ready():
 	randomize()
@@ -118,6 +115,10 @@ func load_map(ix): # max index: 26460
 	var size = width * height
 	contents.clear()
 	contents.resize(size + 1)
+	blood_map.clear()
+	blood_map.resize(size + 1)
+	for i in blood_map.size():
+		blood_map[i] = 0
 	for room in map.rooms:
 		var hole_punched_x: bool = false
 		var hole_punched_y: bool = false
@@ -153,19 +154,58 @@ func load_map(ix): # max index: 26460
 		if not hole_punched_y:
 			var y = int(rand_range(room.y+1, bottom_edge-1))
 			spawn_door(right_edge, y)
+			
+func splatter_blood(pos: Vector2, dir: Vector2):
+	blood_map[to_linear(pos.x, pos.y)] += 11
+	pos += dir
+	blood_map[to_linear(pos.x, pos.y)] += 9
+	pos += dir
+	blood_map[to_linear(pos.x, pos.y)] += 7
+	pos += dir
+	blood_map[to_linear(pos.x, pos.y)] += 5
+	pos += dir
+	blood_map[to_linear(pos.x, pos.y)] += 3
+	pos += dir
+	blood_map[to_linear(pos.x, pos.y)] += 1
+	update()
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
+var blood_txtr = (preload("res://sprites/blood.tscn").instance() as Sprite).texture
+var some_blood_txtr = (preload("res://sprites/lots_of_blood.tscn").instance() as Sprite).texture
+var more_blood_txtr = (preload("res://sprites/more_blood.tscn").instance() as Sprite).texture
+var most_blood_txtr = (preload("res://sprites/most_blood.tscn").instance() as Sprite).texture
+var max_floor_color = Color(0.300781, 0.300781, 0.300781)
+var min_floor_color = Color(0.460938, 0.460938, 0.460938)
+var blood_color = Color(1, 0, 0)
 
 var offset: Vector2 = Vector2(-SCREEN.TILE_WIDTH / 2,-SCREEN.TILE_HEIGHT / 2)
 func _draw():
 	#instead of managing a bajillion sprites in here we manually
 	#draw walls and floors
+	var r: Array = rand_seed(cosmetic_map_seed)
 	for i in range(width):
 		for j in range(height):
+			var blood = blood_map[to_linear(i, j)]
+			var n: int = r[0]
+			r = rand_seed(r[1])
 			var pos = SCREEN.dungeon_to_screen(i,j)
 			var tile = at(i,j)
 			if tile == '#':
-				draw_texture(wall_txtr,pos + offset)
+				if blood == 0:
+					draw_texture(wall_txtr,pos + offset)
+				else:
+					draw_texture(wall_txtr,pos + offset, blood_color)
 			elif tile == null:
-				draw_texture(floor_txtr,pos + offset, Color(0.300781, 0.300781, 0.300781))
+				if blood == 0:
+					var weight: float = float(n % 4) / 4.0
+					var floor_color = min_floor_color.linear_interpolate(max_floor_color, weight)
+					draw_texture(floor_txtr,pos + offset, floor_color)
+				elif blood < 10:
+					draw_texture(blood_txtr,pos + offset, blood_color)
+				elif blood < 20:
+					draw_texture(some_blood_txtr,pos + offset, blood_color)
+				elif blood < 30:
+					draw_texture(more_blood_txtr,pos + offset, blood_color)
+				else:
+					draw_texture(most_blood_txtr,pos + offset, blood_color)

@@ -45,6 +45,6 @@ func dash_attack(pos: Vector2):
 	self.set_pos(pos)
 	self.pc.injure()
 		
-func die():
+func die(dir: Vector2):
 	self.combatLog.say("The samurai dies.")
-	.die()
+	.die(dir)

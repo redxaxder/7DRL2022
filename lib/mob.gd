@@ -18,7 +18,7 @@ func pc_adjacent() -> bool:
 	
 func is_hit(dir: Vector2):
 	emit_signal(constants.ENEMY_HIT, dir)
-	die()
+	die(dir)
 
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map

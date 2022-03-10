@@ -26,6 +26,10 @@ var southpaw = false
 func _ready():
 	randomize()
 	terrain.load_random_map()
+#	terrain.blood_map[terrain.to_linear(13, 9)] = 31
+#	terrain.blood_map[terrain.to_linear(13, 10)] = 21
+#	terrain.blood_map[terrain.to_linear(13, 11)] = 11
+#	terrain.blood_map[terrain.to_linear(13, 12)] = 1
 	connect(constants.END_PLAYER_TURN, $Scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")

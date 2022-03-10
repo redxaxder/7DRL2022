@@ -32,7 +32,7 @@ func try_move(i,j) -> bool:
 					combatLog.say("the door is smashed to pieces!")
 				else:
 					combatLog.say("you cautiously open the door.")
-				d.die()
+				d.die(Vector2(0,0))
 				return true
 		return false
 	else:
@@ -48,8 +48,11 @@ func get_pos(default = null) -> Vector2:
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
 
-func die():
+func die(dir: Vector2):
 	if is_in_group(self.constants.MOBS):
+		# splatter blood everywhere
+		var pos = get_pos()
+		terrain.splatter_blood(pos, dir)
 		emit_signal(constants.DESCHEDULE, self)
 	self.locationService.delete_node(self)
 	#TODO: handle if it was killed by someone else (eg: wizard)
@@ -66,13 +69,11 @@ func knockback(dir: Vector2, distance: int = -1):
 		if m.knight and m.blocking:
 			m.knockback(dir)
 		else:
-			m.die()
-	for o in obstacles_at:
-		o.die()
+			m.die(dir)
 	if mobs_at.size() > 0 or obstacles_at.size() > 0:
 		if not (self.knight and self.blocking):
 			if not self.player:
-				self.die()
+				self.die(dir)
 		else:
 			return
 	if try_move(i, j) and abs(distance) > 0:

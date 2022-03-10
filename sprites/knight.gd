@@ -63,6 +63,6 @@ func draw() -> void:
 		else:
 			self.modulate = Color(1, 1, 1)
 		
-func die():
+func die(dir: Vector2):
 	self.combatLog.say("The knight dies.")
-	.die()
+	.die(dir)
