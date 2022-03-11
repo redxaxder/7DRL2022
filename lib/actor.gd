@@ -17,9 +17,11 @@ var label: String = ""
 var door: bool = false
 var blocking: bool = false
 
+var is_ragdoll: bool = false
+var ragdoll_dir: Vector2
+
 var anim_screen_offsets: Array
 var anim_speed: float = 7
-
 
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
@@ -27,14 +29,37 @@ func get_pos(default = null) -> Vector2:
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
 
+func make_ragdoll(dir: Vector2):
+	var ragdoll: Sprite = get_script().new()
+	ragdoll.texture = self.texture
+	get_parent().add_child(ragdoll)
+	for g in ragdoll.get_groups():
+		if g != constants.BLOODBAG :
+			ragdoll.remove_from_group(g)
+	ragdoll.add_to_group("idle_process")
+	ragdoll.anim_screen_offsets = anim_screen_offsets.duplicate(true)
+	ragdoll.locationService = locationService
+	ragdoll.terrain = terrain
+	ragdoll.set_pos(get_pos())
+	ragdoll.is_ragdoll = true
+	ragdoll.ragdoll_dir = dir
+	ragdoll.update()
+
 func die(dir: Vector2):
+	var p = self.get_pos()
+	#notify PC of kills
+	#TODO: maybe handle if it was killed by someone else (eg: wizard)
 	if is_in_group(self.constants.MOBS):
-		# splatter blood everywhere
+		emit_signal(constants.KILLED_BY_PC, label)
+	# spawn an animation dummy that dies on completing animation
+	if  !is_ragdoll:# && elf.anim_screen_offsets.size() > 0:
+		var _ragdoll = make_ragdoll(dir)
+		self.remove_from_group(constants.BLOODBAG)
+	# splatter blood everywhere
+	if is_in_group(self.constants.BLOODBAG):
 		var pos = get_pos()
 		terrain.splatter_blood(pos, dir)
 	self.locationService.delete_node(self)
-	#TODO: handle if it was killed by someone else (eg: wizard)
-	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
 
 func animated_move_to(target: Vector2, duration: float = 1):
@@ -50,12 +75,17 @@ func animation_delay(duration: float):
 	var av = Vector3(0,0,duration)
 	anim_screen_offsets.push_back(av)
 
+const knockback_anim_tile = 0.2
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
+	print("knock")
 	var landed = get_pos()
+	print(landed)
 	var next
 	var collision = false
+	var anim = 0
 	while distance > 0 && power > 0:
 		distance -= 1
+		anim += knockback_anim_tile
 		next = landed + dir
 		if terrain.atv(next) == '#':
 			if !self.player:
@@ -75,17 +105,23 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 				power -= 1
 				if b.blocking:
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
+					b.animation_delay(self.pending_animation()+anim)
 					b.knockback(dir, distance)
 					break
 				elif	 b.is_in_group(constants.FURNITURE):
 					combatLog.say("The {0} is destroyed.".format([b.label]))
+					b.animation_delay(self.pending_animation()+anim)
 					b.die(dir)
 				elif b.player:
 					b.injure()
 				else:
+					b.animation_delay(self.pending_animation()+anim)
 					b.die(dir)
-		landed = next
-	animated_move_to(landed)
+		if !collision:
+			landed = next
+	animated_move_to(landed, anim)
+	print(label)
+	print(landed)
 	if collision:
 		if self.blocking:
 			pass
@@ -94,7 +130,14 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 		else:
 			self.die(dir)
 	update()
-	
+
+func pending_animation() -> float:
+	var total = 0
+	for v in self.anim_screen_offsets:
+		total += v.z
+	return total
+
+
 func _process(delta):
 	if anim_screen_offsets.size() > 0:
 		if is_zero_approx(anim_screen_offsets[0].z):
@@ -110,6 +153,8 @@ func _process(delta):
 			v.z = z1
 			anim_screen_offsets[0] = v
 		update()
+	elif is_ragdoll:
+		die(ragdoll_dir)
 
 func _draw() -> void:
 	var pos = get_pos()

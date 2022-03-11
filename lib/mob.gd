@@ -11,6 +11,7 @@ func _ready():
 	add_to_group(self.constants.MOBS)
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
+	add_to_group(constants.BLOODBAG)
 
 func pc_adjacent() -> bool:
 	var v = get_pos() - pc.get_pos()
