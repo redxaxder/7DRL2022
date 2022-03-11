@@ -25,5 +25,5 @@ func config():
 		1:
 			description = "Your knockback propels objects through 2 additional targets."
 		2:
-			description = "Your knockback propels objects through all targets."
+			description = "Your knockback propels objects through any number of targets."
 	

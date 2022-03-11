@@ -120,10 +120,11 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 			for b in blockers:
 				power -= 1
 				if b.blocking:
+					var rem = power
 					power = 0 #perfectly inelastic
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
 					b.animation_delay(self.pending_animation()+anim)
-					b.knockback(dir, distance)
+					b.knockback(dir, distance, rem)
 					strong_collision = true
 					break
 				elif	 b.is_in_group(constants.FURNITURE):

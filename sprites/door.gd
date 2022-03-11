@@ -13,9 +13,9 @@ func _ready():
 	add_to_group(self.constants.PATHING_BLOCKER)
 	add_to_group(self.constants.STOPS_ATTACK)
 
-func kick(dir: int) -> bool:
+func kick(dir: int, extra_knockback = 0) -> bool:
 	combatLog.say("The door goes flying!")
-	knockback(DIR.dir_to_vec(dir))
+	knockback(DIR.dir_to_vec(dir), 1000, extra_knockback)
 	combatLog.say("The door is smashed to pieces!")
 	return true
 

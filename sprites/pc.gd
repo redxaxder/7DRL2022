@@ -131,7 +131,7 @@ func try_kick_furniture(dir) -> bool:
 	var targets = locationService.lookup(targetCell, constants.FURNITURE)
 	for t in targets:
 		if rage > 0:
-			acted = t.kick(dir)
+			acted = t.kick(dir, extra_knockback)
 		else:
 			acted = t.nudge(dir)
 	return acted
