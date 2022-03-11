@@ -53,10 +53,10 @@ TODO:
       + space to use item
    + add doors
    + door handling when raged/calm
-   - time system
-      - only boost speed for player in rage
-   - more fatigue effects
-     - cant pick up items
+   + time system
+      + only boost speed for player in rage
+   + more fatigue effects
+     + cant pick up items
    + exp and leveling system
        + triggered on exiting rage
    + a couple of perks:

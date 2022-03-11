@@ -118,6 +118,12 @@ func update_status():
 	for name in effects.keys():
 		if effects[name] > 0:
 			status_text += "{0} {1}\n".format([name, effects[name]])
+	if pc.rage > 0:
+		$hud/fatigue_mask.visible = false
+	elif pc.fatigue > 0:
+		$hud/fatigue_mask.visible = true
+	else:
+		$hud/fatigue_mask.visible = false
 	$hud/status_panel/status.text = status_text
 
 
