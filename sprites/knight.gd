@@ -27,7 +27,7 @@ func on_turn():
 		var block_chance: float = 1.0 / float(distance) * max_block_chance
 		if rand_range(0, 1) < block_chance and self.cur_block_cooldown == 0:
 			if pc.seen_shield_message < 100:
-				self.combatLog.say("The knight readies his shield!")
+				self.combatLog.say("The knight readies his shield!", 20)
 				pc.seen_shield_message += 1
 			self.blocking = true
 			self.cur_block_duration = 0

@@ -34,8 +34,8 @@ TODO:
      + knight
      + monk
      + samurai
-   - 3 levels
-     - path to next level activates if you step on it
+   + 3 levels
+     + path to next level activates if you step on it
    + handle knockback
    + HUD: equipped weapon / item
    + yes to weapons
@@ -85,6 +85,7 @@ other important things:
   - floating text numbers??
   - double death message
   - overlap player
+  - sword -> club
 
 - third pass:
   - wizard enemy sets things on fire

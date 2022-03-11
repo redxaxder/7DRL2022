@@ -71,6 +71,11 @@ func injure():
 		fatigue += fatigue_on_got_hit
 		self.combatLog.say(" +{0} rage  +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
+		var pos = get_pos()
+		for dir in [Dir.DIR.UP, Dir.DIR.LEFT, Dir.DIR.DOWN, Dir.DIR.RIGHT]:
+			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
+			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
+			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
 		enter_rage()

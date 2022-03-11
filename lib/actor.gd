@@ -77,9 +77,7 @@ func animation_delay(duration: float):
 
 const knockback_anim_tile = 0.2
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
-	print("knock")
 	var landed = get_pos()
-	print(landed)
 	var next
 	var collision = false
 	var anim = 0
@@ -91,7 +89,7 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 			if !self.player:
 				combatLog.say("The {0} collides with the wall.".format([self.label]))
 			else:
-				combatLog.say("You collide with the wall.".format([self.label]))				
+				combatLog.say("You collide with the wall.", 20)
 			collision = true
 			break
 		var blockers = locationService.lookup(next, constants.BLOCKER)
@@ -120,8 +118,7 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 		if !collision:
 			landed = next
 	animated_move_to(landed, anim)
-	print(label)
-	print(landed)
+
 	if collision:
 		if self.blocking:
 			pass

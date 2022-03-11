@@ -39,6 +39,7 @@ func _ready():
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
+	pc.connect(constants.PLAYER_DIED, scheduler, "_on_player_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")

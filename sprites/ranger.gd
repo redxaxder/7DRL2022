@@ -26,7 +26,7 @@ func on_turn():
 			set_pos(self.seek_to_player(true))
 		# shoot
 		else:
-			combatLog.say("The ranger takes aim!")
+			combatLog.say("The ranger takes aim!",20)
 			var pp = pc.get_pos()
 			var candidates = [pp, Vector2(pp.x + 1, pp.y), Vector2(pp.x, pp.y + 1), Vector2(pp.x - 1, pp.y), Vector2(pp.x, pp.y - 1)]
 			var legal_candidates = []
@@ -55,7 +55,7 @@ func attack():
 		combatLog.say("The ranger's arrow flies true!")
 		pc.injure()
 	else:
-		combatLog.say("The ranger's arrow harmlessly flies wide.")
+		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
 
 func _draw() -> void:
 	if telegraphing:

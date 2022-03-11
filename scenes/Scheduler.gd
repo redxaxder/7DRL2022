@@ -42,6 +42,8 @@ func next_turn() -> bool:
 			current_actors.push_back(actor)
 	current_actors.shuffle()
 	for actor in current_actors:
+		if pc_dead:
+			return false
 		if legit(actor):
 			turns_since_player+= 1
 			actors[actor] -= 1
@@ -69,6 +71,10 @@ func recalculate_turns():
 		if legit(a):
 			actors2[a] = a.speed
 	actors = actors2
+
+var pc_dead: bool = false
+func _on_player_death():
+	pc_dead = true
 
 func clear():
 	for a in actors.keys():

@@ -70,7 +70,7 @@ func decide_map(lvl: int) -> int:
 	var selector: int = int(randf() * (big_area - small_area) + small_area)
 	selector = int(0.66 * (selector - 1000))
 	if true: # TODO: remove this when adding rest of maps
-		selector = selector - (selector % 100)
+		selector = selector - (selector % 100) + 100
 	return selector
 	
 func load_next_map():
