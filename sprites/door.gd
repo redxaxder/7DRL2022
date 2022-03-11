@@ -17,7 +17,6 @@ func kick(dir: int) -> bool:
 	combatLog.say("The door goes flying!")
 	knockback(DIR.dir_to_vec(dir))
 	combatLog.say("The door is smashed to pieces!")
-	die(Vector2(0,0))
 	return true
 
 func nudge(_dir: int, player_opened: bool = true) -> bool:
