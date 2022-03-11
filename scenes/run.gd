@@ -68,7 +68,7 @@ func _unhandled_input(event):
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
 		elif event.is_action_pressed("level_up"):
-			if pc.experience >= pc.experience_needed:
+			if pc.experience >= pc.experience_needed && pc.rage <= 0:
 				do_level_up()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)

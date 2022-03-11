@@ -34,7 +34,7 @@ func refresh():
 
 func d_score(v: Vector2) -> int:
 	var ix = terrain.to_linear(v.x,v.y)
-	return _score(ix)
+	return _score(ix) - destination_score
 
 func tick():
 	print("tick {0} {1}".format([destination_score, backlog.size()]))

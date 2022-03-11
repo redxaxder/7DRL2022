@@ -2,7 +2,7 @@ extends Mob
 
 const block_cooldown: int = 1
 var cur_block_cooldown: int = 0
-const max_block_chance: float = 0.25
+const max_block_chance: float = 0.40
 const block_duration: int = 2
 var cur_block_duration: int = 0
 

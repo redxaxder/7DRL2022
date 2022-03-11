@@ -17,7 +17,7 @@ var label: String = ""
 var door: bool = false
 var blocking: bool = false
 
-var anim_screen_offset: Vector2
+var anim_screen_offsets: Array
 var anim_speed: float = 5
 
 
@@ -41,7 +41,7 @@ func animated_move_to(target: Vector2):
 	var start_pos = get_pos()
 	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
 	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
-	anim_screen_offset = prev_screen_position - target_screen_position
+	anim_screen_offsets.push_back(prev_screen_position - target_screen_position)
 	set_pos(target)
 
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
@@ -90,11 +90,16 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	update()
 	
 func _process(delta):
-	if not is_zero_approx(anim_screen_offset.length()):
-		anim_screen_offset = anim_screen_offset.move_toward(Vector2(0,0), anim_speed)
+	if anim_screen_offsets.size() > 0:
+		if is_zero_approx(anim_screen_offsets[0].length()):
+			anim_screen_offsets.pop_front()
+		else:
+			anim_screen_offsets[0] = anim_screen_offsets[0].move_toward(Vector2(0,0), anim_speed)
 		update()
 
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
-		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y) + anim_screen_offset
+		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		for offset in anim_screen_offsets:
+			 self.position += offset
