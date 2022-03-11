@@ -27,6 +27,10 @@ const door_scene = preload("res://sprites/door.tscn")
 
 var block_input = 0
 
+# for tempo perk
+var tempo_chance: int = 0
+var did_tempo: bool = false
+
 func _ready():
 	randomize()
 	pc.terrain = terrain
@@ -43,6 +47,7 @@ func _ready():
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
+	level_up_modal.connect("pick_perk",self,"_on_pick_perk")
 	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
 	pc.connect(constants.EXIT_LEVEL,director,"_on_exit_level")
 	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")	
@@ -56,6 +61,7 @@ func _unhandled_input(event):
 		return
 	if $Scheduler.player_turn:
 		var acted: bool = false
+		var did_attack: bool = false
 		var dir: int = -1
 		var ppos = pc.get_pos()
 		if event.is_action_pressed("left"):
@@ -74,7 +80,8 @@ func _unhandled_input(event):
 			#if pc.experience >= pc.experience_needed && pc.rage <= 0:
 				do_level_up()
 		if dir >= 0 && !acted:
-			acted = pc.try_attack(dir)
+			did_attack = pc.try_attack(dir)
+			acted = did_attack
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
 		if dir >= 0 && !acted:
@@ -98,6 +105,10 @@ func _unhandled_input(event):
 			if not acted:
 				pc.run_speed = 1
 		if acted:
+			if did_attack && (randi()%100 < tempo_chance) && !did_tempo:
+				print("tempo")
+				did_tempo = true
+				return
 			tick += 1
 			pc.tick()
 			pc_dijkstra.update([pc.get_pos()])
@@ -106,6 +117,7 @@ func _unhandled_input(event):
 #			print("ls: {0}".format([locationService.__forward.keys().size()]))
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
+			did_tempo = false
 
 func update_status():
 	var status_text = ""
@@ -165,6 +177,13 @@ func do_level_up():
 	set_process_unhandled_input(false)
 	level_up_modal.visible = true
 	level_up_modal.focus()
+
+func _on_pick_perk(p):
+	match p.perk_type:
+		p.PERK_TYPE.TEMPO:
+			tempo_chance += p.bonus
+		_:
+			pass
 
 func _on_exit_level_up():
 	level_up_modal.visible = false
