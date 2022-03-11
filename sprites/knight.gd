@@ -33,7 +33,7 @@ func on_turn():
 			attack()
 		else:
 			var next = .seek_to_player()
-			set_pos(next)
+			animated_move_to(next)
 
 func attack():
 	if not self.blocking:

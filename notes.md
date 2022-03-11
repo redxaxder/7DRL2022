@@ -70,15 +70,15 @@ other important things:
   + visibility
   - blood through doors
   - samurai behind open door waits in place
-  - enemies pass through each other
+  + enemies pass through each other
   - attack passes through door
   - throw passes through door
   - sometimes can't throw??
-  - knockback should open doors
+  + knockback should open doors
   - kicking door into blocking knight doesnt knock them back
-  - animate
-  - telegraph monk knockback
-  - message if trying to attack but can't
+  + animate
+  + telegraph monk knockback
+  + message if trying to attack but can't
   - distinct weapon icons
   - smooth camera tracking
   - more clearly indicate rage / fatigue state
