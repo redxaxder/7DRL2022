@@ -29,8 +29,12 @@ func on_turn():
 			combatLog.say("The ranger takes aim!")
 			var pp = pc.get_pos()
 			var candidates = [pp, Vector2(pp.x + 1, pp.y), Vector2(pp.x, pp.y + 1), Vector2(pp.x - 1, pp.y), Vector2(pp.x, pp.y - 1)]
-			candidates.shuffle()
-			target = candidates.pop_back()
+			var legal_candidates = []
+			for c in candidates:
+				if not self.terrain.is_wall(c):
+					legal_candidates.push_back(c)
+			legal_candidates.shuffle()
+			target = legal_candidates.pop_back()
 			telegraphing = true
 			telegraph_timer = telegraph_duration
 			emit_signal("telegraph", target, self)
