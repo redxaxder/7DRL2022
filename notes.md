@@ -82,7 +82,7 @@ other important things:
   - distinct weapon icons
   - smooth camera tracking
   - more clearly indicate rage / fatigue state
-
+  - floating text numbers??
 
 - third pass:
   - wizard enemy sets things on fire

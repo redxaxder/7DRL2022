@@ -51,12 +51,18 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 		distance -= 1
 		next = landed + dir
 		if terrain.atv(next) == '#':
-			combatLog.say("The {0} collides with the wall.".format([self.label]))
+			if !self.player:
+				combatLog.say("The {0} collides with the wall.".format([self.label]))
+			else:
+				combatLog.say("You collide with the wall.".format([self.label]))				
 			collision = true
 			break
 		var blockers = locationService.lookup(next, constants.BLOCKER)
 		if blockers.size() > 0:
-			combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
+			if !self.player:
+				combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
+			else:
+				combatLog.say("You collide with the {1}.".format([self.label, blockers[0].label]))
 			collision = true
 			for b in blockers:
 				power -= 1
@@ -64,6 +70,9 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
 					b.knockback(dir, distance)
 					break
+				elif	 b.is_in_group(constants.FURNITURE):
+					combatLog.say("The {0} is destroyed".format([b.label]))
+					b.die(dir)
 				elif b.player:
 					b.injure()
 				else:

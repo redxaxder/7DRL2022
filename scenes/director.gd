@@ -73,17 +73,17 @@ func populate_room(room: Vector3):
 	cells.shuffle()
 	for _i in 1 + (randi() % max_enemies):
 		var c = cells.pop_back()
-		if c: spawn_random_enemy(c)
+		if c && terrain.is_floor(c): spawn_random_enemy(c)
 	# add some weapons
 	var max_weapons: int = max(sz/2,1)
 	for _i in randi() % max_weapons:
 		var c = cells.pop_back()
-		if c: spawn_random_weapon(c)
+		if c && terrain.is_floor(c): spawn_random_weapon(c)
 	# add some consumables
 	var max_consumables: int = max(sz/4,1)
 	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
-		if c: spawn_random_consumable(c)
+		if c && terrain.is_floor(c): spawn_random_consumable(c)
 
 func spawn_random_enemy(pos: Vector2):
 	var enemy = enemies[randi() % enemies.size()]
@@ -109,13 +109,13 @@ func spawn_door(pos: Vector2) -> Actor:
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
-	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
+	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
 		mob.visible = false
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
-	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
+	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
 		var mob = prefab.instance() as Mob
 		mob.pc = pc
 		mob.terrain = terrain
@@ -126,7 +126,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		return mob
 
 func spawn_random_consumable(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
+	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
 		var item = pickup_scene.instance() as Pickup
 		item.locationService = locationService
 		item.random_consumable()
@@ -135,7 +135,7 @@ func spawn_random_consumable(p: Vector2):
 		item.visible = false
 
 func spawn_random_weapon(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
+	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
 		var item = weapon_scene.instance()
 		item.locationService = locationService
 		item.random_weapon(pc.southpaw)

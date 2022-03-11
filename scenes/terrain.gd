@@ -140,6 +140,21 @@ func has_door(cells: Array) -> bool:
 			door_placed = true
 	return door_placed
 
+func place_exit(room: Vector3):
+	var x = room.x + 1 + (randi() % int(room.z - 1))
+	var y = room.y + 1 + (randi() % int(room.z - 1))
+	contents[to_linear(x, y)] = '>'
+
+func is_exit(v: Vector2) -> bool:
+	return atv(v) == '>'
+
+func is_wall(v: Vector2) -> bool:
+	return atv(v) == '#'
+
+func is_floor(v: Vector2) -> bool:
+	var t = atv(v)
+	return t == '.' || t == null
+
 func place_a_door(cells: Array) -> bool:
 	# first, check if a door is already placed:
 	var candidates: Array = []
@@ -232,6 +247,7 @@ func splatter_blood(pos: Vector2, dir: Vector2):
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
+var exit_txtr = (preload("res://sprites/exit.tscn").instance() as Sprite).texture
 var blood_txtr = (preload("res://sprites/blood.tscn").instance() as Sprite).texture
 var some_blood_txtr = (preload("res://sprites/lots_of_blood.tscn").instance() as Sprite).texture
 var more_blood_txtr = (preload("res://sprites/more_blood.tscn").instance() as Sprite).texture
@@ -258,6 +274,11 @@ func _draw():
 					draw_texture(wall_txtr,pos + offset)
 				else:
 					draw_texture(wall_txtr,pos + offset, blood_color)
+			elif tile == '>':
+				if blood == 0:
+					draw_texture(exit_txtr,pos + offset)
+				else:
+					draw_texture(exit_txtr,pos + offset, blood_color)
 			else:
 				if blood == 0:
 					var weight: float = float(n % 4) / 4.0

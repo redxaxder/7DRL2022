@@ -23,6 +23,7 @@ const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene = preload("res://sprites/door.tscn")
 
+var block_input = 0
 
 func _ready():
 	randomize()
@@ -50,6 +51,8 @@ func _ready():
 var tick = 0
 
 func _unhandled_input(event):
+	if block_input > 0:
+		return
 	if $Scheduler.player_turn:
 		var acted: bool = false
 		var dir: int = -1
@@ -67,7 +70,7 @@ func _unhandled_input(event):
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
 		elif event.is_action_pressed("level_up"):
-#			if pc.experience >= pc.experience_needed:
+			if pc.experience >= pc.experience_needed:
 				do_level_up()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)
@@ -138,10 +141,13 @@ func _handle_death():
 func do_level_up():
 	set_process_unhandled_input(false)
 	level_up_modal.visible = true
-	level_up_modal.set_process_unhandled_input(true)
 	level_up_modal.focus()
 
 func _on_exit_level_up():
-	level_up_modal.set_process_unhandled_input(false)
 	level_up_modal.visible = false
 	set_process_unhandled_input(true)
+	block_input = 0.2
+
+func _process(delta):
+	if block_input > 0:
+		block_input = max(block_input - delta, 0)
