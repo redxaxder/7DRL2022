@@ -9,6 +9,7 @@ var perks: Array = [
 	preload("res://lib/perks/vengeance.gd").new(),
 	preload("res://lib/perks/bloodlust.gd").new(),
 	preload("res://lib/perks/powerattack.gd").new(),
+	preload("res://lib/perks/secondwind.gd").new(),
 	]
 
 func _ready():

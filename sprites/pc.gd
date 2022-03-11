@@ -17,6 +17,7 @@ var starting_recovery: int = 0
 var recovery: int = 0
 var southpaw = false
 var extra_knockback: int = 0
+var second_wind_bonus: int = 0
 
 const base_experience_gain_rate: int = 10
 const experience_gain_step: int = 10
@@ -276,6 +277,12 @@ func _on_pick_perk(p: Perk):
 			starting_rage += p.bonus
 		p.PERK_TYPE.POWER_ATTACK:
 			extra_knockback += p.bonus
+		p.PERK_TYPE.SECOND_WIND:
+			second_wind_bonus += p.bonus
+	var second_wind_recovery = float(second_wind_bonus) / 100.0
+	fatigue = int(fatigue * (1 - second_wind_recovery))
+	for d in debuffs.keys():
+		debuffs[d] = int(debuffs[d] * (1 - second_wind_recovery))
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 	emit_signal(constants.PLAYER_LEVEL_UP)
 
