@@ -17,9 +17,15 @@ func _ready():
 func pc_adjacent() -> bool:
 	var v = get_pos() - pc.get_pos()
 	return (abs(v.x) + abs(v.y) <= 1)
-	
-func is_hit(dir: Vector2):
-	die(dir)
+
+func is_hit(dir: Vector2, extra_knockback = 0):
+	if self.blocking:
+		self.combatLog.say("The {0} blocks your attack!".format([self.label]))
+		self.combatLog.say("The {0} goes flying!".format([self.label]))
+		self.knockback(dir, 1000, 1 + extra_knockback)
+		self.blocking = false
+	else:
+		die(dir)
 
 func seek_to_player(run_away: bool = false) -> Vector2:
 	# find the smallest direction in the d_map

@@ -6,7 +6,7 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, _terrain: Terrain =
 	var target = pos + d
 	var mobs = ls.lookup(target, constants.MOBS)
 	for m in mobs:
-		m.knockback(d)
+		m.knockback(d, 1000,1 + extra_knockback)
 		attacked = true
 	return attacked
 

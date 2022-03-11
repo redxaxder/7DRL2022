@@ -19,6 +19,8 @@ var southpaw = false
 var run_speed: int = 1
 const max_run_speed: int = 4
 var run_dir: int = -1
+var extra_knockback: int = 0
+var second_wind_bonus: int = 0
 
 const base_experience_gain_rate: int = 1
 const experience_gain_step: int = 1
@@ -38,9 +40,6 @@ var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
 var debuff_effects = preload("res://lib/debuffs.gd").new()
-
-
-var seen_shield_message: int = 0
 
 func _ready():
 	randomize()
@@ -117,8 +116,10 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 		can_attack = true
 	if can_attack:
 		if weapon != null and not force_bear_hands:
+			weapon.attack.extra_knockback = extra_knockback
 			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir)
 		else:
+			punch.extra_knockback = extra_knockback
 			did_attack = punch.try_attack(locationService, get_pos(), dir)
 	if calm && did_attack:
 		rage += starting_rage
@@ -130,7 +131,7 @@ func try_kick_furniture(dir) -> bool:
 	var targets = locationService.lookup(targetCell, constants.FURNITURE)
 	for t in targets:
 		if rage > 0:
-			acted = t.kick(dir)
+			acted = t.kick(dir, extra_knockback)
 		else:
 			acted = t.nudge(dir)
 	return acted
@@ -273,6 +274,14 @@ func _on_pick_perk(p: Perk):
 			starting_recovery += p.bonus
 		p.PERK_TYPE.SHORT_TEMPERED:
 			starting_rage += p.bonus
+		p.PERK_TYPE.POWER_ATTACK:
+			extra_knockback += p.bonus
+		p.PERK_TYPE.SECOND_WIND:
+			second_wind_bonus += p.bonus
+	var second_wind_recovery = float(second_wind_bonus) / 100.0
+	fatigue = int(fatigue * (1 - second_wind_recovery))
+	for d in debuffs.keys():
+		debuffs[d] = int(debuffs[d] * (1 - second_wind_recovery))
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 	emit_signal(constants.PLAYER_LEVEL_UP)
 
