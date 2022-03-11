@@ -8,8 +8,10 @@ var attack: Attack
 var sword_attack: Attack = preload("res://lib/attacks/sword.gd").new()
 var spear_attack: Attack = preload("res://lib/attacks/spear.gd").new()
 var broadsword_attack: Attack = preload("res://lib/attacks/broadsword.gd").new()
+var axe_attack: Attack = preload("res://lib/attacks/axe.gd").new()
+var hammer_attack: Attack = preload("res://lib/attacks/hammer.gd").new()
 
-enum WEAPON_TYPE{ SWORD, SPEAR, BROADSWORD }
+enum WEAPON_TYPE{ SWORD, SPEAR, BROADSWORD, AXE, HAMMER }
 
 func _ready():
 	._ready()
@@ -31,7 +33,16 @@ func init(type: int, southpaw: bool = false):
 			attack = broadsword_attack
 			label = "broadsword"
 			pickup_text = "You pick up a broadsword."
+		WEAPON_TYPE.AXE:
+			attack = axe_attack
+			label = "axe"
+			pickup_text = "You pick up an axe."
+		WEAPON_TYPE.HAMMER:
+			attack = hammer_attack
+			label = "hammer"
+			pickup_text = "You pick up a hammer."
 	attack.southpaw = southpaw
 
 func random_weapon(southpaw: bool = false):
-	init(randi() % 3, southpaw)
+	init(randi() % 5, southpaw)
+#	init(WEAPON_TYPE.HAMMER, true)

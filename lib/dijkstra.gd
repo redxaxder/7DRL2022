@@ -37,7 +37,7 @@ func d_score(v: Vector2) -> int:
 	return _score(ix) - destination_score
 
 func tick():
-	print("tick {0} {1}".format([destination_score, backlog.size()]))
+#	print("tick {0} {1}".format([destination_score, backlog.size()]))
 	destination_score -= destination_decay
 	backlog = _propagate(backlog, dijkstra_backlog_budget, backlog_cliff)
 
