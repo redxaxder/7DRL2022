@@ -49,7 +49,6 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	var landed = get_pos()
 	var next
 	var collision = false
-	var prev_screen_position = self.SCREEN.dungeon_to_screen(landed.x, landed.y)
 	while distance > 0 && power > 0:
 		distance -= 1
 		next = landed + dir
@@ -81,9 +80,7 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 				else:
 					b.die(dir)
 		landed = next
-	set_pos(landed)
-	var landed_screen_position = self.SCREEN.dungeon_to_screen(landed.x, landed.y)
-	anim_screen_offset = prev_screen_position - landed_screen_position
+	animated_move_to(landed)
 	if collision:
 		if self.blocking:
 			pass

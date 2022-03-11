@@ -21,7 +21,7 @@ func on_turn():
 		var cursor: Vector2 = pos
 		while true:
 			cursor += step
-			if self.terrain.at(cursor.x, cursor.y):
+			if self.terrain.is_wall(cursor):
 				# hit a wall before player
 				break
 			else:
