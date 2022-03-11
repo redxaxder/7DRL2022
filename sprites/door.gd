@@ -15,7 +15,7 @@ func _ready():
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	combatLog.say("The door goes flying!")
-	knockback(DIR.dir_to_vec(dir), 1000, extra_knockback)
+	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)
 	combatLog.say("The door is smashed to pieces!")
 	return true
 
