@@ -37,11 +37,13 @@ func die(dir: Vector2):
 	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
 
-func animated_move_to(target: Vector2):
+func animated_move_to(target: Vector2, duration: float = 1):
 	var start_pos = get_pos()
 	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
 	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
-	anim_screen_offsets.push_back(prev_screen_position - target_screen_position)
+	var dp = prev_screen_position - target_screen_position
+	var av = Vector3(dp.x,dp.y,duration)
+	anim_screen_offsets.push_back(av)
 	set_pos(target)
 
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
@@ -91,15 +93,24 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	
 func _process(delta):
 	if anim_screen_offsets.size() > 0:
-		if is_zero_approx(anim_screen_offsets[0].length()):
+		if is_zero_approx(anim_screen_offsets[0].z):
+			print("pop")
 			anim_screen_offsets.pop_front()
 		else:
-			anim_screen_offsets[0] = anim_screen_offsets[0].move_toward(Vector2(0,0), anim_speed)
+			var speed_mult = max(1,anim_screen_offsets.size() - 2)
+			var v: Vector3 = anim_screen_offsets[0]
+			var v0 = v
+			var dz = anim_speed * delta * speed_mult
+			var z1 = max(0,v.z - dz)
+			var c = z1 / v.z
+			v *= Vector3(c, c, 1)
+			v.z = z1
+			anim_screen_offsets[0] = v
 		update()
 
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
 		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-		for offset in anim_screen_offsets:
-			 self.position += offset
+		for v in anim_screen_offsets:
+			 self.position += Vector2(v.x,v.y)
