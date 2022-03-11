@@ -23,34 +23,32 @@ const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const door_scene = preload("res://sprites/door.tscn")
 
+var block_input = 0
 
 func _ready():
 	randomize()
-#	terrain.load_random_map()
-#	terrain.blood_map[terrain.to_linear(13, 9)] = 31
-#	terrain.blood_map[terrain.to_linear(13, 10)] = 21
-#	terrain.blood_map[terrain.to_linear(13, 11)] = 11
-#	terrain.blood_map[terrain.to_linear(13, 12)] = 1
-	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
-	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
-	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
-	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")
-	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
-	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
-	var pcpos = Vector2(30,30)
-	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	pc.locationService = locationService
 	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler)
 	scheduler.register_actor(pc)
 	director.load_next_map()
+	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
+	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
+	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
+	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
+	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
+	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
+	pc.connect(constants.EXIT_LEVEL,director,"_on_exit_level")
+	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")	
 	update_status()
 	update_pan(-1)
 
 var tick = 0
 
 func _unhandled_input(event):
+	if block_input > 0:
+		return
 	if $Scheduler.player_turn:
 		var acted: bool = false
 		var dir: int = -1
@@ -68,7 +66,7 @@ func _unhandled_input(event):
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
 		elif event.is_action_pressed("level_up"):
-#			if pc.experience >= pc.experience_needed:
+			if pc.experience >= pc.experience_needed:
 				do_level_up()
 		if dir >= 0 && !acted:
 			acted = pc.try_attack(dir)
@@ -139,10 +137,18 @@ func _handle_death():
 func do_level_up():
 	set_process_unhandled_input(false)
 	level_up_modal.visible = true
-	level_up_modal.set_process_unhandled_input(true)
 	level_up_modal.focus()
 
 func _on_exit_level_up():
-	level_up_modal.set_process_unhandled_input(false)
 	level_up_modal.visible = false
 	set_process_unhandled_input(true)
+	block_input = 0.2
+
+func _on_level_up():
+	#if we can still level up, go back to the level up screen
+	if pc.experience > pc.experience_needed:
+		do_level_up()
+
+func _process(delta):
+	if block_input > 0:
+		block_input = max(block_input - delta, 0)

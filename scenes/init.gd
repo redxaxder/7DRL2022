@@ -13,7 +13,6 @@ func _unhandled_input(event):
 	if event.is_action_pressed("action"):
 		r = run.instance()
 		add_child(r)
-		print("{0}".format([self.get_child_count()]))
 		set_process_unhandled_input(false)
 		for c in $splash.get_children():
 			c.visible = false

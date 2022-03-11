@@ -17,11 +17,8 @@ var label: String = ""
 var door: bool = false
 var blocking: bool = false
 
-var knocked_back: bool = false
-var prev_screen_position: Vector2
-var anim_screen_position: Vector2
-var anim_speed: float = 0.05
-var anim_ticks: int = 0
+var anim_screen_offset: Vector2
+var anim_speed: float = 5
 
 
 func get_pos(default = null) -> Vector2:
@@ -39,24 +36,34 @@ func die(dir: Vector2):
 	#TODO: handle if it was killed by someone else (eg: wizard)
 	emit_signal(constants.KILLED_BY_PC, label)
 	queue_free()
-	
+
+func animated_move_to(target: Vector2):
+	var start_pos = get_pos()
+	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
+	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
+	anim_screen_offset = prev_screen_position - target_screen_position
+	set_pos(target)
+
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	var landed = get_pos()
 	var next
 	var collision = false
-	knocked_back = true
-	prev_screen_position = self.SCREEN.dungeon_to_screen(landed.x, landed.y)
-	anim_screen_position = prev_screen_position
 	while distance > 0 && power > 0:
 		distance -= 1
 		next = landed + dir
 		if terrain.atv(next) == '#':
-			combatLog.say("The {0} collides with the wall.".format([self.label]))
+			if !self.player:
+				combatLog.say("The {0} collides with the wall.".format([self.label]))
+			else:
+				combatLog.say("You collide with the wall.".format([self.label]))				
 			collision = true
 			break
 		var blockers = locationService.lookup(next, constants.BLOCKER)
 		if blockers.size() > 0:
-			combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
+			if !self.player:
+				combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
+			else:
+				combatLog.say("You collide with the {1}.".format([self.label, blockers[0].label]))
 			collision = true
 			for b in blockers:
 				power -= 1
@@ -64,13 +71,15 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
 					b.knockback(dir, distance)
 					break
+				elif	 b.is_in_group(constants.FURNITURE):
+					combatLog.say("The {0} is destroyed.".format([b.label]))
+					b.die(dir)
 				elif b.player:
 					b.injure()
 				else:
 					b.die(dir)
 		landed = next
-	set_pos(landed)
-	anim_ticks = (landed - prev_screen_position).length() * anim_speed
+	animated_move_to(landed)
 	if collision:
 		if self.blocking:
 			pass
@@ -81,22 +90,11 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	update()
 	
 func _process(delta):
-	if knocked_back:
+	if not is_zero_approx(anim_screen_offset.length()):
+		anim_screen_offset = anim_screen_offset.move_toward(Vector2(0,0), anim_speed)
 		update()
 
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
-		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-		if knocked_back and not is_zero_approx((t_pos - prev_screen_position).length()):
-			var dir = t_pos - prev_screen_position
-			var new_position = position + dir * anim_speed
-			self.position = new_position
-			anim_ticks -= 1
-			if anim_ticks <= 0:
-				self.position = t_pos
-				knocked_back = false
-				combatLog.say("Thud!")
-		else:
-			self.position.x = float(t_pos.x)
-			self.position.y = float(t_pos.y)
+		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y) + anim_screen_offset

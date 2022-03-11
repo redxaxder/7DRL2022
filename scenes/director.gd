@@ -3,12 +3,12 @@ class_name Director
 
 var constants = preload("res://lib/const.gd").new()
 
-var pc
-var terrain
+var pc: Actor
+var terrain: Terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
-var scheduler
+var scheduler: Scheduler
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -24,6 +24,7 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 
 #to use for map selection later
 var area_seen: int = 0
+var level = 1
 
 func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 	pc = p
@@ -36,7 +37,7 @@ func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 
 
 func load_next_map():
-	terrain.load_random_map()
+	terrain.load_map(100 * level)
 	area_seen += terrain.width * terrain.height
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
@@ -73,17 +74,17 @@ func populate_room(room: Vector3):
 	cells.shuffle()
 	for _i in 1 + (randi() % max_enemies):
 		var c = cells.pop_back()
-		if c: spawn_random_enemy(c)
+		if c && terrain.is_floor(c): spawn_random_enemy(c)
 	# add some weapons
 	var max_weapons: int = max(sz/2,1)
 	for _i in randi() % max_weapons:
 		var c = cells.pop_back()
-		if c: spawn_random_weapon(c)
+		if c && terrain.is_floor(c): spawn_random_weapon(c)
 	# add some consumables
 	var max_consumables: int = max(sz/4,1)
 	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
-		if c: spawn_random_consumable(c)
+		if c && terrain.is_floor(c): spawn_random_consumable(c)
 
 func spawn_random_enemy(pos: Vector2):
 	var enemy = enemies[randi() % enemies.size()]
@@ -109,13 +110,13 @@ func spawn_door(pos: Vector2) -> Actor:
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
-	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
+	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
 		mob.visible = false
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
-	if terrain.atv(pos) != '#' && locationService.lookup(pos).size() == 0:
+	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
 		var mob = prefab.instance() as Mob
 		mob.pc = pc
 		mob.terrain = terrain
@@ -126,7 +127,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		return mob
 
 func spawn_random_consumable(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
+	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
 		var item = pickup_scene.instance() as Pickup
 		item.locationService = locationService
 		item.random_consumable()
@@ -135,7 +136,7 @@ func spawn_random_consumable(p: Vector2):
 		item.visible = false
 
 func spawn_random_weapon(p: Vector2):
-	if terrain.atv(p) != '#' && locationService.lookup(p).size() == 0:
+	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
 		var item = weapon_scene.instance()
 		item.locationService = locationService
 		item.random_weapon(pc.southpaw)
@@ -146,3 +147,18 @@ func spawn_random_weapon(p: Vector2):
 func _on_door_opened(pos: Vector2):
 	for room in terrain.map.get_rooms(pos,1):
 		activate_room(room)
+		
+func _on_exit_level():
+	for b in locationService.__backward.keys():
+		locationService.delete_node(b)
+		if b is Actor:
+			if !b.player:
+				b.queue_free()
+		else:
+			b.queue_free()
+	scheduler.clear()
+	level += 1
+	load_next_map()
+	terrain.update()
+	scheduler.register_actor(pc)
+	pc.update()

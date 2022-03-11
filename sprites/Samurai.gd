@@ -21,17 +21,20 @@ func on_turn():
 		var cursor: Vector2 = pos
 		while true:
 			cursor += step
-			if self.terrain.at(cursor.x, cursor.y):
+			if self.terrain.is_wall(cursor):
 				# hit a wall before player
 				break
 			else:
 				var stuff_at = self.locationService.lookup(cursor, constants.PLAYER)
 				for player in stuff_at:
-					dash_attack(cursor - step)
+					var target_tile = cursor - step
+					var blockers = locationService.lookup(target_tile, constants.BLOCKER)
+					if blockers.size() == 0 && !terrain.is_wall(target_tile):
+						dash_attack(target_tile)
 					return
 	else:
 		var next = .seek_to_player()
-		set_pos(next)
+		animated_move_to(next)
 
 func attack():
 	self.combatLog.say("The samurai slashes with his katana!")
@@ -41,5 +44,5 @@ func dash_attack(pos: Vector2):
 	self.combatLog.say("The samurai dashes at you with blinding speed!")
 	self.combatLog.say("Before you can even blink, you feel the bite of his katana.")
 	self.cur_dash_cooldown = dash_cooldown
-	self.set_pos(pos)
+	self.animated_move_to(pos)
 	self.pc.injure()

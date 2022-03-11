@@ -116,7 +116,7 @@ func array_min(arr: Array) -> int:
 	return m
 
 func load_random_map():
-	var ix = 200 # (randi() % 263 + 1) * 100
+	var ix = (randi() % 263 + 1) * 100
 	load_map(ix)
 	
 func load_map_resource(ix):
@@ -139,6 +139,21 @@ func has_door(cells: Array) -> bool:
 		if atv(t) == '.':
 			door_placed = true
 	return door_placed
+
+func place_exit(room: Vector3):
+	var x = room.x + 1 + (randi() % int(room.z - 1))
+	var y = room.y + 1 + (randi() % int(room.z - 1))
+	contents[to_linear(x, y)] = '>'
+
+func is_exit(v: Vector2) -> bool:
+	return atv(v) == '>'
+
+func is_wall(v: Vector2) -> bool:
+	return atv(v) == '#'
+
+func is_floor(v: Vector2) -> bool:
+	var t = atv(v)
+	return t == '.' || t == null
 
 func place_a_door(cells: Array) -> bool:
 	# first, check if a door is already placed:
@@ -182,6 +197,7 @@ func room_side(room: Vector3, dir: int) -> Array:
 
 func load_map(ix): # max index: 26460
 	map = load_map_resource(ix)
+	active_rooms = {}
 	if randi() % 2 == 0:
 		map.flip_v()
 	if randi() % 2 == 0:
@@ -189,14 +205,20 @@ func load_map(ix): # max index: 26460
 	width = map.width + 1
 	height = map.height + 1
 	var size = width * height
-	contents.clear()
+	contents = []
 	contents.resize(size)
-	blood_map.clear()
+	blood_map = []
 	blood_map.resize(size)
 	for i in blood_map.size():
 		blood_map[i] = 0
-	#spawn the doors:
 	map.rooms.shuffle()
+	#place the exit
+	for i in map.rooms.size():
+		if map.rooms[i].z > 2:
+			print(map.rooms[i])
+			place_exit(map.rooms[i])
+			break
+	#spawn the doors:	
 	for room in map.rooms:
 		var sides = [] # room sides lacking a door
 		for dir in [Dir.DIR.UP,Dir.DIR.DOWN,Dir.DIR.RIGHT,Dir.DIR.LEFT]:
@@ -216,6 +238,7 @@ func load_map(ix): # max index: 26460
 				var t = to_linear(v.x,v.y)
 				if contents[t] == null:
 					contents[t] = '#'
+	update()
 
 func splatter_blood(pos: Vector2, dir: Vector2):
 	var blood = 15
@@ -232,6 +255,7 @@ func splatter_blood(pos: Vector2, dir: Vector2):
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
+var exit_txtr = (preload("res://sprites/exit.tscn").instance() as Sprite).texture
 var blood_txtr = (preload("res://sprites/blood.tscn").instance() as Sprite).texture
 var some_blood_txtr = (preload("res://sprites/lots_of_blood.tscn").instance() as Sprite).texture
 var more_blood_txtr = (preload("res://sprites/more_blood.tscn").instance() as Sprite).texture
@@ -258,6 +282,11 @@ func _draw():
 					draw_texture(wall_txtr,pos + offset)
 				else:
 					draw_texture(wall_txtr,pos + offset, blood_color)
+			elif tile == '>':
+				if blood == 0:
+					draw_texture(exit_txtr,pos + offset)
+				else:
+					draw_texture(exit_txtr,pos + offset, blood_color)
 			else:
 				if blood == 0:
 					var weight: float = float(n % 4) / 4.0
