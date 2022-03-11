@@ -101,7 +101,6 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 		anim += knockback_anim_tile
 		travel += 1
 		next = landed + dir
-		print("knock {0} {1}".format([self.label, next]))
 		if terrain.atv(next) == '#':
 			if !self.player:
 				combatLog.say("The {0} collides with the wall.".format([self.label]))

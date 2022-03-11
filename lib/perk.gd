@@ -6,7 +6,7 @@ var next_level: bool = false
 var perk_type: int
 var description: String
 
-enum PERK_TYPE{ SHORT_TEMPERED, BLOODLUST, VENGEANCE, ENDURANCE, POWER_ATTACK, SECOND_WIND }
+enum PERK_TYPE{ SHORT_TEMPERED, BLOODLUST, VENGEANCE, ENDURANCE, POWER_ATTACK, SECOND_WIND, TEMPO }
 
 func evolve_perk() -> bool:
 	return false

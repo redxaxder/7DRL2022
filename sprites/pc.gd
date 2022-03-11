@@ -278,6 +278,8 @@ func _on_pick_perk(p: Perk):
 			extra_knockback += p.bonus
 		p.PERK_TYPE.SECOND_WIND:
 			second_wind_bonus += p.bonus
+		_:
+			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0
 	fatigue = int(fatigue * (1 - second_wind_recovery))
 	for d in debuffs.keys():
