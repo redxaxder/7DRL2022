@@ -146,6 +146,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 			self.pc.injure()
 		else:
 			self.die(dir)
+	stop_run()
 	update()
 
 func pending_animation() -> float:
@@ -172,6 +173,9 @@ func _process(delta):
 		update()
 	elif is_ragdoll:
 		die(ragdoll_dir)
+
+func stop_run():
+	pass
 
 func _draw() -> void:
 	var pos = get_pos()

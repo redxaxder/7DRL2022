@@ -62,6 +62,7 @@ func _unhandled_input(event):
 	if $Scheduler.player_turn:
 		var acted: bool = false
 		var did_attack: bool = false
+		var did_kick: bool = false
 		var dir: int = -1
 		var ppos = pc.get_pos()
 		if event.is_action_pressed("left"):
@@ -82,22 +83,28 @@ func _unhandled_input(event):
 		if dir >= 0 && !acted:
 			did_attack = pc.try_attack(dir)
 			acted = did_attack
+			if did_attack:
+				pc.run_speed = 1
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
+		if acted: # stop running after attack or kick
+			pc.stop_run()
 		if dir >= 0 && !acted:
 			var run_multiplier: int = 1
 			if dir == pc.run_dir:
 				pc.run_speed = min(pc.max_run_speed, pc.run_speed + 1)
 				run_multiplier = pc.run_speed
 			else:
-				pc.run_speed = 1
+				pc.stop_run()
 			var p = pc.get_pos() + DIR.dir_to_vec(dir)
 			pc.run_dir = dir
 			for _i in range(run_multiplier):
-				acted = pc.try_attack(dir, true)
-				acted = pc.try_kick_furniture(dir)
-				acted = pc.try_move(dir)
-				if acted:
+				did_attack = pc.try_attack(dir, true)
+				acted = did_attack
+				acted = pc.try_kick_furniture(dir) || acted
+				var did_move = pc.try_move(dir)
+				acted = did_move || acted
+				if did_move:
 					var items = locationService.lookup(p, constants.PICKUPS)
 					if items.size() > 0:
 						pc.pick_up(items[0],p)
@@ -124,7 +131,7 @@ func update_status():
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.experience >= pc.experience_needed && pc.rage == 0:
 		status_text += "Press enter to level up\n"
-	status_text += "Running speed: {0}/{1}\n".format([pc.run_speed, pc.max_run_speed])
+	status_text += "running speed: {0}\n".format([pc.run_speed])
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:

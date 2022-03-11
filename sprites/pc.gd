@@ -106,6 +106,10 @@ func tick():
 		recovery = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
+func stop_run():
+	self.run_speed = 1
+	self.run_dir = -1
+
 func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false
 	var did_attack = false
@@ -117,10 +121,10 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	if can_attack:
 		if weapon != null and not force_bear_hands:
 			weapon.attack.extra_knockback = extra_knockback
-			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir)
+			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation())
 		else:
 			punch.extra_knockback = extra_knockback
-			did_attack = punch.try_attack(locationService, get_pos(), dir)
+			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation())
 	if calm && did_attack:
 		rage += starting_rage
 	return did_attack
@@ -130,6 +134,7 @@ func try_kick_furniture(dir) -> bool:
 	var targetCell = get_pos() + DIR.dir_to_vec(dir)
 	var targets = locationService.lookup(targetCell, constants.FURNITURE)
 	for t in targets:
+		t.animation_delay(self.pending_animation())
 		if rage > 0:
 			acted = t.kick(dir, extra_knockback)
 		else:

@@ -1,6 +1,6 @@
 extends Attack
 
-func try_attack(ls: LocationService, pos: Vector2, dir: int, terrain = null) -> bool:
+func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, terrain = null) -> bool:
 	if terrain == null:
 		return false
 	var did_attack = false
@@ -8,7 +8,7 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, terrain = null) -> 
 	var target = pos
 	while !did_attack: #scan down the line
 		target += v
-		did_attack = .try_attack_at(ls, target, dir)
+		did_attack = .try_attack_at(ls, target, dir, anim_delay)
 		if terrain.at(target.x, target.y) == '#':
 			break;
 		if ls.lookup(target, constants.PROJECTILE_BLOCKER).size() > 0:

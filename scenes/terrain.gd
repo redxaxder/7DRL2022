@@ -83,8 +83,8 @@ func has_door(cells: Array) -> bool:
 	return door_placed
 
 func place_exit(room: Vector3):
-	var x = room.x + 1 + (randi() % int(room.z - 1))
-	var y = room.y + 1 + (randi() % int(room.z - 1))
+	var x = room.x + 2 + (randi() % int(room.z - 2))
+	var y = room.y + 2 + (randi() % int(room.z - 2))
 	contents[to_linear(x, y)] = '>'
 
 func is_exit(v: Vector2) -> bool:
@@ -156,7 +156,7 @@ func load_map(ix): # max index: 26460
 	map.rooms.shuffle()
 	#place the exit
 	for i in map.rooms.size():
-		if map.rooms[i].z > 2:
+		if map.rooms[i].z > 7:
 			place_exit(map.rooms[i])
 			break
 	#spawn the doors:	
