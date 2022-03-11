@@ -16,6 +16,7 @@ const blocking: bool = false
 func _ready():
 	label = "target"
 	self.play("targetting")
+	$target_back.play("blink")
 
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
