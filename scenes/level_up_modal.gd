@@ -30,16 +30,17 @@ func prepare():
 		perk_card(i).visible = true
 		perk_card(i).set_perk(perks[i])
 	focus()
+	self.update()
 
 func display_perk(i: int, n: Node):
 	n.get_node("vbox/header").text = perks[i].title
 
 func _on_perk_picked(p: Perk):
+	exit()
 	emit_signal("pick_perk", p)
 	if !p.evolve_perk():
 		perks.erase(p)
 	prepare()
-	exit()
 
 func exit():
 	emit_signal("exit_level_up")

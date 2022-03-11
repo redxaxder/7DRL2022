@@ -4,6 +4,7 @@ class_name PC
 
 signal player_died()
 signal status_changed()
+signal level_up()
 
 var rage: int = 0
 var rage_decay: int = 0

@@ -37,6 +37,7 @@ func _ready():
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
+	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
 	var pcpos = Vector2(30,30)
 	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
@@ -147,6 +148,11 @@ func _on_exit_level_up():
 	level_up_modal.visible = false
 	set_process_unhandled_input(true)
 	block_input = 0.2
+
+func _on_level_up():
+	#if we can still level up, go back to the level up screen
+	if pc.experience > pc.experience_needed:
+		do_level_up()
 
 func _process(delta):
 	if block_input > 0:
