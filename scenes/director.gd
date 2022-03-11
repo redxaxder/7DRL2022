@@ -146,3 +146,6 @@ func spawn_random_weapon(p: Vector2):
 func _on_door_opened(pos: Vector2):
 	for room in terrain.map.get_rooms(pos,1):
 		activate_room(room)
+		
+func _on_exit_level():
+	print("wooo")

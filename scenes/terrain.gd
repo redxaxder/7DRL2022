@@ -210,8 +210,13 @@ func load_map(ix): # max index: 26460
 	blood_map.resize(size)
 	for i in blood_map.size():
 		blood_map[i] = 0
-	#spawn the doors:
 	map.rooms.shuffle()
+	#place the exit
+	for i in map.rooms.size():
+		if map.rooms[i].z > 2:
+			place_exit(map.rooms[i])
+		break
+	#spawn the doors:	
 	for room in map.rooms:
 		var sides = [] # room sides lacking a door
 		for dir in [Dir.DIR.UP,Dir.DIR.DOWN,Dir.DIR.RIGHT,Dir.DIR.LEFT]:

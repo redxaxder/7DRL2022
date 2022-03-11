@@ -83,6 +83,7 @@ other important things:
   - smooth camera tracking
   - more clearly indicate rage / fatigue state
   - floating text numbers??
+  - double death message
 
 - third pass:
   - wizard enemy sets things on fire

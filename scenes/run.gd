@@ -27,25 +27,19 @@ var block_input = 0
 
 func _ready():
 	randomize()
-#	terrain.load_random_map()
-#	terrain.blood_map[terrain.to_linear(13, 9)] = 31
-#	terrain.blood_map[terrain.to_linear(13, 10)] = 21
-#	terrain.blood_map[terrain.to_linear(13, 11)] = 11
-#	terrain.blood_map[terrain.to_linear(13, 12)] = 1
-	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
-	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
-	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
-	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
-	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
-	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
-	var pcpos = Vector2(30,30)
-	pc.position = SCREEN.dungeon_to_screen(pcpos.x,pcpos.y)
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	pc.locationService = locationService
 	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler)
 	scheduler.register_actor(pc)
 	director.load_next_map()
+	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
+	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
+	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
+	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
+	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
+	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
+	pc.connect(constants.EXIT_LEVEL,director,"_on_exit_level")
 	update_status()
 	update_pan(-1)
 

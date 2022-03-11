@@ -5,6 +5,7 @@ class_name PC
 signal player_died()
 signal status_changed()
 signal level_up()
+signal exit_level()
 
 var rage: int = 0
 var rage_decay: int = 0
@@ -124,10 +125,10 @@ func try_move(dir) -> bool:
 	var pos = get_pos() + DIR.dir_to_vec(dir)
 	var mobs = locationService.lookup(pos, constants.MOBS)
 	if mobs.size() > 0 && fatigue > 0 && rage == 0:
-		combatLog.say("You are too exhausted to fight.")
+		combatLog.say("You are too exhausted to fight!")
 		return false
 	var blockers = locationService.lookup(pos, constants.BLOCKER)
-	if terrain.atv(pos) == '#':
+	if terrain.is_wall(pos):
 		if rage > 0:
 			combatLog.say("The wall blocks your path.")
 		else:
@@ -135,6 +136,11 @@ func try_move(dir) -> bool:
 		return false
 	elif blockers.size() > 0:
 		return false
+	elif terrain.is_exit(pos):
+		combatLog.say("")
+		combatLog.say("You make your way up the stairs.")
+		emit_signal(constants.EXIT_LEVEL)
+		return true
 	else:
 		set_pos(pos)
 		terrain.update_dijkstra_map([pos])
