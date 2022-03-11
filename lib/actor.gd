@@ -17,6 +17,13 @@ var label: String = ""
 var door: bool = false
 var blocking: bool = false
 
+var knocked_back: bool = false
+var prev_screen_position: Vector2
+var anim_screen_position: Vector2
+var anim_speed: float = 0.05
+var anim_ticks: int = 0
+
+
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
 
@@ -37,6 +44,9 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	var landed = get_pos()
 	var next
 	var collision = false
+	knocked_back = true
+	prev_screen_position = self.SCREEN.dungeon_to_screen(landed.x, landed.y)
+	anim_screen_position = prev_screen_position
 	while distance > 0 && power > 0:
 		distance -= 1
 		next = landed + dir
@@ -60,6 +70,7 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 					b.die(dir)
 		landed = next
 	set_pos(landed)
+	anim_ticks = (landed - prev_screen_position).length() * anim_speed
 	if collision:
 		if self.blocking:
 			pass
@@ -68,10 +79,24 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 		else:
 			self.die(dir)
 	update()
+	
+func _process(delta):
+	if knocked_back:
+		update()
 
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
 		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-		self.position.x = float(t_pos.x)
-		self.position.y = float(t_pos.y)
+		if knocked_back and not is_zero_approx((t_pos - prev_screen_position).length()):
+			var dir = t_pos - prev_screen_position
+			var new_position = position + dir * anim_speed
+			self.position = new_position
+			anim_ticks -= 1
+			if anim_ticks <= 0:
+				self.position = t_pos
+				knocked_back = false
+				combatLog.say("Thud!")
+		else:
+			self.position.x = float(t_pos.x)
+			self.position.y = float(t_pos.y)

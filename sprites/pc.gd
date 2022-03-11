@@ -75,8 +75,6 @@ func make_shards() -> Pickup:
 	return shards
 
 func tick():
-	for d in debuffs.keys():
-		debuffs[d] = max(0, debuffs[d] - 1)
 	if rage > 0:
 		rage -= rage_decay
 		rage = max(rage,int(0))
@@ -176,6 +174,11 @@ func consume() -> bool:
 
 func recover(amount: int):
 	fatigue = max(0, fatigue - amount)
+	for d in debuffs.keys():
+		if fatigue == 0:
+			debuffs[d] = 0
+		else:
+			debuffs[d] = max(0, debuffs[d] - amount)
 
 func consume_calm(p: Pickup) -> bool:
 	match p.type:

@@ -52,12 +52,8 @@ func is_hit(dir: Vector2):
 		.is_hit(dir)
 
 func _draw() -> void:
-	var pos = get_pos()
-	if pos:
-		var t_pos = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
-		self.transform.origin.x = float(t_pos.x)
-		self.transform.origin.y = float(t_pos.y)
-		if self.blocking:
-			self.modulate = Color(0.460938, 0.460938, 1)
-		else:
-			self.modulate = Color(1, 1, 1)
+	if self.blocking:
+		self.modulate = Color(0.460938, 0.460938, 1)
+	else:
+		self.modulate = Color(1, 1, 1)
+	._draw()
