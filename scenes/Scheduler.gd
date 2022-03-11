@@ -44,7 +44,6 @@ func next_turn() -> bool:
 					return false
 				actor.on_turn()
 				actor.update()
-				return true
 	return true
 
 func priority(a) -> int:

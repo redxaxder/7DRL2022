@@ -84,6 +84,8 @@ func _unhandled_input(event):
 		if acted:
 			tick += 1
 			pc.tick()
+			print("scheduler: {0}".format([scheduler.actors.keys().size()]))
+			print("ls: {0}".format([locationService.__forward.keys().size()]))
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 

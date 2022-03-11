@@ -31,6 +31,39 @@ func room_outline(room: Vector3) -> Array:
 		results.append(Vector2(room.x + room.z, room.y + i)) # tight
 	return results
 
+func adjacent_rooms(room: Vector3) -> Array:
+	var results = []
+	for r in rooms:
+		if room_distance(r,room) == 1:
+			results.append(r)
+	return results
+
+func room_distance(r: Vector3, s: Vector3) -> int:
+	var r_left = r.x
+	var r_right = r.x + r.z - 1
+	var s_left = s.x 
+	var s_right = s.x + s.z - 1
+	var dx
+	if r_right < s_left:
+		dx = s_left - r_right
+	elif s_right < r_left:
+		dx = r_left - s_right
+	else:
+		dx = 0
+	var r_top = r.y
+	var r_bot = r.y + r.z - 1
+	var s_top = s.y
+	var s_bot = s.y + s.z - 1
+	var dy
+	if r_bot < s_top:
+		dy = s_top - r_bot
+	elif s_bot < r_top:
+		dy = r_top - s_bot
+	else:
+		 dy = 0
+	return int(max(dx,dy))
+
+
 func count_rooms(p: Vector2, fudge: int = 0) -> int:
 	var n = 0
 	for r in rooms:

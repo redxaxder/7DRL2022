@@ -84,6 +84,7 @@ other important things:
   - more clearly indicate rage / fatigue state
   - floating text numbers??
   - double death message
+  - overlap player
 
 - third pass:
   - wizard enemy sets things on fire

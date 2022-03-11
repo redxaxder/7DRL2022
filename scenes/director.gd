@@ -26,6 +26,8 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 var area_seen: int = 0
 var level = 1
 
+var populated_rooms = {}
+
 func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 	pc = p
 	terrain = t
@@ -37,8 +39,10 @@ func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 
 
 func load_next_map():
-	terrain.load_map(100 * level)
+	populated_rooms = {}
+	terrain.load_map(20000)
 	area_seen += terrain.width * terrain.height
+	print(area_seen)
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
 		if room.z > 1:
@@ -50,9 +54,7 @@ func load_next_map():
 	var start = candidates[randi() % candidates.size()]
 	pc.set_pos(start)
 	activate_room(starting_room)
-	# fill the rooms!
-	for room in terrain.map.rooms:
-		populate_room(room)
+	populated_rooms[starting_room] = 0
 
 func activate_room(room: Vector3):
 	terrain.active_rooms[room] = 0 # add it to the dict. the 0 is meaningless.
@@ -62,8 +64,13 @@ func activate_room(room: Vector3):
 			if node.is_in_group(constants.MOBS):
 				scheduler.register_actor(node)
 	terrain.update()
+	for neighbor in terrain.map.adjacent_rooms(room):
+		populate_room(neighbor)
 
 func populate_room(room: Vector3):
+	if populated_rooms.has(room):
+		return
+	populated_rooms[room] = 0
 	#place doors as needed
 	room_doors(room)
 	var sz = int(room.z)
@@ -147,7 +154,7 @@ func spawn_random_weapon(p: Vector2):
 func _on_door_opened(pos: Vector2):
 	for room in terrain.map.get_rooms(pos,1):
 		activate_room(room)
-		
+
 func _on_exit_level():
 	for b in locationService.__backward.keys():
 		locationService.delete_node(b)
