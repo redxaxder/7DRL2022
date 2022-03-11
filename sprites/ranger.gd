@@ -7,6 +7,7 @@ var cur_shot_cooldown: int = 0
 const shot_cooldown: int = 3
 const shot_range: int = 8
 var target: Vector2
+var target_obj: Object = null
 
 signal telegraph(target)
 signal remove_target(target)
@@ -25,13 +26,14 @@ func on_turn():
 			set_pos(self.seek_to_player(true))
 		# shoot
 		else:
+			combatLog.say("The ranger takes aim!")
 			var pp = pc.get_pos()
 			var candidates = [pp, Vector2(pp.x + 1, pp.y), Vector2(pp.x, pp.y + 1), Vector2(pp.x - 1, pp.y), Vector2(pp.x, pp.y - 1)]
 			candidates.shuffle()
 			target = candidates.pop_back()
 			telegraphing = true
 			telegraph_timer = telegraph_duration
-			emit_signal("telegraph", target)
+			emit_signal("telegraph", target, self)
 	elif telegraphing:
 		if telegraph_timer > 0:
 			telegraph_timer -= 1
@@ -42,11 +44,22 @@ func on_turn():
 		cur_shot_cooldown = max(0, cur_shot_cooldown - 1)
 
 func attack():
+	telegraphing = false
+	emit_signal("remove_target", target_obj)
+	target_obj = null
 	if pc.get_pos() == target:
 		combatLog.say("The ranger's arrow flies true!")
 		pc.injure()
-		telegraphing = false
-		emit_signal("remove_target", target)
+	else:
+		combatLog.say("The ranger's arrow harmlessly flies wide.")
 
 func _draw() -> void:
+	if telegraphing:
+		self.modulate = Color(1, 1, 0)
+	else:
+		self.modulate = Color(1, 1, 1)
 	._draw()
+
+func die(dir: Vector2):
+	emit_signal("remove_target", target_obj)
+	.die(dir)

@@ -89,6 +89,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/screen.gd"
 }, {
+"base": "AnimatedSprite",
+"class": "Target",
+"language": "GDScript",
+"path": "res://sprites/Target.gd"
+}, {
 "base": "Node2D",
 "class": "Terrain",
 "language": "GDScript",
@@ -116,6 +121,7 @@ _global_script_class_icons={
 "PerkCard": "",
 "Pickup": "",
 "Screen": "",
+"Target": "",
 "Terrain": "",
 "Weapon": ""
 }

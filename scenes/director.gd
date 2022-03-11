@@ -20,6 +20,7 @@ const enemies: Array = [knight_scene, monk_scene, samurai_scene, ranger_scene]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
+const target_scene: PackedScene = preload("res://sprites/Target.tscn")
 
 const door_scene: PackedScene = preload("res://sprites/door.tscn")
 #########################################
@@ -159,11 +160,17 @@ func spawn_random_weapon(p: Vector2):
 		item.place(p)
 		item.visible = false
 		
-func _on_remove_target(pos: Vector2):
-	pass
+func _on_remove_target(target: Target):
+	if target != null:
+		locationService.delete_node(target)
+		target.queue_free()
 	
-func _on_telegraph(pos: Vector2):
-	pass
+func _on_telegraph(pos: Vector2, ranger: Mob):
+	var target = target_scene.instance()
+	target.locationService = locationService
+	target.set_pos(pos)
+	parent.add_child(target)
+	ranger.target_obj = target
 
 func _on_door_opened(pos: Vector2):
 	for room in terrain.map.get_rooms(pos,1):
