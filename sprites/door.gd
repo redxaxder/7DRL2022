@@ -11,6 +11,7 @@ func _ready():
 	add_to_group(self.constants.BLOCKER)
 	add_to_group(self.constants.PROJECTILE_BLOCKER)
 	add_to_group(self.constants.PATHING_BLOCKER)
+	add_to_group(self.constants.STOPS_ATTACK)
 
 func kick(dir: int) -> bool:
 	combatLog.say("The door goes flying!")
