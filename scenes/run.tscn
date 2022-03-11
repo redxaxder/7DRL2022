@@ -94,9 +94,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="level_up_modal" parent="hud" instance=ExtResource( 6 )]
-visible = false
-
 [node name="fatigue_mask" type="Panel" parent="hud"]
 modulate = Color( 1, 0.858824, 0.0862745, 0.34902 )
 anchor_left = 0.004
@@ -106,9 +103,9 @@ margin_left = -77.2333
 margin_top = -50.4055
 margin_right = 105.815
 margin_bottom = 59.5945
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="level_up_modal" parent="hud" instance=ExtResource( 6 )]
+visible = false
 
 [node name="Scheduler" parent="." instance=ExtResource( 5 )]
 

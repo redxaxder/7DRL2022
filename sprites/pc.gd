@@ -16,6 +16,7 @@ var fatigue: int = 0
 var starting_recovery: int = 0
 var recovery: int = 0
 var southpaw = false
+var extra_knockback: int = 0
 
 const base_experience_gain_rate: int = 10
 const experience_gain_step: int = 10
@@ -39,9 +40,6 @@ var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
 var debuff_effects = preload("res://lib/debuffs.gd").new()
-
-
-var seen_shield_message: int = 0
 
 func _ready():
 	randomize()
@@ -118,8 +116,10 @@ func try_attack(dir) -> bool:
 		can_attack = true
 	if can_attack:
 		if weapon != null:
+			weapon.attack.extra_knockback = extra_knockback
 			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir)
 		else:
+			punch.extra_knockback = extra_knockback
 			did_attack = punch.try_attack(locationService, get_pos(), dir)
 	if calm && did_attack:
 		rage += starting_rage
@@ -274,6 +274,8 @@ func _on_pick_perk(p: Perk):
 			starting_recovery += p.bonus
 		p.PERK_TYPE.SHORT_TEMPERED:
 			starting_rage += p.bonus
+		p.PERK_TYPE.POWER_ATTACK:
+			extra_knockback += p.bonus
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 	emit_signal(constants.PLAYER_LEVEL_UP)
 

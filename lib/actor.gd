@@ -16,6 +16,8 @@ var speed: int = 3
 var label: String = ""
 var door: bool = false
 var blocking: bool = false
+const block_duration: int = 2
+var cur_block_duration: int = 0
 
 var is_ragdoll: bool = false
 var ragdoll_dir: Vector2
@@ -28,6 +30,17 @@ func get_pos(default = null) -> Vector2:
 
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
+
+func block_decay():
+	if blocking:
+		if cur_block_duration < block_duration:
+			cur_block_duration += 1
+		else:
+			blocking = false
+
+func block():
+	cur_block_duration = 0
+	blocking = true
 
 func make_ragdoll(dir: Vector2):
 	var ragdoll: Sprite = get_script().new()
@@ -76,21 +89,26 @@ func animation_delay(duration: float):
 	anim_screen_offsets.push_back(av)
 
 const knockback_anim_tile = 0.2
-func knockback(dir: Vector2, distance: int = 1000000, power = 1):
+func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	var landed = get_pos()
 	var next
 	var collision = false
+	var strong_collision = false
 	var anim = 0
+	var travel = -1
 	while distance > 0 && power > 0:
 		distance -= 1
 		anim += knockback_anim_tile
+		travel += 1
 		next = landed + dir
+		print("knock {0} {1}".format([self.label, next]))
 		if terrain.atv(next) == '#':
 			if !self.player:
 				combatLog.say("The {0} collides with the wall.".format([self.label]))
 			else:
 				combatLog.say("You collide with the wall.", 20)
 			collision = true
+			strong_collision = true
 			break
 		var blockers = locationService.lookup(next, constants.BLOCKER)
 		if blockers.size() > 0:
@@ -102,9 +120,11 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 			for b in blockers:
 				power -= 1
 				if b.blocking:
+					power = 0 #perfectly inelastic
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
 					b.animation_delay(self.pending_animation()+anim)
 					b.knockback(dir, distance)
+					strong_collision = true
 					break
 				elif	 b.is_in_group(constants.FURNITURE):
 					combatLog.say("The {0} is destroyed.".format([b.label]))
@@ -115,13 +135,13 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 				else:
 					b.animation_delay(self.pending_animation()+anim)
 					b.die(dir)
-		if !collision:
+		if power > 0:
 			landed = next
 	animated_move_to(landed, anim)
-
 	if collision:
 		if self.blocking:
-			pass
+			if travel == 0 && strong_collision:
+				self.die(dir)
 		elif self.player:
 			self.pc.injure()
 		else:

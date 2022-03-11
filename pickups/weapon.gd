@@ -4,6 +4,7 @@ class_name Weapon
 
 var weapon_type
 var attack: Attack
+var knockback_bonus: int = 0
 
 var sword_attack: Attack = preload("res://lib/attacks/sword.gd").new()
 var spear_attack: Attack = preload("res://lib/attacks/spear.gd").new()
@@ -44,5 +45,5 @@ func init(type: int, southpaw: bool = false):
 	attack.southpaw = southpaw
 
 func random_weapon(southpaw: bool = false):
-	init(randi() % 5, southpaw)
-#	init(WEAPON_TYPE.HAMMER, true)
+#	init(randi() % 5, southpaw)
+	init(WEAPON_TYPE.HAMMER, true)

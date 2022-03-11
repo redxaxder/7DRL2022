@@ -67,25 +67,25 @@ TODO:
 
 other important things:
   - running mechanic
-  + visibility
   - blood through doors
-  + samurai behind open door waits in place
-  + enemies pass through each other
-  - attack passes through door
-  - throw passes through door
   - sometimes can't throw??
+  - distinct weapon icons
+  - smooth camera tracking
+  - floating text numbers??
+  - overlap player
+  - sword -> club
+  - visual indicators for weapons
+  + visibility
   + knockback should open doors
-  - kicking door into blocking knight doesnt knock them back
   + animate
   + telegraph monk knockback
   + message if trying to attack but can't
-  - distinct weapon icons
-  - smooth camera tracking
-  - more clearly indicate rage / fatigue state
-  - floating text numbers??
-  - double death message
-  - overlap player
-  - sword -> club
+  + more clearly indicate rage / fatigue state
+  + double death message
+  + samurai behind open door waits in place
+  + enemies pass through each other
+  + attack passes through door
+  + throw passes through door
 
 - third pass:
   - wizard enemy sets things on fire
