@@ -21,7 +21,7 @@ func on_turn():
 	if not blocking:
 		# chance to block increases linearly with proximity to player
 		var pos = self.get_pos()
-		var distance = terrain.d_score(pos)
+		var distance = pc_dijkstra.d_score(pos)
 		if distance == null || distance <= 0:
 			distance = 100000
 		var block_chance: float = 1.0 / float(distance) * max_block_chance

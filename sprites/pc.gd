@@ -149,7 +149,6 @@ func try_move(dir) -> bool:
 		return true
 	else:
 		animated_move_to(pos)
-		terrain.update_dijkstra_map([pos])
 		update()
 		return true
 

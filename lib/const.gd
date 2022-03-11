@@ -18,6 +18,7 @@ var MOBS = "mobs"
 var PICKUPS = "pickups"
 var BLOCKER = "blocker"
 var PROJECTILE_BLOCKER = "projectile_blocker"
+var PATHING_BLOCKER = "pathing_blocker"
 var FURNITURE = "furniture"
 
 #debuffs

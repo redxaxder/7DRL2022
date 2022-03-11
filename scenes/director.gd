@@ -9,6 +9,7 @@ var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
 var scheduler: Scheduler
+var pc_dijkstra: Dijkstra
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -28,19 +29,21 @@ var level = 1
 
 var populated_rooms = {}
 
-func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
+func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s: Scheduler, pcd: Dijkstra):
 	pc = p
 	terrain = t
 	locationService = ls
 	combatLog = cl
 	parent = n
 	scheduler = s
+	pc_dijkstra = pcd
 	randomize()
 
 
 func load_next_map():
 	populated_rooms = {}
 	terrain.load_map(20000)
+	pc_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
 	print(area_seen)
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
@@ -129,6 +132,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		mob.terrain = terrain
 		mob.combatLog = combatLog
 		mob.locationService = locationService
+		mob.pc_dijkstra = pc_dijkstra
 		mob.set_pos(pos)
 		parent.add_child(mob)
 		return mob

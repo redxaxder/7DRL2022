@@ -1,20 +1,31 @@
 class_name Dijkstra
 
-const dijkstra_map_now_limit = 30
-const dijkstra_map_later_budget = 400
-
-var terrain: Terrain
-
-
-var dijkstra_map = []
-var destination_score: int = 0
-const destination_decay: int = 1
+var dijkstra_now_budget: int = 2000
+var dijkstra_backlog_budget = 2000
+var destination_decay: int = 1
+var backlog_cliff: int
 const big: int = 100000000000000000
 
-func _init(t: Terrain):
+var constants: Const = preload("res://lib/const.gd").new()
+var terrain: Terrain
+var locationService: LocationService
+
+var dijkstra_map = []
+var backlog = []
+var destination_score: int = 0
+
+func _init(t: Terrain, ls: LocationService, now_budget = 2000, backlog_budget = 2000, decay = 1, cliff = 15):
 	terrain = t
+	locationService = ls
+	dijkstra_now_budget = now_budget
+	dijkstra_backlog_budget = backlog_budget
+	destination_decay = decay
+	backlog_cliff = cliff
+
+func refresh():
 	dijkstra_map.clear()
 	dijkstra_map.resize(terrain.contents.size())
+	destination_score = 0
 	for i in range(terrain.contents.size()):
 		if terrain.contents[i] == '#':
 			dijkstra_map[i] = null
@@ -23,14 +34,14 @@ func _init(t: Terrain):
 
 func d_score(v: Vector2) -> int:
 	var ix = terrain.to_linear(v.x,v.y)
-	if ix >= dijkstra_map.size() || ix < 0:
-		return 100000
-	var x = dijkstra_map[ix]
-	if x == null:
-		return 100000
-	return x
+	return _score(ix)
 
-func update_map(targets: Array):
+func tick():
+	print("tick {0} {1}".format([destination_score, backlog.size()]))
+	destination_score -= destination_decay
+	backlog = _propagate(backlog, dijkstra_backlog_budget, backlog_cliff)
+
+func update(targets: Array):
 	var live = []
 	var w: int = terrain.width
 	for t in targets:
@@ -41,9 +52,10 @@ func update_map(targets: Array):
 			live.push_back(ix - w)
 			live.push_back(ix + 1)
 			live.push_back(ix - 1)
-	propagate(live)
+	var remaining = _propagate(live,dijkstra_now_budget,1)
+	backlog += remaining
 
-func score(ix: int) -> int:
+func _score(ix: int) -> int:
 	if ix >= dijkstra_map.size() || ix < 0:
 		return big
 	var x = dijkstra_map[ix]
@@ -51,7 +63,7 @@ func score(ix: int) -> int:
 		return big
 	return x
 
-func propagate(live: Array, budget = 8000, cliff = 1) -> Array:
+func _propagate(live: Array, budget: int, cliff: int) -> Array:
 	var next = []
 	var tmp
 	var w: int = terrain.width
@@ -61,11 +73,17 @@ func propagate(live: Array, budget = 8000, cliff = 1) -> Array:
 		for ix in live:
 			if ix >= 0 && ix < dijkstra_map.size() && dijkstra_map[ix] != null:
 				var smallest = big
+				var neighbors = []
 				for t in [ix + w, ix - w, ix + 1, ix - 1]:
-					smallest = min(smallest,score(t))
+					var x = int(t) % int(w)
+# warning-ignore:integer_division
+					var y = int(t) / int(w)
+					if locationService.lookup(Vector2(x,y),constants.PATHING_BLOCKER).size() == 0 && dijkstra_map[ix] != null:
+						smallest = min(smallest,_score(t))
+						neighbors.append(t)
 				if dijkstra_map[ix] > smallest + cliff:
 					dijkstra_map[ix] = smallest + 1
-					for t in [ix + w, ix - w, ix + 1, ix - 1]:
+					for t in neighbors:
 						next.push_back(t)
 		tmp = live
 		live = next

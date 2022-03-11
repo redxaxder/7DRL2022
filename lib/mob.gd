@@ -2,6 +2,8 @@ extends Actor
 
 class_name Mob
 
+var pc_dijkstra: Dijkstra
+
 signal killed_by_pc(label)
 
 func _ready():
@@ -20,24 +22,26 @@ func is_hit(dir: Vector2):
 func seek_to_player() -> Vector2:
 	# find the smallest direction in the d_map
 	var e = get_pos()
-	var smallest_val = terrain.d_score(e)
-	var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+	var smallest_val = pc_dijkstra.d_score(e)
+	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+	var scores = []
 	for c in candidates:
-		var t = terrain.d_score(c)
+		var t = pc_dijkstra.d_score(c)
+		scores.append(t)
 		if t:
 			smallest_val = min(smallest_val, t)
 
 	var legal_candidates = []
 	for c in candidates:
 		if self.locationService.lookup(c, constants.BLOCKER).size() == 0:
-			if terrain.atv(c) != '#':
+			if !terrain.is_wall(c):
 				legal_candidates.append(c)
 	if legal_candidates.size() == 0:
 		return get_pos()
 
 	var final_candidates = []
 	for c in legal_candidates:
-		if terrain.d_score(c) == smallest_val:
+		if pc_dijkstra.d_score(c) == smallest_val:
 			final_candidates.append(c)
 
 	if final_candidates.size() == 0:

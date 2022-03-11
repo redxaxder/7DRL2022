@@ -11,11 +11,8 @@ var map
 #var hole_punch_chance: float = 0.1
 
 var contents: Array = []
-var dijkstra_map: Array = []
 var blood_map: Array = []
 var active_rooms: Dictionary = {} # used as a set. room -> 0
-
-const dijstra_map_limit = 70
 
 const cosmetic_map_seed: int = 68000
 
@@ -31,15 +28,6 @@ func atv(v: Vector2):
 func in_bounds(v: Vector2) -> bool:
 	return v.x >= 0 && v.x < width && v.y >= 0 && v.y < height
 
-func d_score(v: Vector2) -> int:
-	var ix = to_linear(v.x,v.y)
-	if ix >= dijkstra_map.size() || ix < 0:
-		return 100000
-	var x = dijkstra_map[ix]
-	if x == null:
-		return 100000
-	return x
-
 func _ready():
 	randomize()
 
@@ -48,52 +36,6 @@ func from_linear(ix: int) -> Vector2:
 	
 func to_linear(x,y) -> int:
 	return width * y + x
-
-func update_dijkstra_map(dest: Array):
-	var d_map: Array = []
-	d_map.clear()
-	d_map.resize(contents.size())
-	# initialize all non-wall things to a very high number
-	for i in range(contents.size()):
-		if contents[i] == '#':
-			d_map[i] = null
-		else:
-			d_map[i] = 1000000
-	# initialize all destinations to 0
-	for v in dest:
-		d_map[to_linear(v.x, v.y)] = 0
-	var live: Array = []
-	var next: Array = []
-	for v in dest:
-		var ix = to_linear(v.x, v.y)
-		for n in neighbors(ix):
-			live.append(n)
-	var prev
-	var tmp
-	while live.size() > 0:
-		next.clear()
-		for i in live:
-			if i != prev:
-				prev = i
-				if d_map[i] != null:
-					var ns = neighbors(i)
-					var neighs: Array = []
-					for n in ns:
-						var v = d_map[n]
-						if v != null:
-							neighs.push_back(d_map[n])
-					if neighs.size() > 0:
-						var m: int = array_min(neighs)
-						if d_map[i] and d_map[i] > m + 1:
-							d_map[i] = array_min(neighs) + 1
-							if m <= dijstra_map_limit:
-								for n in ns:
-									next.append(n)
-		tmp = live
-		live = next
-		next = tmp
-		next.sort()
-	dijkstra_map = d_map
 
 func neighbors(i: int) -> Array:
 	var arr: Array = []

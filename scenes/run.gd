@@ -13,6 +13,7 @@ onready var locationService = $LocationService
 onready var level_up_modal = $hud/level_up_modal
 onready var scheduler = $Scheduler
 var director: Director
+var pc_dijkstra: Dijkstra
 
 signal end_player_turn()
 
@@ -30,7 +31,8 @@ func _ready():
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	pc.locationService = locationService
-	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler)
+	pc_dijkstra = Dijkstra.new(terrain, locationService)
+	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler, pc_dijkstra)
 	scheduler.register_actor(pc)
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
@@ -84,8 +86,10 @@ func _unhandled_input(event):
 		if acted:
 			tick += 1
 			pc.tick()
-			print("scheduler: {0}".format([scheduler.actors.keys().size()]))
-			print("ls: {0}".format([locationService.__forward.keys().size()]))
+			pc_dijkstra.update([pc.get_pos()])
+			pc_dijkstra.tick()
+#			print("scheduler: {0}".format([scheduler.actors.keys().size()]))
+#			print("ls: {0}".format([locationService.__forward.keys().size()]))
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 
