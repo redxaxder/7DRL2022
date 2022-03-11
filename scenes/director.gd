@@ -125,6 +125,9 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 		var mob = spawn_mob(prefab, pos)
 		mob.visible = false
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
+		if mob.label == "ranger":
+			mob.connect(constants.REMOVE_TARGET, self, "_on_remove_target")
+			mob.connect(constants.TELEGRAPH, self, "_on_telegraph")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
@@ -155,6 +158,12 @@ func spawn_random_weapon(p: Vector2):
 		parent.add_child(item)
 		item.place(p)
 		item.visible = false
+		
+func _on_remove_target(pos: Vector2):
+	pass
+	
+func _on_telegraph(pos: Vector2):
+	pass
 
 func _on_door_opened(pos: Vector2):
 	for room in terrain.map.get_rooms(pos,1):
