@@ -61,9 +61,9 @@ func load_random_map():
 	var ix = (randi() % 263 + 1) * 100
 	load_map(ix)
 	
-func load_map_resource(ix):
+func load_map_resource(ix) -> Map:
 	var path = "res://resources/maps/map{0}.tres".format([ix])
-	return load(path)
+	return load(path) as Map
 	
 func spawn_door(x: int, y: int):
 	#terrain marks door spawn locations with '.' and they get filled later

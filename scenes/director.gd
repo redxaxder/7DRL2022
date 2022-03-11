@@ -58,13 +58,30 @@ wd: Dijkstra):
 	wander_dijkstra = wd
 	randomize()
 
-
+const area_targets = [2000,3000,4000,6000,10000,18000]
+func decide_map(lvl: int) -> int:
+	var base_area = 0
+	for i in lvl:
+		if i < area_targets.size():
+			base_area += area_targets[i]
+	var target_area = base_area - area_seen
+	var small_area = target_area / 2.0
+	var big_area = target_area * 1.5
+	var selector: int = int(randf() * (big_area - small_area) + small_area)
+	selector = int(0.66 * (selector - 1000))
+	if true: # TODO: remove this when adding rest of maps
+		selector = selector - (selector % 100)
+	return selector
+	
 func load_next_map():
 	populated_rooms = {}
 	exits = []
-	terrain.load_map(20000)
+	var map_id = decide_map(level)
+	terrain.load_map(map_id)
 	pc_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
+	print("map id: {0} \n area: {1}".format([map_id, terrain.width * terrain.height]))
+	print(area_seen)
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
 		if room.z > 1:
