@@ -40,6 +40,9 @@ var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
 var debuff_effects = preload("res://lib/debuffs.gd").new()
 
+
+var seen_shield_message: int = 0
+
 func _ready():
 	randomize()
 	self.player = true
