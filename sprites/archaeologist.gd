@@ -1,10 +1,11 @@
 extends Mob
 
 const mutter_chance: float = 0.001
-const wander_chance: float = 0.4
+const wander_chance: float = 0.5
 
 func _ready():
 	label = "archaeologist"
+	self.speed = 1
 	._ready()
 
 func door_adjacent():
@@ -31,7 +32,6 @@ func wander_to_door():
 		var t = self.wander_dijkstra.d_score(c)
 		if t:
 			best_val = min(best_val, t)
-			print(best_val)
 
 	var legal_candidates = []
 	for c in candidates:

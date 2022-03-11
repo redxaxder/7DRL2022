@@ -78,14 +78,25 @@ func _unhandled_input(event):
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
 		if dir >= 0 && !acted:
+			var run_multiplier: int = 1
+			if dir == pc.run_dir:
+				pc.run_speed = min(pc.max_run_speed, pc.run_speed + 1)
+				run_multiplier = pc.run_speed
+			else:
+				pc.run_speed = 1
 			var p = pc.get_pos() + DIR.dir_to_vec(dir)
-			acted = pc.try_move(dir)
-			if acted:
-				var items = locationService.lookup(p, constants.PICKUPS)
-				if items.size() > 0:
-					pc.pick_up(items[0],p)
-				update_pan(dir)
-			
+			pc.run_dir = dir
+			for _i in range(run_multiplier):
+				acted = pc.try_attack(dir, true)
+				acted = pc.try_kick_furniture(dir)
+				acted = pc.try_move(dir)
+				if acted:
+					var items = locationService.lookup(p, constants.PICKUPS)
+					if items.size() > 0:
+						pc.pick_up(items[0],p)
+					update_pan(dir)
+			if not acted:
+				pc.run_speed = 1
 		if acted:
 			tick += 1
 			pc.tick()
@@ -101,6 +112,7 @@ func update_status():
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.experience >= pc.experience_needed && pc.rage == 0:
 		status_text += "Press enter to level up\n"
+	status_text += "Running speed: {0}/{1}\n".format([pc.run_speed, pc.max_run_speed])
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:

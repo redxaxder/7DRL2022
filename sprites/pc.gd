@@ -16,21 +16,20 @@ var fatigue: int = 0
 var starting_recovery: int = 0
 var recovery: int = 0
 var southpaw = false
+var run_speed: int = 1
+const max_run_speed: int = 4
+var run_dir: int = -1
 
-const base_experience_gain_rate: int = 10
-const experience_gain_step: int = 10
-const max_experience_gain_rate: int = 200
+const base_experience_gain_rate: int = 1
+const experience_gain_step: int = 1
+const max_experience_gain_rate: int = 100
 
 var experience_gain_rate: int = base_experience_gain_rate
 var experience: int = 0
 
 const base_experience_needed = 1000
-const experience_needed_step = 600
+const experience_needed_step = 1000
 var experience_needed = base_experience_needed
-
-
-var running: int = 0
-var run_dir: int = 0
 
 var pickup: Pickup = null
 var weapon = null
@@ -108,7 +107,7 @@ func tick():
 		recovery = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
-func try_attack(dir) -> bool:
+func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false
 	var did_attack = false
 	var calm = rage <= 0
@@ -117,7 +116,7 @@ func try_attack(dir) -> bool:
 	elif fatigue <= 0:
 		can_attack = true
 	if can_attack:
-		if weapon != null:
+		if weapon != null and not force_bear_hands:
 			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir)
 		else:
 			did_attack = punch.try_attack(locationService, get_pos(), dir)
