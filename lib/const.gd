@@ -11,6 +11,8 @@ var INJURE_PC = "injure_pc"
 var DOOR_OPENED = "door_opened"
 var RAGE_LIGHTING = "rage_lighting"
 var EXIT_LEVEL = "exit_level"
+var TELEGRAPH = "telegraph"
+var REMOVE_TARGET = "remove_target"
 
 #groups
 var PLAYER = "player"
