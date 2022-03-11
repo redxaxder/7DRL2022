@@ -42,7 +42,6 @@ func attack():
 				
 func is_hit(dir: Vector2):
 	if self.blocking:
-		emit_signal(constants.ENEMY_HIT, dir)
 		self.combatLog.say("The knight blocks your attack!")
 		self.combatLog.say("The knight goes flying!")
 		self.knockback(dir)

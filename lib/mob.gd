@@ -2,7 +2,6 @@ extends Actor
 
 class_name Mob
 
-signal enemy_hit(dir)
 signal killed_by_pc(label)
 
 func _ready():
@@ -10,14 +9,12 @@ func _ready():
 	add_to_group(self.constants.MOBS)
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
-	connect(constants.ENEMY_HIT, pc, constants.ENEMY_HIT)
 
 func pc_adjacent() -> bool:
 	var v = get_pos() - pc.get_pos()
 	return (abs(v.x) + abs(v.y) <= 1)
 	
 func is_hit(dir: Vector2):
-	emit_signal(constants.ENEMY_HIT, dir)
 	die(dir)
 
 func seek_to_player() -> Vector2:

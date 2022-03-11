@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://scenes/level_up_modal.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/FiraCode-Regular.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
+[ext_resource path="res://resources/light.png" type="Texture" id=9]
+[ext_resource path="res://scenes/camera.gd" type="Script" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 7 )
@@ -15,26 +17,6 @@ font_data = ExtResource( 7 )
 [sub_resource type="DynamicFont" id=2]
 size = 15
 font_data = ExtResource( 7 )
-
-[sub_resource type="GDScript" id=3]
-script/source = "extends Camera2D
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
-
-var pan := Vector2(0.0,0.0)
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-"
 
 [node name="run" type="Node2D"]
 position = Vector2( 0.378738, 0.00562859 )
@@ -120,6 +102,38 @@ visible = false
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2( 511.621, 287.994 )
 current = true
-script = SubResource( 3 )
+script = ExtResource( 10 )
+
+[node name="Ragebulb1" type="Light2D" parent="camera"]
+position = Vector2( -150, -150 )
+scale = Vector2( 0.4, 0.4 )
+enabled = false
+texture = ExtResource( 9 )
+color = Color( 0.878431, 0, 0, 1 )
+mode = 2
+
+[node name="Ragebulb2" type="Light2D" parent="camera"]
+position = Vector2( 150, 150 )
+scale = Vector2( 0.4, 0.4 )
+enabled = false
+texture = ExtResource( 9 )
+color = Color( 0.878431, 0, 0, 1 )
+mode = 2
+
+[node name="Ragebulb3" type="Light2D" parent="camera"]
+position = Vector2( -150, 150 )
+scale = Vector2( 0.4, 0.4 )
+enabled = false
+texture = ExtResource( 9 )
+color = Color( 0.878431, 0, 0, 1 )
+mode = 2
+
+[node name="Ragebulb4" type="Light2D" parent="camera"]
+position = Vector2( 150, -150 )
+scale = Vector2( 0.4, 0.4 )
+enabled = false
+texture = ExtResource( 9 )
+color = Color( 0.878431, 0, 0, 1 )
+mode = 2
 
 [node name="LocationService" parent="." instance=ExtResource( 4 )]

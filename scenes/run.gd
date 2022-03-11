@@ -34,6 +34,7 @@ func _ready():
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
+	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
 	var pcpos = Vector2(30,30)

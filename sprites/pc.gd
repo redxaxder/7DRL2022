@@ -4,6 +4,7 @@ class_name PC
 
 signal player_died()
 signal status_changed()
+signal rage_lighting(switch)
 
 var rage: int = 0
 var rage_decay: int = 0
@@ -43,13 +44,21 @@ func _ready():
 	self.speed = 6
 	self.pc = self
 	southpaw = randi() % 4 == 0
-	add_to_group(constants.PLAYER)
+	add_to_group(self.constants.PLAYER)
 
 var starting_rage: int = 40
 var rage_on_got_hit: int = 6
 var rage_on_kill: int = 2
 var fatigue_on_got_hit: int = 5
 var debuffs: Dictionary = {}
+
+func enter_rage():
+	combatLog.say("You fly into a rage!")
+	emit_signal(self.constants.RAGE_LIGHTING, true)
+	rage += rage_on_got_hit + starting_rage
+	fatigue += fatigue_on_got_hit
+	recovery = starting_recovery
+	speed = rage_speed
 
 func injure():
 	if rage > 0:
@@ -59,12 +68,9 @@ func injure():
 	elif fatigue > 0:
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
-		combatLog.say("You fly into a rage!")
-		rage += rage_on_got_hit + starting_rage
-		fatigue += fatigue_on_got_hit
-		recovery = starting_recovery
+		enter_rage()
 	rage_decay = 1 + fatigue / 40
-	emit_signal(constants.PLAYER_STATUS_CHANGED)
+	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
 func make_shards() -> Pickup:
 	var shards = pickup_scene.instance()
@@ -82,7 +88,7 @@ func tick():
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = debuff_effects.get_fatigue_effects(fatigue)
-			speed = rage_speed
+			emit_signal(constants.RAGE_LIGHTING, false)
 	elif fatigue > 0:
 		speed = normal_speed
 		recover(recovery)
@@ -257,6 +263,8 @@ func _on_pick_perk(p: Perk):
 	emit_signal(constants.PLAYER_LEVEL_UP)
 
 func _on_enemy_killed(label: String):
+	if rage == 0:
+		enter_rage()
 	experience += experience_gain_rate
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)

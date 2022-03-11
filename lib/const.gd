@@ -9,6 +9,7 @@ var ENEMY_HIT = "enemy_hit"
 var KILLED_BY_PC = "killed_by_pc"
 var INJURE_PC = "injure_pc"
 var DOOR_OPENED = "door_opened"
+var RAGE_LIGHTING = "rage_lighting"
 
 #groups
 var PLAYER = "player"
