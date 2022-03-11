@@ -96,6 +96,7 @@ func tick():
 		recover(recovery)
 		recovery += 1
 	else:
+		speed = normal_speed
 		recovery = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
