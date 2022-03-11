@@ -157,7 +157,6 @@ func load_map(ix): # max index: 26460
 	#place the exit
 	for i in map.rooms.size():
 		if map.rooms[i].z > 2:
-			print(map.rooms[i])
 			place_exit(map.rooms[i])
 			break
 	#spawn the doors:	

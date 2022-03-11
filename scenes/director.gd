@@ -10,13 +10,22 @@ var combatLog: CombatLog
 var parent: Node
 var scheduler
 var pc_dijkstra
+var wander_dijkstra
+var exits: Array = []
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
 const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const samurai_scene: PackedScene = preload("res://sprites/Samurai.tscn")
 const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
-const enemies: Array = [knight_scene, monk_scene, samurai_scene, ranger_scene]
+const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.tscn")
+const enemies: Array = [
+	knight_scene, 
+	monk_scene, 
+	samurai_scene, 
+	ranger_scene, 
+	archaeologist_scene
+	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
@@ -31,7 +40,14 @@ var level = 1
 
 var populated_rooms = {}
 
-func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s, pcd: Dijkstra):
+func _init(p, 
+t, 
+ls: LocationService, 
+cl: CombatLog, 
+n: Node, 
+s, 
+pcd: Dijkstra, 
+wd: Dijkstra):
 	pc = p
 	terrain = t
 	locationService = ls
@@ -39,15 +55,16 @@ func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s, pcd: Dijkstra):
 	parent = n
 	scheduler = s
 	pc_dijkstra = pcd
+	wander_dijkstra = wd
 	randomize()
 
 
 func load_next_map():
 	populated_rooms = {}
+	exits = []
 	terrain.load_map(20000)
 	pc_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
-	print(area_seen)
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
 		if room.z > 1:
@@ -60,6 +77,8 @@ func load_next_map():
 	pc.set_pos(start)
 	activate_room(starting_room)
 	populated_rooms[starting_room] = 0
+	wander_dijkstra.refresh()
+	wander_dijkstra.update(exits)
 
 func activate_room(room: Vector3):
 	terrain.active_rooms[room] = 0 # add it to the dict. the 0 is meaningless.
@@ -71,6 +90,7 @@ func activate_room(room: Vector3):
 	terrain.update()
 	for neighbor in terrain.map.adjacent_rooms(room):
 		populate_room(neighbor)
+	wander_dijkstra.update(exits)	
 
 func populate_room(room: Vector3):
 	if populated_rooms.has(room):
@@ -119,6 +139,11 @@ func spawn_door(pos: Vector2) -> Actor:
 	parent.add_child(door)
 	door.visible = false
 	door.connect(constants.DOOR_OPENED,self,"_on_door_opened")
+	exits.push_back(pos)
+	exits.push_back(pos + Vector2(1, 0))
+	exits.push_back(pos + Vector2(-1, 0))
+	exits.push_back(pos + Vector2(0, 1))
+	exits.push_back(pos + Vector2(0, -1))
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
@@ -138,6 +163,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		mob.combatLog = combatLog
 		mob.locationService = locationService
 		mob.pc_dijkstra = pc_dijkstra
+		mob.wander_dijkstra = wander_dijkstra
 		mob.set_pos(pos)
 		parent.add_child(mob)
 		return mob
@@ -173,6 +199,7 @@ func _on_telegraph(pos: Vector2, ranger: Mob):
 	ranger.target_obj = target
 
 func _on_door_opened(pos: Vector2):
+	exits.erase(pos)
 	for room in terrain.map.get_rooms(pos,1):
 		activate_room(room)
 

@@ -6,7 +6,7 @@ var destination_decay: int = 1
 var backlog_cliff: int
 const big: int = 100000000000000000
 
-var constants: Const = preload("res://lib/const.gd").new()
+var constants = preload("res://lib/const.gd").new()
 var terrain: Terrain
 var locationService: LocationService
 

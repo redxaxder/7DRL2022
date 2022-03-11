@@ -3,6 +3,7 @@ extends Actor
 class_name Mob
 
 var pc_dijkstra: Dijkstra
+var wander_dijkstra: Dijkstra
 
 signal killed_by_pc(label)
 
