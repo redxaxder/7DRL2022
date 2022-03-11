@@ -17,7 +17,6 @@ var label: String = ""
 var door: bool = false
 var blocking: bool = false
 
-var knocked_back: bool = false
 var anim_screen_offset: Vector2
 var anim_speed: float = 5
 
@@ -73,7 +72,7 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 					b.knockback(dir, distance)
 					break
 				elif	 b.is_in_group(constants.FURNITURE):
-					combatLog.say("The {0} is destroyed".format([b.label]))
+					combatLog.say("The {0} is destroyed.".format([b.label]))
 					b.die(dir)
 				elif b.player:
 					b.injure()

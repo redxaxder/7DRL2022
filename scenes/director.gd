@@ -3,12 +3,12 @@ class_name Director
 
 var constants = preload("res://lib/const.gd").new()
 
-var pc
-var terrain
+var pc: Actor
+var terrain: Terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
-var scheduler
+var scheduler: Scheduler
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -24,6 +24,7 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 
 #to use for map selection later
 var area_seen: int = 0
+var level = 1
 
 func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 	pc = p
@@ -36,7 +37,7 @@ func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s):
 
 
 func load_next_map():
-	terrain.load_random_map()
+	terrain.load_map(100 * level)
 	area_seen += terrain.width * terrain.height
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
@@ -148,4 +149,16 @@ func _on_door_opened(pos: Vector2):
 		activate_room(room)
 		
 func _on_exit_level():
-	print("wooo")
+	for b in locationService.__backward.keys():
+		locationService.delete_node(b)
+		if b is Actor:
+			if !b.player:
+				b.queue_free()
+		else:
+			b.queue_free()
+	scheduler.clear()
+	level += 1
+	load_next_map()
+	terrain.update()
+	scheduler.register_actor(pc)
+	pc.update()

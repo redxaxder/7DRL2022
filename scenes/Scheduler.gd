@@ -63,6 +63,9 @@ func recalculate_turns():
 			actors2[a] = a.speed
 	actors = actors2
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func clear():
+	for a in actors.keys():
+		if a != null && is_instance_valid(a) && !a.player:
+			a.visible = false
+			a.queue_free()
+	actors = {}

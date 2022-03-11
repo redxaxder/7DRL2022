@@ -69,7 +69,7 @@ other important things:
   - running mechanic
   + visibility
   - blood through doors
-  - samurai behind open door waits in place
+  + samurai behind open door waits in place
   + enemies pass through each other
   - attack passes through door
   - throw passes through door

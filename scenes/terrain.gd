@@ -116,7 +116,7 @@ func array_min(arr: Array) -> int:
 	return m
 
 func load_random_map():
-	var ix = 200 # (randi() % 263 + 1) * 100
+	var ix = (randi() % 263 + 1) * 100
 	load_map(ix)
 	
 func load_map_resource(ix):
@@ -197,6 +197,7 @@ func room_side(room: Vector3, dir: int) -> Array:
 
 func load_map(ix): # max index: 26460
 	map = load_map_resource(ix)
+	active_rooms = {}
 	if randi() % 2 == 0:
 		map.flip_v()
 	if randi() % 2 == 0:
@@ -204,9 +205,9 @@ func load_map(ix): # max index: 26460
 	width = map.width + 1
 	height = map.height + 1
 	var size = width * height
-	contents.clear()
+	contents = []
 	contents.resize(size)
-	blood_map.clear()
+	blood_map = []
 	blood_map.resize(size)
 	for i in blood_map.size():
 		blood_map[i] = 0
@@ -214,8 +215,9 @@ func load_map(ix): # max index: 26460
 	#place the exit
 	for i in map.rooms.size():
 		if map.rooms[i].z > 2:
+			print(map.rooms[i])
 			place_exit(map.rooms[i])
-		break
+			break
 	#spawn the doors:	
 	for room in map.rooms:
 		var sides = [] # room sides lacking a door
@@ -236,6 +238,7 @@ func load_map(ix): # max index: 26460
 				var t = to_linear(v.x,v.y)
 				if contents[t] == null:
 					contents[t] = '#'
+	update()
 
 func splatter_blood(pos: Vector2, dir: Vector2):
 	var blood = 15
