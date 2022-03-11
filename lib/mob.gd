@@ -19,17 +19,20 @@ func pc_adjacent() -> bool:
 func is_hit(dir: Vector2):
 	die(dir)
 
-func seek_to_player() -> Vector2:
+func seek_to_player(run_away: bool = false) -> Vector2:
 	# find the smallest direction in the d_map
 	var e = get_pos()
-	var smallest_val = pc_dijkstra.d_score(e)
+	var best_val = pc_dijkstra.d_score(e)
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	var scores = []
 	for c in candidates:
 		var t = pc_dijkstra.d_score(c)
 		scores.append(t)
 		if t:
-			smallest_val = min(smallest_val, t)
+			if run_away:
+				best_val = max(best_val, t)
+			else:
+				best_val = min(best_val, t)
 
 	var legal_candidates = []
 	for c in candidates:
@@ -41,7 +44,7 @@ func seek_to_player() -> Vector2:
 
 	var final_candidates = []
 	for c in legal_candidates:
-		if pc_dijkstra.d_score(c) == smallest_val:
+		if pc_dijkstra.d_score(c) == best_val:
 			final_candidates.append(c)
 
 	if final_candidates.size() == 0:

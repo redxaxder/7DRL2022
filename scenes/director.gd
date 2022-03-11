@@ -8,14 +8,15 @@ var terrain: Terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
-var scheduler: Scheduler
-var pc_dijkstra: Dijkstra
+var scheduler
+var pc_dijkstra
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
 const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const samurai_scene: PackedScene = preload("res://sprites/Samurai.tscn")
-const enemies: Array = [knight_scene, monk_scene, samurai_scene]
+const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
+const enemies: Array = [knight_scene, monk_scene, samurai_scene, ranger_scene]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
 const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
@@ -29,7 +30,7 @@ var level = 1
 
 var populated_rooms = {}
 
-func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s: Scheduler, pcd: Dijkstra):
+func _init(p, t, ls: LocationService, cl: CombatLog, n: Node, s, pcd: Dijkstra):
 	pc = p
 	terrain = t
 	locationService = ls
