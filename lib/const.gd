@@ -28,4 +28,5 @@ var FURNITURE = "furniture"
 #debuffs
 var THRESH = "threshold"
 var DIV = "divisor"
-var FUMBLE = "fumble"
+var FUMBLE = "weak grip"
+var IMMOBILIZED = "immobilized"

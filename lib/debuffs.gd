@@ -4,6 +4,10 @@ var debuffs: Dictionary = {
 	constants.FUMBLE: {
 		constants.THRESH: 10,
 		constants.DIV: 2,
+	},
+	constants.IMMOBILIZED: {
+		constants.THRESH: 40,
+		constants.DIV: 20,
 	}
 }
 

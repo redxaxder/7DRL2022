@@ -155,6 +155,9 @@ func try_kick_furniture(dir) -> bool:
 func try_move(dir) -> bool:
 	var pos = get_pos() + DIR.dir_to_vec(dir)
 	var mobs = locationService.lookup(pos, constants.MOBS)
+	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
+		combatLog.say("You are too weak to walk.")
+		return false
 	if mobs.size() > 0 && fatigue > 0 && rage == 0:
 		combatLog.say("You are too exhausted to fight!")
 		return false
