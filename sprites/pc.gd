@@ -43,7 +43,7 @@ var debuff_effects = preload("res://lib/debuffs.gd").new()
 func _ready():
 	randomize()
 	self.player = true
-	self.speed = 6
+	self.speed = normal_speed
 	self.pc = self
 	southpaw = randi() % 4 == 0
 	add_to_group(self.constants.PLAYER)
@@ -66,7 +66,7 @@ func injure():
 	if rage > 0:
 		rage += rage_on_got_hit
 		fatigue += fatigue_on_got_hit
-		self.combatLog.say("+{0} rage   +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
+		self.combatLog.say(" +{0} rage  +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
@@ -275,5 +275,5 @@ func _on_enemy_killed(label: String):
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)
 	rage += rage_on_kill
-	combatLog.say("The {0} dies. +{1} rage +{2} exp".format([label, rage_on_kill, experience_gain_rate]))
+	combatLog.say("The {0} dies. \n +{1} rage  +{2} exp".format([label, rage_on_kill, experience_gain_rate]))
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
