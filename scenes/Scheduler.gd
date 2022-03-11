@@ -11,6 +11,7 @@ var actors: Dictionary = {} # maps actor -> turns per round (int)
 var combat_round: int = 0
 var turn: int = 0
 var player_turn: bool = false
+var turns_since_player: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,15 +36,22 @@ func next_turn() -> bool:
 		# time to recalculate
 		recalculate_turns()
 		return true
+	var current_actors = []
 	for actor in actors.keys():
+		if legit(actor) && priority(actor) == largest:
+			current_actors.push_back(actor)
+	current_actors.shuffle()
+	for actor in current_actors:
 		if legit(actor):
-			if priority(actor) == largest:
-				actors[actor] -= 1
-				if actor.player:
-					self.player_turn = true
-					return false
-				actor.on_turn()
-				actor.update()
+			turns_since_player+= 1
+			actors[actor] -= 1
+			if actor.player:
+				self.player_turn = true
+				turns_since_player = 0
+				return false
+			actor.animation_delay(sqrt(turns_since_player) * 0.15)
+			actor.on_turn()
+			actor.update()
 	return true
 
 func priority(a) -> int:

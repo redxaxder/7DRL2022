@@ -18,7 +18,7 @@ var door: bool = false
 var blocking: bool = false
 
 var anim_screen_offsets: Array
-var anim_speed: float = 5
+var anim_speed: float = 7
 
 
 func get_pos(default = null) -> Vector2:
@@ -45,6 +45,10 @@ func animated_move_to(target: Vector2, duration: float = 1):
 	var av = Vector3(dp.x,dp.y,duration)
 	anim_screen_offsets.push_back(av)
 	set_pos(target)
+
+func animation_delay(duration: float):
+	var av = Vector3(0,0,duration)
+	anim_screen_offsets.push_back(av)
 
 func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 	var landed = get_pos()
@@ -94,7 +98,6 @@ func knockback(dir: Vector2, distance: int = 1000000, power = 1):
 func _process(delta):
 	if anim_screen_offsets.size() > 0:
 		if is_zero_approx(anim_screen_offsets[0].z):
-			print("pop")
 			anim_screen_offsets.pop_front()
 		else:
 			var speed_mult = max(1,anim_screen_offsets.size() - 2)
