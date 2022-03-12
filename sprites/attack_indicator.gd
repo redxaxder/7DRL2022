@@ -1,6 +1,6 @@
 extends AnimatedSprite
 
-var lifetime = 0.1
+var lifetime = 0.15
 
 func _ready():
 	self.play("flash")

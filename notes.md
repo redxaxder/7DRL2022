@@ -137,7 +137,6 @@ other important things:
   - splash screen
 
 
-
 - mapgen:
   - use squarings db!
 
@@ -506,3 +505,4 @@ pathing algo
 
 
 
+butler push web redxaxder/7drl2022:HTML5

@@ -5,7 +5,7 @@ var constants = preload("res://lib/const.gd").new()
 
 
 func _ready():
-	pass # Replace with function body.
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D,SceneTree.STRETCH_ASPECT_KEEP,Vector2(1024,600))
 
 var r: Node2D
 
