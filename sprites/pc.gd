@@ -103,6 +103,16 @@ func dazzle():
 	rage_decay = 1 + fatigue / 40
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
+func calm(amount: int):
+	if rage > 0:
+		rage = max(0, rage - amount)
+		self.combatLog.say(" -{0} rage".format([amount]))
+		if rage == 0: # we left rage!
+			experience_gain_rate = base_experience_gain_rate
+			debuffs = pending_debuffs()
+			emit_signal(constants.RAGE_LIGHTING, false)
+	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
+
 func make_shards() -> Pickup:
 	var shards = pickup_scene.instance()
 	shards.init(shards.ITEM_TYPE.SHARDS)
