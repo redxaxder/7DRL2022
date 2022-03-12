@@ -58,7 +58,7 @@ func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2
 
 	var final_candidates = []
 	for c in legal_candidates:
-		if pc_dijkstra.d_score(c) == best_val:
+		if d_map.d_score(c) == best_val:
 			final_candidates.append(c)
 
 	if final_candidates.size() == 0:
