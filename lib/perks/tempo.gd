@@ -18,4 +18,4 @@ var bonuses = [20,100]
 func config():
 	title = titles[level]
 	bonus = bonuses[level]
-	description = "Each turn, there is a {0}% chance for your first attack not to end your turn.".format([bonus])
+	description = "Each turn, there is a {0}% chance for your first attack to not end your turn.".format([bonus])

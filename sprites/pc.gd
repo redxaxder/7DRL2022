@@ -127,16 +127,16 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	if can_attack:
 		if weapon != null and not force_bear_hands:
 			weapon.attack.extra_knockback = extra_knockback
-			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation())
+			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
 			if did_attack && fatigue - (weapons_broken * weapon_break_level) > weapon_break_level:
-				combatLog.say("The {0} crumbles in your grasp".format([weapon.label]))
+				combatLog.say("The {0} crumbles in your grasp.".format([weapon.label]))
 				weapons_broken += 1
 				var w = weapon
 				weapon = null
 				w.queue_free()
 		else:
 			punch.extra_knockback = extra_knockback
-			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation())
+			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
 	if calm && did_attack:
 		rage += starting_rage
 	return did_attack
@@ -247,7 +247,7 @@ func throw_item() -> bool:
 	dirs.shuffle()
 	for d in dirs: #first, try to throw at an enemy
 		if !did_throw:
-			did_throw = throw.try_attack(locationService, get_pos(), d, terrain)
+			did_throw = throw.try_attack(locationService, get_pos(), d, self.pending_animation(), terrain)
 	if did_throw:
 		pickup.queue_free()
 		pickup = null
