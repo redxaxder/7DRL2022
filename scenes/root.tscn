@@ -23,22 +23,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -394.0
-margin_top = -62.0
-margin_right = 394.0
-margin_bottom = 62.0
-custom_colors/font_color = Color( 0.470588, 0.0117647, 0.0117647, 1 )
+margin_left = -327.438
+margin_top = -143.857
+margin_right = 354.562
+margin_bottom = -19.8568
 custom_fonts/font = SubResource( 1 )
-text = "Rage Rampage"
+custom_colors/font_color = Color( 0.470588, 0.0117647, 0.0117647, 1 )
+text = "Orcish Fury"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="title2" type="Label" parent="splash/title"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -201.0
-margin_top = -20.0
-margin_right = 201.0
+margin_left = -109.0
+margin_right = 91.0
+margin_bottom = 20.0
 custom_fonts/font = SubResource( 2 )
 text = "press space to start"
 uppercase = true

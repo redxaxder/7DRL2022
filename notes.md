@@ -66,19 +66,19 @@ TODO:
        + recovery: [+1/+1/+1] starting recovery after rage ends
 
 other important things:
-  - running mechanic
   - blood through doors
   - sometimes can't throw??
-  - distinct weapon icons
-  - smooth camera tracking
   - floating text numbers??
   - overlap player
   - sword -> club
   - visual indicators for weapons
   - double item swap running
   - running vs items is jank
-  - running animation speed
   - animated projectiles
+  + running mechanic
+  + distinct weapon icons
+  + smooth camera tracking
+  + running animation speed
   + visibility
   + knockback should open doors
   + animate
