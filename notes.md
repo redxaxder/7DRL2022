@@ -66,6 +66,7 @@ TODO:
        + recovery: [+1/+1/+1] starting recovery after rage ends
 
 other important things:
+  - pending debuffs
   - blood through doors
   - sometimes can't throw??
   - floating text numbers??

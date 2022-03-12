@@ -53,6 +53,7 @@ func _ready():
 	scheduler.register_actor(pc)
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
+	connect(constants.END_PLAYER_TURN, self, "_help_director_out") # kludge
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_DIED, scheduler, "_on_player_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
@@ -229,3 +230,7 @@ func update_pan(dir) -> void:
 	camera_offset += old_target - new_target
 	camera_target = new_target
 
+func _help_director_out():
+	#not sure why rooms sometimes fail to activate, so..
+	#pretend a door just opened at pc's current location
+	director._on_door_opened(pc.get_pos())
