@@ -15,6 +15,7 @@ onready var scheduler = $Scheduler
 var director: Director
 var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
+var ortho_dijkstra: Dijkstra
 
 signal end_player_turn()
 
@@ -39,7 +40,16 @@ func _ready():
 	pc.locationService = locationService
 	pc_dijkstra = Dijkstra.new(terrain, locationService)
 	wander_dijkstra = Dijkstra.new(terrain, locationService)
-	director = Director.new(pc, terrain, locationService, combatLog, self, scheduler, pc_dijkstra, wander_dijkstra)
+	ortho_dijkstra = Dijkstra.new(terrain, locationService)
+	director = Director.new(pc, 
+		terrain, 
+		locationService, 
+		combatLog, 
+		self, 
+		scheduler, 
+		pc_dijkstra, 
+		wander_dijkstra, 
+		ortho_dijkstra)
 	scheduler.register_actor(pc)
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
@@ -101,13 +111,23 @@ func _unhandled_input(event):
 				return
 			tick += 1
 			pc.tick()
-			pc_dijkstra.update([pc.get_pos()])
-			pc_dijkstra.tick()
-#			print("scheduler: {0}".format([scheduler.actors.keys().size()]))
-#			print("ls: {0}".format([locationService.__forward.keys().size()]))
+			update_pc_dijkstras()
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
+			
+func update_pc_dijkstras():
+	var pos = pc.get_pos()
+	pc_dijkstra.update([pos])
+	pc_dijkstra.tick()
+	var ortho_targets = []
+	for i in range(1, 6):
+		ortho_targets.push_back(pos + Vector2(i, 0))
+		ortho_targets.push_back(pos - Vector2(i, 0))
+		ortho_targets.push_back(pos + Vector2(0, i))
+		ortho_targets.push_back(pos - Vector2(0, i))
+	ortho_dijkstra.update(ortho_targets)
+	ortho_dijkstra.tick()
 
 func update_status():
 	var status_text = ""

@@ -11,6 +11,7 @@ var parent: Node
 var scheduler
 var pc_dijkstra
 var wander_dijkstra
+var ortho_dijkstra
 var exits: Array = []
 var king_spawned: bool = false
 
@@ -21,12 +22,14 @@ const samurai_scene: PackedScene = preload("res://sprites/Samurai.tscn")
 const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
 const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.tscn")
 const king_scene: PackedScene = preload("res://sprites/king.tscn")
+const wizard_scene: PackedScene = preload("res://sprites/wizard.tscn")
 const enemies: Array = [ \
-		{ "scene": knight_scene, "min_depth": 1,"weight": 2 }, \
-		{ "scene": monk_scene, "min_depth": 1,"weight": 2 }, \
-		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 }, \
-		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 }, \
-		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 }, \
+		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
+		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
+		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 },
+		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 },
+		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 },
+		{ "scene": wizard_scene, "min_depth": 2, "weight": 1}
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -48,14 +51,15 @@ var level = 1
 var populated_rooms = {}
 
 func _init(p, 
-t, 
-ls: LocationService, 
-cl: CombatLog, 
-n: Node, 
-s, 
-pcd: Dijkstra, 
-wd: Dijkstra):
-	pc = p
+		t, 
+		ls: LocationService, 
+		cl: CombatLog, 
+		n: Node, 
+		s, 
+		pcd: Dijkstra, 
+		wd: Dijkstra,
+		od):
+	pc = p 
 	terrain = t
 	locationService = ls
 	combatLog = cl
@@ -63,6 +67,7 @@ wd: Dijkstra):
 	scheduler = s
 	pc_dijkstra = pcd
 	wander_dijkstra = wd
+	ortho_dijkstra = od
 	randomize()
 
 const area_targets = [2000,2000,4000,6000,10000,18000]
@@ -80,12 +85,16 @@ func decide_map(lvl: int) -> int:
 		selector = selector - (selector % 100) + 100
 	return selector
 	
+func refresh_pc_dijkstras():
+	pc_dijkstra.refresh()
+	ortho_dijkstra.refresh()
+	
 func load_next_map():
 	populated_rooms = {}
 	exits = []
 	var map_id = decide_map(level)
 	terrain.load_map(map_id, level)
-	pc_dijkstra.refresh()
+	refresh_pc_dijkstras()
 	area_seen += terrain.width * terrain.height
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
@@ -206,6 +215,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		mob.locationService = locationService
 		mob.pc_dijkstra = pc_dijkstra
 		mob.wander_dijkstra = wander_dijkstra
+		mob.ortho_dijkstra = ortho_dijkstra
 		mob.set_pos(pos)
 		parent.add_child(mob)
 		return mob

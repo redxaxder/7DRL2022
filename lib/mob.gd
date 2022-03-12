@@ -4,6 +4,7 @@ class_name Mob
 
 var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
+var ortho_dijkstra: Dijkstra
 
 signal killed_by_pc(label)
 
@@ -27,14 +28,19 @@ func is_hit(dir: Vector2, extra_knockback = 0):
 	else:
 		die(dir)
 
-func seek_to_player(run_away: bool = false) -> Vector2:
+func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2:
 	# find the smallest direction in the d_map
+	var d_map
+	if ortho_seek:
+		d_map = ortho_dijkstra
+	else:
+		d_map = pc_dijkstra
 	var e = get_pos()
-	var best_val = pc_dijkstra.d_score(e)
+	var best_val = d_map.d_score(e)
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	var scores = []
 	for c in candidates:
-		var t = pc_dijkstra.d_score(c)
+		var t = d_map.d_score(c)
 		scores.append(t)
 		if t:
 			if run_away:
