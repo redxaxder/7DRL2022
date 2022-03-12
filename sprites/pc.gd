@@ -119,7 +119,6 @@ func stop_run():
 func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false
 	var did_attack = false
-	var calm = rage <= 0
 	if rage > 0:
 		can_attack = true
 	elif fatigue <= 0:
@@ -137,8 +136,6 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 		else:
 			punch.extra_knockback = extra_knockback
 			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
-	if calm && did_attack:
-		rage += starting_rage
 	return did_attack
 
 func try_kick_furniture(dir) -> bool:

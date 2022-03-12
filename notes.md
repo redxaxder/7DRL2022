@@ -76,6 +76,7 @@ other important things:
   - sword -> club
   - visual indicators for weapons
   - double item swap running
+  - running vs items is jank
   - running animation speed
   - animated projectiles
   + visibility
