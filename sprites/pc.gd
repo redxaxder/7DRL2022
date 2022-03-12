@@ -28,6 +28,7 @@ var second_wind_bonus: int = 0
 var immune_limp: bool = false
 var furniture_smash_chance: int = 0
 var overrun_perk: bool = false
+var grit_bonus: int = 0
 
 
 const base_experience_gain_rate: int = 5
@@ -47,7 +48,6 @@ var weapon = null
 var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
-const attack_indicator = preload("res://sprites/attack_indicator.tscn")
 var debuff_effects = preload("res://lib/debuffs.gd").new()
 
 func _ready():
@@ -87,9 +87,6 @@ func injure():
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
 		enter_rage()
-	var x = attack_indicator.instance()
-	add_child(x)
-	x.update()
 	rage_decay = 1 + fatigue / 40
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
@@ -105,10 +102,10 @@ func tick():
 	if rage > 0:
 		rage -= rage_decay
 		rage = max(rage,int(0))
-		rage_decay = 1 + fatigue / 40
+		rage_decay = 1 + int(((100 - grit_bonus) / 100) * fatigue / 40)
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
-			debuffs = debuff_effects.get_fatigue_effects(fatigue)
+			debuffs = pending_debuffs()
 			emit_signal(constants.RAGE_LIGHTING, false)
 	elif fatigue > 0:
 		speed = normal_speed
@@ -117,9 +114,13 @@ func tick():
 	else:
 		speed = normal_speed
 		recovery = 0
-	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
-			debuffs[self.constants.LIMP] = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
+
+func pending_debuffs() -> Dictionary:
+	var d = debuff_effects.get_fatigue_effects(fatigue)
+	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
+		d[self.constants.LIMP] = 0
+	return d
 
 func stop_run():
 	self.run_speed = 1
@@ -261,7 +262,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				for d in [Dir.DIR.UP, Dir.DIR.DOWN, Dir.DIR.LEFT, Dir.DIR.RIGHT]:
 					if randi()%100 < furniture_smash_chance:
 						try_kick_furniture(d)
-		if ran >= run_dist:
+		if ran >= run_dist || dir != run_dir:
 			run_speed = run_dist
 			run_dir = dir
 			update()
@@ -397,6 +398,10 @@ func _on_pick_perk(p: Perk):
 				immune_limp = true
 		p.PERK_TYPE.CHINA:
 			furniture_smash_chance += p.bonus
+		p.PERK_TYPE.OVERRUN:
+			overrun_perk = true
+		p.PERK_TYPE.GRIT:
+			grit_bonus += p.bonus
 		_:
 			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0

@@ -70,7 +70,7 @@ func _init(p,
 	ortho_dijkstra = od
 	randomize()
 
-const area_targets = [2000,2000,4000,6000,10000,18000]
+const area_targets = [2000,2500,4000,6000,10000,18000]
 func decide_map(lvl: int) -> int:
 	var base_area = 0
 	for i in lvl:
@@ -82,7 +82,7 @@ func decide_map(lvl: int) -> int:
 	var selector: int = int(randf() * (big_area - small_area) + small_area)
 	selector = int(0.66 * (selector - 1000))
 	if true: # TODO: remove this when adding rest of maps
-		selector = selector - (selector % 100) + 100
+		selector = int(max(selector - (selector % 100) + 100, 100))
 	return selector
 	
 func refresh_pc_dijkstras():
@@ -135,6 +135,7 @@ func populate_room(room: Vector3):
 	var spawn_denom = 9 - level
 	var max_enemies: int = max(area / spawn_denom, 1)
 	var min_enemies = max_enemies / 3
+	var min_furniture: int = int(sz / 2)
 	var max_furniture: int = max((area / 20) - 1, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
@@ -148,9 +149,9 @@ func populate_room(room: Vector3):
 	for _i in min_enemies + (randi() % int(max(max_enemies - min_enemies,1))):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
-	for _i in randi() % max_furniture:
+	for _i in min_furniture + (randi() % int(max(max_furniture - min_furniture,1))):
 		var c = cells.pop_back()
-		if c && terrain.is_floor(c): spawn_random_furniture(c)
+		if c && terrain.is_floor(c) && terrain.map.is_in_room(c, room, -1): spawn_random_furniture(c)
 	# add some weapons
 	var max_weapons: int = max(sz/2,1)
 	for _i in randi() % max_weapons:

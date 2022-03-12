@@ -39,4 +39,5 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 		else:
 			if player_opened:
 				combatLog.say("The table is stuck.")
+				return false
 	return true

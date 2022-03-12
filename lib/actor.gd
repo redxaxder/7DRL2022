@@ -5,6 +5,7 @@ class_name Actor
 var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
+const attack_indicator = preload("res://sprites/attack_indicator.tscn")
 
 var terrain
 var combatLog: CombatLog
@@ -140,7 +141,6 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 					strong_collision = true
 					break
 				elif	 b.is_in_group(constants.FURNITURE):
-					combatLog.say("The {0} is destroyed.".format([b.label]))
 					b.animation_delay(self.pending_animation()+anim)
 					b.die(dir)
 				elif b.player:
@@ -159,6 +159,8 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 			self.pc.injure()
 		else:
 			self.die(dir)
+	if self.player:
+		self.pc.stop_run()
 	update()
 
 func pending_animation() -> float:

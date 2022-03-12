@@ -53,6 +53,7 @@ func _ready():
 	scheduler.register_actor(pc)
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
+	connect(constants.END_PLAYER_TURN, self, "_help_director_out") # kludge
 	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
 	pc.connect(constants.PLAYER_DIED, scheduler, "_on_player_death")
 	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
@@ -95,11 +96,13 @@ func _unhandled_input(event):
 			did_attack = pc.try_attack(dir)
 			acted = did_attack
 			if did_attack:
-				pc.run_speed = 1
+				pc.stop_run()
+				if overrun_perk:
+					pc.run_dir = dir
+					update_status()
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
-		if acted: # stop running after  kick
-			pc.stop_run()
+			if acted: pc.stop_run()
 		if dir >= 0 && !acted:
 			acted = pc.try_move(dir)
 			if acted:
@@ -136,8 +139,6 @@ func update_status():
 		status_text += "Press enter to level up\n"
 	if pc.next_run_speed() > 1:
 		status_text += "running speed: {0}\n".format([pc.next_run_speed()])
-#	else:
-#		status_text += "running speed: 1\n"
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:
@@ -158,11 +159,21 @@ func update_status():
 			status_text += "{0} {1}\n".format([name, effects[name]])
 	if pc.rage > 0:
 		$hud/fatigue_mask.visible = false
+		var pending_text = ""
+		var pending = pc.pending_debuffs()
+		for name in pending.keys():
+			if pending[name] > 0:
+				pending_text += "{0} {1}\n".format([name, pending[name]])
+		if pending_text != "":
+			pending_text = "pending debuffs\n" + pending_text
+		$hud/status_panel/vbox/pending.text = pending_text
 	elif pc.fatigue > 0:
 		$hud/fatigue_mask.visible = true
+		$hud/status_panel/vbox/pending.text = ""
 	else:
 		$hud/fatigue_mask.visible = false
-	$hud/status_panel/status.text = status_text
+		$hud/status_panel/vbox/pending.text = ""
+	$hud/status_panel/vbox/status.text = status_text
 
 
 var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
@@ -190,6 +201,8 @@ func _on_pick_perk(p: Perk):
 	match p.perk_type:
 		p.PERK_TYPE.TEMPO:
 			tempo_chance += p.bonus
+		p.PERK_TYPE.OVERRUN:
+			overrun_perk = true
 		_:
 			pass
 
@@ -229,3 +242,7 @@ func update_pan(dir) -> void:
 	camera_offset += old_target - new_target
 	camera_target = new_target
 
+func _help_director_out():
+	#not sure why rooms sometimes fail to activate, so..
+	#pretend a door just opened at pc's current location
+	director._on_door_opened(pc.get_pos())

@@ -56,6 +56,10 @@ func attack():
 		pc.injure()
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
+	var x = attack_indicator.instance()
+	terrain.add_child(x)
+	x.position = SCREEN.dungeon_to_screen(target.x, target.y)
+	x.update()
 
 func _draw() -> void:
 	if telegraphing:
