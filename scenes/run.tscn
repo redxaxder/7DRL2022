@@ -50,6 +50,19 @@ margin_top = 7.0
 margin_right = 187.251
 margin_bottom = 599.0
 
+[node name="level_up" type="Label" parent="hud/status_panel/vbox"]
+visible = false
+modulate = Color( 0.219608, 1, 0, 1 )
+margin_right = 180.0
+margin_bottom = 43.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "PRESS ENTER TO LEVEL UP"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="status" type="Label" parent="hud/status_panel/vbox"]
 margin_right = 180.0
 margin_bottom = 66.0

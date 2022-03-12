@@ -136,7 +136,10 @@ func update_status():
 	var status_text = ""
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.experience >= pc.experience_needed && pc.rage == 0:
-		status_text += "Press enter to level up\n"
+		$hud/status_panel/vbox/level_up.visible = true
+	else:
+		$hud/status_panel/vbox/level_up.visible = false
+#		status_text += "Press enter to level up\n"
 	if pc.next_run_speed() > 1:
 		status_text += "running speed: {0}\n".format([pc.next_run_speed()])
 	if pc.pickup != null || pc.weapon != null:
