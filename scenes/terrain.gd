@@ -56,10 +56,10 @@ func array_min(arr: Array) -> int:
 		if i < m:
 			m = i
 	return m
-
-func load_random_map():
-	var ix = (randi() % 263 + 1) * 100
-	load_map(ix)
+#
+#func load_random_map():
+#	var ix = (randi() % 263 + 1) * 100
+#	load_map(ix)
 	
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
@@ -149,7 +149,7 @@ func room_side(room: Vector3, dir: int) -> Array:
 		results.append(corner + (i * v))
 	return results
 
-func load_map(ix): # max index: 26460
+func load_map(ix, level: int): # max index: 26460
 	map = load_map_resource(ix)
 	active_rooms = {}
 	if randi() % 2 == 0:
@@ -167,10 +167,11 @@ func load_map(ix): # max index: 26460
 		blood_map[i] = 0
 	map.rooms.shuffle()
 	#place the exit
-	for i in map.rooms.size():
-		if map.rooms[i].z > 7:
-			place_exit(map.rooms[i])
-			break
+	if level < 6:
+		for i in map.rooms.size():
+			if map.rooms[i].z > 7:
+				place_exit(map.rooms[i])
+				break
 	#spawn the doors:	
 	for room in map.rooms:
 		var sides = [] # room sides lacking a door
