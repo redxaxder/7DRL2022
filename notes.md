@@ -71,10 +71,10 @@ other important things:
   - floating text numbers??
   - overlap player
   - sword -> club
-  - visual indicators for weapons
-  - double item swap running
-  - running vs items is jank
   - animated projectiles
+  + visual indicators for weapons
+  + double item swap running
+  + running vs items is jank
   + running mechanic
   + distinct weapon icons
   + smooth camera tracking

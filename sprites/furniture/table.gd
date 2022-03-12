@@ -14,9 +14,13 @@ func _ready():
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
 		combatLog.say("The table goes flying!")
-		combatLog.say("The table is smashed to pieces!")
 	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)	
 	return true
+
+func die(dir):
+	if combatLog != null:
+		combatLog.say("The table is smashed to pieces!")
+	.die(dir)
 
 func nudge(dir: int, player_opened: bool = true) -> bool:
 	if combatLog != null:

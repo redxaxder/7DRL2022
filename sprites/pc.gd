@@ -27,6 +27,7 @@ var extra_knockback: int = 0
 var second_wind_bonus: int = 0
 var immune_limp: bool = false
 var furniture_smash_chance: int = 0
+var overrun_perk: bool = false
 
 
 const base_experience_gain_rate: int = 5
@@ -206,6 +207,9 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				if locationService.lookup(target, constants.BLOCKER).size() == 0:
 					animated_move_to_combine(target)
 				stop_run()
+				if overrun_perk:
+					run_dir = dir
+				emit_signal("status_changed")
 				return true
 			else: # we shouldnt reach this branch, but if we do..
 				return false # cancel!

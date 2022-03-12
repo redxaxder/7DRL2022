@@ -14,10 +14,16 @@ func _ready():
 	add_to_group(self.constants.STOPS_ATTACK)
 
 func kick(dir: int, extra_knockback = 0) -> bool:
-	combatLog.say("The door goes flying!")
+	if combatLog != null:
+		combatLog.say("The door goes flying!")
 	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)
-	combatLog.say("The door is smashed to pieces!")
 	return true
+
+func die(dir):
+	emit_signal("door_opened",get_pos())
+	if combatLog != null:
+		combatLog.say("The table is smashed to pieces!")
+	.die(dir)
 
 func nudge(_dir: int, player_opened: bool = true) -> bool:
 	if combatLog != null:
@@ -27,7 +33,3 @@ func nudge(_dir: int, player_opened: bool = true) -> bool:
 			combatLog.say("You hear a door open.")
 	die(Vector2(0,0))
 	return true
-
-func die(dir: Vector2):
-	emit_signal("door_opened",get_pos())
-	.die(dir)

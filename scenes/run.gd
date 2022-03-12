@@ -30,6 +30,7 @@ var block_input = 0
 # for perks
 var tempo_chance: int = 0
 var did_tempo: bool = false
+var overrun_perk: bool = false
 
 func _ready():
 	randomize()
@@ -87,37 +88,13 @@ func _unhandled_input(event):
 				pc.run_speed = 1
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
-		if acted: # stop running after attack or kick
+		if acted: # stop running after  kick
 			pc.stop_run()
 		if dir >= 0 && !acted:
 			acted = pc.try_move(dir)
 			if acted:
 				update_pan(dir)
-#			var run_multiplier: int = 1
-#			if dir == pc.run_dir:
-#				pc.run_speed = pc.next_run_speed()
-#				run_multiplier = pc.run_speed
-#			else:
-#				pc.stop_run()
-#			var p = pc.get_pos() + DIR.dir_to_vec(dir)
-#			pc.run_dir = dir
-#			for _i in range(run_multiplier):
-#				did_attack = pc.try_attack(dir, true)
-#				acted = did_attack
-#				acted = pc.try_kick_furniture(dir) || acted
-#				var anim_multiplier = 0.5 + run_multiplier / 2.0
-#				var did_move = pc.try_move(dir, anim_multiplier)
-#				acted = did_move || acted
-#				if did_move:
-#					var items = locationService.lookup(p, constants.PICKUPS)
-#					if items.size() > 0:
-#						pc.pick_up(items[0],p)
-#					update_pan(dir)
-#				else:
-#					pc.stop_run()
-#					break
-#			if not acted:
-#				pc.run_speed = 1
+
 		if acted:
 			if did_attack && (randi()%100 < tempo_chance) && !did_tempo:
 				did_tempo = true
@@ -212,7 +189,7 @@ func _process(delta):
 	if block_input > 0:
 		block_input = max(block_input - delta, 0)
 	if camera_offset.length() > 0:
-		camera_offset = camera_offset * pow(0.4,delta)
+		camera_offset = camera_offset * pow(0.3,delta)
 		camera_offset = camera_offset.move_toward(Vector2(0,0), SCREEN.TILE_HEIGHT * delta * 2)
 	$camera.position = camera_target + camera_offset
 
