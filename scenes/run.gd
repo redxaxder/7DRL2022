@@ -30,7 +30,6 @@ var block_input = 0
 # for perks
 var tempo_chance: int = 0
 var did_tempo: bool = false
-var furniture_smash_chance: int = 0
 
 func _ready():
 	randomize()
@@ -91,7 +90,9 @@ func _unhandled_input(event):
 		if acted: # stop running after attack or kick
 			pc.stop_run()
 		if dir >= 0 && !acted:
-			pc.try_move(dir)
+			acted = pc.try_move(dir)
+			if acted:
+				update_pan(dir)
 #			var run_multiplier: int = 1
 #			if dir == pc.run_dir:
 #				pc.run_speed = pc.next_run_speed()
@@ -121,10 +122,6 @@ func _unhandled_input(event):
 			if did_attack && (randi()%100 < tempo_chance) && !did_tempo:
 				did_tempo = true
 				return
-			if pc.rage > 0:
-				for d in [Dir.DIR.UP, Dir.DIR.DOWN, Dir.DIR.LEFT, Dir.DIR.RIGHT]:
-					if randi()%100 < furniture_smash_chance:
-						pc.try_kick_furniture(d)
 			tick += 1
 			pc.tick()
 			pc_dijkstra.update([pc.get_pos()])
@@ -196,8 +193,6 @@ func _on_pick_perk(p: Perk):
 	match p.perk_type:
 		p.PERK_TYPE.TEMPO:
 			tempo_chance += p.bonus
-		p.PERK_TYPE.CHINA:
-			furniture_smash_chance += p.bonus
 		_:
 			pass
 

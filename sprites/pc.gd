@@ -26,6 +26,8 @@ var run_dir: int = -1
 var extra_knockback: int = 0
 var second_wind_bonus: int = 0
 var immune_limp: bool = false
+var furniture_smash_chance: int = 0
+
 
 const base_experience_gain_rate: int = 1
 const experience_gain_step: int = 1
@@ -191,11 +193,11 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				return false
 			elif ran_to != null && fatigue > 0 && rage == 0:
 				combatLog.say("You collide with the {0}.".format([mobs[0].label]))
-				animated_move_to(ran_to)
+				animated_move_to_combine(ran_to)
 				update()
 			elif ran_to != null:
 				combatLog.say("You trample the {0}.".format([mobs[0].label]))
-				animated_move_to(ran_to)
+				animated_move_to_combine(ran_to)
 				try_attack(dir,true)
 				if locationService.lookup(target, constants.BLOCKER).size() == 0:
 					animated_move_to_combine(target)
@@ -212,7 +214,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				return false
 			else:
 				combatLog.say("You slam into the wall.",10)
-				animated_move_to(ran_to)
+				animated_move_to_combine(ran_to)
 				stop_run()
 				update()
 				return true
@@ -222,7 +224,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 			else:
 				if rage == 0:
 					combatLog.say("You collide with the {0}.".format([blockers[0].label]))
-				animated_move_to(ran_to)
+				animated_move_to_combine(ran_to)
 				if rage > 0:
 					try_kick_furniture(dir)
 				if locationService.lookup(target, constants.BLOCKER).size() == 0:
@@ -239,15 +241,21 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 			return true
 		# the target tile is free!
 		ran_to = target # we're there
+		animated_move_to_combine(ran_to)
 		ran += 1
+		#try to pick up an item here
 		var items = locationService.lookup(target, constants.PICKUPS)
 		if items.size() > 0:
 			pick_up(items[0],target)
 			emit_signal(constants.PLAYER_STATUS_CHANGED)
+		#try to smash furniture here
+		if pc.rage > 0:
+				for d in [Dir.DIR.UP, Dir.DIR.DOWN, Dir.DIR.LEFT, Dir.DIR.RIGHT]:
+					if randi()%100 < furniture_smash_chance:
+						try_kick_furniture(d)
 		if ran >= run_dist:
 			run_speed = run_dist
 			run_dir = dir
-			animated_move_to(target)
 			update()
 			emit_signal(constants.PLAYER_STATUS_CHANGED)
 			return true
@@ -379,6 +387,8 @@ func _on_pick_perk(p: Perk):
 				max_run_speed += 1
 			elif p.bonus == 100:
 				immune_limp = true
+		p.PERK_TYPE.CHINA:
+			furniture_smash_chance += p.bonus
 		_:
 			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0

@@ -18,4 +18,4 @@ var bonuses = [20,100]
 func config():
 	title = titles[level]
 	bonus = bonuses[level]
-	description = "While raging, you have a {0}% chance to lash out at adjacent furniture.".format([bonus])
+	description = "While raging, you have a {0}% chance to smash nearby furniture.".format([bonus])
