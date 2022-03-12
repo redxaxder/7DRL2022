@@ -4,7 +4,7 @@ class_name Director
 var constants = preload("res://lib/const.gd").new()
 
 var pc: Actor
-var terrain: Terrain
+var terrain
 var locationService: LocationService
 var combatLog: CombatLog
 var parent: Node
@@ -12,6 +12,7 @@ var scheduler
 var pc_dijkstra
 var wander_dijkstra
 var exits: Array = []
+var king_spawned: bool = false
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -19,6 +20,7 @@ const monk_scene: PackedScene = preload("res://sprites/monk.tscn")
 const samurai_scene: PackedScene = preload("res://sprites/Samurai.tscn")
 const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
 const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.tscn")
+const king_scene: PackedScene = preload("res://sprites/king.tscn")
 const enemies: Array = [
 	knight_scene, 
 	monk_scene, 
@@ -77,7 +79,7 @@ func load_next_map():
 	populated_rooms = {}
 	exits = []
 	var map_id = decide_map(level)
-	terrain.load_map(map_id)
+	terrain.load_map(map_id, level)
 	pc_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
@@ -132,6 +134,13 @@ func populate_room(room: Vector3):
 	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_consumable(c)
+	# spawn the king if on level 6
+	if level == 6:
+		var chance: float = 1.0/(terrain.map.rooms - populated_rooms.size() + 1)
+		if rand_range(0, 1) < chance and not king_spawned:
+			var c = cells.pop_back()
+			spawn_dynamic_mob(king_scene, c)
+			king_spawned = true
 
 func spawn_random_enemy(pos: Vector2):
 	var enemy = enemies[randi() % enemies.size()]
@@ -169,6 +178,8 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 		if mob.label == "ranger":
 			mob.connect(constants.REMOVE_TARGET, self, "_on_remove_target")
 			mob.connect(constants.TELEGRAPH, self, "_on_telegraph")
+		if mob.label == "His Highness":
+			mob.connect("you_win", parent, "_handle_win")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:

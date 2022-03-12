@@ -173,6 +173,14 @@ func _handle_death():
 	var d = DeathModal.instance()
 	add_child(d)
 	set_process_unhandled_input(false)
+	
+var WinModal: PackedScene = preload("res://scenes/WinModal.tscn")
+func _handle_win():
+	combatLog.say("You win!")
+	combatLog.say("Press space to return to main menu.")
+	var d = WinModal.instance()
+	add_child(d)
+	set_process_unhandled_input(false)
 
 func do_level_up():
 	set_process_unhandled_input(false)
