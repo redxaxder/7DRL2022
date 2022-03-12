@@ -124,11 +124,12 @@ func update_pc_dijkstras():
 	pc_dijkstra.update([pos])
 	pc_dijkstra.tick()
 	var ortho_targets = []
-	for i in range(1, 6):
-		ortho_targets.push_back(pos + Vector2(i, 0))
-		ortho_targets.push_back(pos - Vector2(i, 0))
-		ortho_targets.push_back(pos + Vector2(0, i))
-		ortho_targets.push_back(pos - Vector2(0, i))
+	for v in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+		for i in range(1, 6):
+			var target = pos + (i * v)
+			if terrain.is_wall(target):
+				break
+			ortho_targets.push_back(target)
 	ortho_dijkstra.update(ortho_targets)
 	ortho_dijkstra.tick()
 
