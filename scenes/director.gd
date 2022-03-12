@@ -121,6 +121,13 @@ func populate_room(room: Vector3):
 	var max_enemies: int = max(area / 3, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
+		# spawn the king if on level 6
+	if level == 6:
+		var chance: float = 1.0/(terrain.map.rooms.size() - populated_rooms.size() + 1)
+		if rand_range(0, 1) < chance and not king_spawned:
+			var c = cells.pop_back()
+			spawn_dynamic_mob(king_scene, c)
+			king_spawned = true
 	for _i in 1 + (randi() % max_enemies):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
@@ -134,13 +141,6 @@ func populate_room(room: Vector3):
 	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_consumable(c)
-	# spawn the king if on level 6
-	if level == 6:
-		var chance: float = 1.0/(terrain.map.rooms - populated_rooms.size() + 1)
-		if rand_range(0, 1) < chance and not king_spawned:
-			var c = cells.pop_back()
-			spawn_dynamic_mob(king_scene, c)
-			king_spawned = true
 
 func spawn_random_enemy(pos: Vector2):
 	var enemy = enemies[randi() % enemies.size()]
