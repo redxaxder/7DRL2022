@@ -47,7 +47,6 @@ var weapon = null
 var punch = preload("res://lib/attacks/punch.gd").new()
 var throw = preload("res://lib/attacks/throw.gd").new()
 const pickup_scene = preload("res://pickups/pickup.tscn")
-const attack_indicator = preload("res://sprites/attack_indicator.tscn")
 var debuff_effects = preload("res://lib/debuffs.gd").new()
 
 func _ready():
@@ -87,9 +86,6 @@ func injure():
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
 		enter_rage()
-	var x = attack_indicator.instance()
-	add_child(x)
-	x.update()
 	rage_decay = 1 + fatigue / 40
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 

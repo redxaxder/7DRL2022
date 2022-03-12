@@ -17,6 +17,7 @@ func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
 		combatLog.say("The door goes flying!")
 	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)
+	emit_signal("door_opened",get_pos())
 	return true
 
 func die(dir):

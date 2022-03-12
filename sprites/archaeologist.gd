@@ -66,4 +66,9 @@ func on_turn():
 
 func attack():
 	combatLog.say("The archaeologist bashes you with a trowel!")
+	var x = attack_indicator.instance()
+	terrain.add_child(x)
+	var pos = pc.get_pos()
+	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
+	x.update()
 	self.pc.injure()

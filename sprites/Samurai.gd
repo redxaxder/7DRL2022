@@ -38,6 +38,11 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The samurai slashes with his katana!")
+	var x = attack_indicator.instance()
+	terrain.add_child(x)
+	var pos = pc.get_pos()
+	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
+	x.update()
 	self.pc.injure()
 			
 func dash_attack(pos: Vector2):
