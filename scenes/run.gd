@@ -159,11 +159,21 @@ func update_status():
 			status_text += "{0} {1}\n".format([name, effects[name]])
 	if pc.rage > 0:
 		$hud/fatigue_mask.visible = false
+		var pending_text = ""
+		var pending = pc.pending_debuffs()
+		for name in pending.keys():
+			if pending[name] > 0:
+				pending_text += "{0} {1}\n".format([name, pending[name]])
+		if pending_text != "":
+			pending_text = "pending debuffs\n" + pending_text
+		$hud/status_panel/vbox/pending.text = pending_text
 	elif pc.fatigue > 0:
 		$hud/fatigue_mask.visible = true
+		$hud/status_panel/vbox/pending.text = ""
 	else:
 		$hud/fatigue_mask.visible = false
-	$hud/status_panel/status.text = status_text
+		$hud/status_panel/vbox/pending.text = ""
+	$hud/status_panel/vbox/status.text = status_text
 
 
 var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")

@@ -105,7 +105,7 @@ func tick():
 		rage_decay = 1 + int(((100 - grit_bonus) / 100) * fatigue / 40)
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
-			debuffs = debuff_effects.get_fatigue_effects(fatigue)
+			debuffs = pending_debuffs()
 			emit_signal(constants.RAGE_LIGHTING, false)
 	elif fatigue > 0:
 		speed = normal_speed
@@ -114,9 +114,13 @@ func tick():
 	else:
 		speed = normal_speed
 		recovery = 0
-	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
-			debuffs[self.constants.LIMP] = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
+
+func pending_debuffs() -> Dictionary:
+	var d = debuff_effects.get_fatigue_effects(fatigue)
+	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
+		d[self.constants.LIMP] = 0
+	return d
 
 func stop_run():
 	self.run_speed = 1
