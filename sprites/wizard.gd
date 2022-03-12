@@ -13,11 +13,11 @@ const mutter_chance: float = 0.02
 func _ready():
 	label = "wizard"
 	._ready()
-	
+
 func check_alignment():
 	var alignment = get_pos() - pc.get_pos()
 	return alignment.x == 0 or alignment.y == 0
-	
+
 func on_turn():
 	if rand_range(0, 1) < mutter_chance:
 		combatLog.say("You hear snatches of drunken spellcasting.")
@@ -41,11 +41,11 @@ func on_turn():
 		else:
 			# march to see if we have a clear shot
 			var ppos = pc.get_pos()
-			#march the fireball until it hits something	
+			#march the fireball until it hits something
 			var target = pos + shot_dir
 			var cont = true
 			var clear_shot = true
-			shot_dir = (pc.get_pos() - pos).normalized()			
+			shot_dir = (pc.get_pos() - pos).normalized()
 			while cont:
 				var stuff_at = locationService.lookup(target)
 				for thing in stuff_at:
@@ -72,7 +72,7 @@ func attack():
 	var dist = self.ortho_dijkstra.d_score(get_pos())
 	var pos = get_pos()
 	var ppos = pc.get_pos()
-	#march the fireball until it hits something	
+	#march the fireball until it hits something
 	var target = pos + shot_dir
 	var cont = true
 	while cont:

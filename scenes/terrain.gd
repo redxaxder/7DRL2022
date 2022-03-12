@@ -33,7 +33,7 @@ func _ready():
 
 func from_linear(ix: int) -> Vector2:
 	return Vector2(ix % width, ix / width)
-	
+
 func to_linear(x,y) -> int:
 	return width * y + x
 
@@ -49,7 +49,7 @@ func neighbors(i: int) -> Array:
 	if p.y < height - 1:
 		arr.push_back(i+width)
 	return arr
-	
+
 func array_min(arr: Array) -> int:
 	var m: int = arr[0]
 	for i in arr:
@@ -60,11 +60,11 @@ func array_min(arr: Array) -> int:
 #func load_random_map():
 #	var ix = (randi() % 263 + 1) * 100
 #	load_map(ix)
-	
+
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
 	return load(path)
-	
+
 func spawn_door(x: int, y: int):
 	#terrain marks door spawn locations with '.' and they get filled later
 	contents[to_linear(x, y)] = '.'
@@ -123,7 +123,7 @@ func place_a_door(cells: Array) -> bool:
 			if adj.size() > 0:
 				adj.shuffle()
 				spawn_door(adj[0].x,adj[0].y)
-			
+
 	return door_placed
 
 func room_side(room: Vector3, dir: int) -> Array:
@@ -172,7 +172,7 @@ func load_map(ix, level: int): # max index: 26460
 			if map.rooms[i].z > 7:
 				place_exit(map.rooms[i])
 				break
-	#spawn the doors:	
+	#spawn the doors:
 	for room in map.rooms:
 		var sides = [] # room sides lacking a door
 		for dir in [Dir.DIR.UP,Dir.DIR.DOWN,Dir.DIR.RIGHT,Dir.DIR.LEFT]:

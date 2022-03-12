@@ -41,7 +41,7 @@ func adjacent_rooms(room: Vector3) -> Array:
 func room_distance(r: Vector3, s: Vector3) -> int:
 	var r_left = r.x
 	var r_right = r.x + r.z - 1
-	var s_left = s.x 
+	var s_left = s.x
 	var s_right = s.x + s.z - 1
 	var dx
 	if r_right < s_left:

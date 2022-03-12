@@ -57,7 +57,7 @@ func next_turn() -> bool:
 	return true
 
 func priority(a) -> int:
-	if is_instance_valid(a): 
+	if is_instance_valid(a):
 		return actors[a] * 30 / a.speed
 	else:
 		return -1

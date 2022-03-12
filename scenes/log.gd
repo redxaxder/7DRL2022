@@ -26,4 +26,4 @@ func update_label():
 	$log.text = ""
 	for m in messages:
 		$log.text += m + "\n"
-	
+

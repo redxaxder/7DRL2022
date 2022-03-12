@@ -44,7 +44,7 @@ func attack():
 	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
 	x.update()
 	self.pc.injure()
-			
+
 func dash_attack(pos: Vector2):
 	self.combatLog.say("The samurai dashes at you with blinding speed!")
 	self.combatLog.say("Before you can even blink, you feel the bite of his katana.")

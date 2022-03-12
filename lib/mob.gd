@@ -51,7 +51,7 @@ func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2
 	var legal_candidates = []
 	for c in candidates:
 		if self.locationService.lookup(c, constants.BLOCKER).size() == 0:
-			if !terrain.is_wall(c):
+			if not terrain.is_wall(c) and c != pc.get_pos():
 				legal_candidates.append(c)
 	if legal_candidates.size() == 0:
 		return get_pos()

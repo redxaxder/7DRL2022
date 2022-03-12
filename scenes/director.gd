@@ -23,13 +23,18 @@ const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
 const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.tscn")
 const king_scene: PackedScene = preload("res://sprites/king.tscn")
 const wizard_scene: PackedScene = preload("res://sprites/wizard.tscn")
+const rogue_scene: PackedScene = preload("res://sprites/rogue.tscn")
 const enemies: Array = [ \
 		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 },
+		{ "scene": wizard_scene, "min_depth": 2, "weight": 1},
 		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 },
 		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 },
-		{ "scene": wizard_scene, "min_depth": 2, "weight": 1}
+#		{ "scene": valkyrie_scene, "min_depth": 3,"weight": 2 },
+#		{ "scene": tourist_scene, "min_depth": 2,"weight": 2 },
+		{ "scene": rogue_scene, "min_depth": 4, "weight": 2},
+#		{ "scene": priest_scene, "min_depth": 4,"weight": 1 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -50,16 +55,16 @@ var level = 1
 
 var populated_rooms = {}
 
-func _init(p, 
-		t, 
-		ls: LocationService, 
-		cl: CombatLog, 
-		n: Node, 
-		s, 
-		pcd: Dijkstra, 
+func _init(p,
+		t,
+		ls: LocationService,
+		cl: CombatLog,
+		n: Node,
+		s,
+		pcd: Dijkstra,
 		wd: Dijkstra,
 		od):
-	pc = p 
+	pc = p
 	terrain = t
 	locationService = ls
 	combatLog = cl
@@ -84,11 +89,11 @@ func decide_map(lvl: int) -> int:
 	if true: # TODO: remove this when adding rest of maps
 		selector = int(max(selector - (selector % 100) + 100, 100))
 	return selector
-	
+
 func refresh_pc_dijkstras():
 	pc_dijkstra.refresh()
 	ortho_dijkstra.refresh()
-	
+
 func load_next_map():
 	populated_rooms = {}
 	exits = []
@@ -121,7 +126,7 @@ func activate_room(room: Vector3):
 	terrain.update()
 	for neighbor in terrain.map.adjacent_rooms(room):
 		populate_room(neighbor)
-	wander_dijkstra.update(exits)	
+	wander_dijkstra.update(exits)
 
 func populate_room(room: Vector3):
 	if populated_rooms.has(room):
@@ -196,7 +201,7 @@ func spawn_door(pos: Vector2) -> Actor:
 	exits.push_back(pos + Vector2(0, -1))
 	return door
 
-func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2): 
+func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
 		mob.visible = false
@@ -229,7 +234,7 @@ func spawn_random_consumable(p: Vector2):
 		parent.add_child(item)
 		item.place(p)
 		item.visible = false
-		
+
 func spawn_random_furniture(p: Vector2):
 	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
 		furniture.shuffle()
@@ -267,12 +272,12 @@ func spawn_random_weapon(p: Vector2):
 		parent.add_child(item)
 		item.place(p)
 		item.visible = false
-		
+
 func _on_remove_target(target: Target):
 	if target != null:
 		locationService.delete_node(target)
 		target.queue_free()
-	
+
 func _on_telegraph(pos: Vector2, ranger: Mob):
 	var target = target_scene.instance()
 	target.locationService = locationService

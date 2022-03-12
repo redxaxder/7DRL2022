@@ -32,7 +32,7 @@ func attack():
 		self.pc.injure()
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1
-			
+
 func _draw():
 	if cur_knockback_cooldown == 0:
 		self.modulate = Color(0.789062, 0.443848, 0)

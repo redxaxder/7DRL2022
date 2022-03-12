@@ -11,7 +11,7 @@ func _ready():
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
 		combatLog.say("The chair goes flying!")
-	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)	
+	knockback(DIR.dir_to_vec(dir), 1000, 1 + extra_knockback)
 	return true
 
 func die(dir):

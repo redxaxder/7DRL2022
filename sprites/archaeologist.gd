@@ -20,7 +20,7 @@ func door_adjacent():
 					final_candidates.push_back(t)
 	final_candidates.shuffle()
 	return final_candidates.pop_back()
-	
+
 func wander_to_door():
 	if rand_range(0, 1) < mutter_chance:
 		combatLog.say("You hear someone muttering about artifacts.")
@@ -40,11 +40,11 @@ func wander_to_door():
 				legal_candidates.append(c)
 	if legal_candidates.size() == 0:
 		return get_pos()
-		
+
 	if rand_range(0, 1) < wander_chance:
 		legal_candidates.shuffle()
 		return legal_candidates.pop_back()
-		
+
 	var final_candidates = []
 	for c in legal_candidates:
 		if pc_dijkstra.d_score(c) == best_val:

@@ -23,7 +23,7 @@ func get_pos(default = null) -> Vector2:
 
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
-	
+
 func _process(delta):
 		update()
 

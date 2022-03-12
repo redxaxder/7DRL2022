@@ -41,14 +41,14 @@ func _ready():
 	pc_dijkstra = Dijkstra.new(terrain, locationService)
 	wander_dijkstra = Dijkstra.new(terrain, locationService)
 	ortho_dijkstra = Dijkstra.new(terrain, locationService)
-	director = Director.new(pc, 
-		terrain, 
-		locationService, 
-		combatLog, 
-		self, 
-		scheduler, 
-		pc_dijkstra, 
-		wander_dijkstra, 
+	director = Director.new(pc,
+		terrain,
+		locationService,
+		combatLog,
+		self,
+		scheduler,
+		pc_dijkstra,
+		wander_dijkstra,
 		ortho_dijkstra)
 	scheduler.register_actor(pc)
 	director.load_next_map()
@@ -62,7 +62,7 @@ func _ready():
 	level_up_modal.connect("pick_perk",self,"_on_pick_perk")
 	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
 	pc.connect(constants.EXIT_LEVEL,director,"_on_exit_level")
-	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")	
+	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")
 	update_status()
 	update_pan(-1)
 
@@ -118,7 +118,7 @@ func _unhandled_input(event):
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
-			
+
 func update_pc_dijkstras():
 	var pos = pc.get_pos()
 	pc_dijkstra.update([pos])
@@ -142,11 +142,11 @@ func update_status():
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:
-			status_text += "  {0}\n".format([pc.pickup.label]) 
+			status_text += "  {0}\n".format([pc.pickup.label])
 		if pc.weapon != null:
-			status_text += "  {0}\n".format([pc.weapon.label]) 
+			status_text += "  {0}\n".format([pc.weapon.label])
 		if pc.pickup != null && pc.southpaw:
-			status_text += "  {0}\n".format([pc.pickup.label]) 
+			status_text += "  {0}\n".format([pc.pickup.label])
 	if pc.rage > 0:
 		status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
 		status_text += "fatigue {0}\n".format([pc.fatigue])
@@ -183,7 +183,7 @@ func _handle_death():
 	var d = DeathModal.instance()
 	add_child(d)
 	set_process_unhandled_input(false)
-	
+
 var WinModal: PackedScene = preload("res://scenes/WinModal.tscn")
 func _handle_win():
 	combatLog.say("You win!")
