@@ -257,7 +257,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				for d in [Dir.DIR.UP, Dir.DIR.DOWN, Dir.DIR.LEFT, Dir.DIR.RIGHT]:
 					if randi()%100 < furniture_smash_chance:
 						try_kick_furniture(d)
-		if ran >= run_dist:
+		if ran >= run_dist || dir != run_dir:
 			run_speed = run_dist
 			run_dir = dir
 			update()
@@ -393,6 +393,8 @@ func _on_pick_perk(p: Perk):
 				immune_limp = true
 		p.PERK_TYPE.CHINA:
 			furniture_smash_chance += p.bonus
+		p.PERK_TYPE.OVERRUN:
+			overrun_perk = true
 		_:
 			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0

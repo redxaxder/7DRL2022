@@ -96,11 +96,13 @@ func _unhandled_input(event):
 			did_attack = pc.try_attack(dir)
 			acted = did_attack
 			if did_attack:
-				pc.run_speed = 1
+				pc.stop_run()
+				if overrun_perk:
+					pc.run_dir = dir
+					update_status()
 		if dir >= 0 && !acted:
 			acted = pc.try_kick_furniture(dir)
-		if acted: # stop running after  kick
-			pc.stop_run()
+			if acted: pc.stop_run()
 		if dir >= 0 && !acted:
 			acted = pc.try_move(dir)
 			if acted:
@@ -137,8 +139,6 @@ func update_status():
 		status_text += "Press enter to level up\n"
 	if pc.next_run_speed() > 1:
 		status_text += "running speed: {0}\n".format([pc.next_run_speed()])
-#	else:
-#		status_text += "running speed: 1\n"
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:
@@ -191,6 +191,8 @@ func _on_pick_perk(p: Perk):
 	match p.perk_type:
 		p.PERK_TYPE.TEMPO:
 			tempo_chance += p.bonus
+		p.PERK_TYPE.OVERRUN:
+			overrun_perk = true
 		_:
 			pass
 
