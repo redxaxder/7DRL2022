@@ -102,7 +102,8 @@ func _unhandled_input(event):
 				did_attack = pc.try_attack(dir, true)
 				acted = did_attack
 				acted = pc.try_kick_furniture(dir) || acted
-				var did_move = pc.try_move(dir, run_multiplier)
+				var anim_multiplier = 0.5 + run_multiplier / 2.0
+				var did_move = pc.try_move(dir, anim_multiplier)
 				acted = did_move || acted
 				if did_move:
 					var items = locationService.lookup(p, constants.PICKUPS)
@@ -165,19 +166,6 @@ func update_status():
 	$hud/status_panel/status.text = status_text
 
 
-func scale(v: Vector2, s: float) -> Vector2:
-	return Vector2(v.x * s, v.y*s)
-
-func update_pan(dir) -> void:
-	var pan := DIR.dir_to_vec(dir)
-
-	if abs(pan.x) > 0: # vary pan dist based on tile dimension
-		pan = scale(pan, SCREEN.TILE_WIDTH)
-	else:
-		pan = scale(pan, SCREEN.TILE_HEIGHT)
-	var ppos = pc.get_pos()
-	$camera.position = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + pan
-
 var DeathModal: PackedScene = preload("res://scenes/DeathModal.tscn")
 func _handle_death():
 	combatLog.say("You have died.")
@@ -208,6 +196,33 @@ func _on_level_up():
 	if pc.experience > pc.experience_needed:
 		do_level_up()
 
+var camera_offset: Vector2 = Vector2(0,0)
+var camera_target: Vector2 = Vector2(0,0)
 func _process(delta):
 	if block_input > 0:
 		block_input = max(block_input - delta, 0)
+	if camera_offset.length() > 0:
+		camera_offset = camera_offset * pow(0.4,delta)
+		camera_offset = camera_offset.move_toward(Vector2(0,0), SCREEN.TILE_HEIGHT * delta * 2)
+	$camera.position = camera_target + camera_offset
+
+func scale(v: Vector2, s: float) -> Vector2:
+	return Vector2(v.x * s, v.y*s)
+
+func update_pan(dir) -> void:
+	var pan := DIR.dir_to_vec(dir)
+	var run
+	if pc.run_dir >= 0 and pc.run_speed >= 1:
+		run = min(pc.run_speed + 1, pc.max_run_speed)
+	else:
+		run = 1
+	if abs(pan.x) > 0: # vary pan dist based on tile dimension
+		pan = pan * (SCREEN.TILE_WIDTH * run)
+	else:
+		pan = pan * (SCREEN.TILE_HEIGHT * run)
+	var old_target = camera_target
+	var ppos = pc.get_pos()
+	var new_target = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + pan
+	camera_offset += old_target - new_target
+	camera_target = new_target
+
