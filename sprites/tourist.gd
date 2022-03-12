@@ -1,7 +1,7 @@
 extends Mob
 
 const flash_damage: int = 1
-const flash_range: int = 2
+const flash_range: int = 3
 const flash_cooldown: int = 3
 var cur_flash_cooldown: int = 0
 const mutter_chance: float = 0.02
@@ -38,7 +38,7 @@ func attack():
 
 func _draw() -> void:
 	if cur_flash_cooldown == 0:
-		self.modulate = Color(0.501961, 0.501961, 0.027451)
+		self.modulate = constants.READY_COLOR
 	else:
 		self.modulate = Color(1, 1, 1)
 	._draw()

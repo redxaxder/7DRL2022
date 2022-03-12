@@ -51,3 +51,10 @@ func dash_attack(pos: Vector2):
 	self.cur_dash_cooldown = dash_cooldown
 	self.animated_move_to(pos)
 	self.pc.injure()
+
+func _draw() -> void:
+	if cur_dash_cooldown == 0:
+		self.modulate = constants.READY_COLOR
+	else:
+		self.modulate = Color(1, 1, 1)
+	._draw()
