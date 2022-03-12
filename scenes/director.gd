@@ -122,8 +122,9 @@ func populate_room(room: Vector3):
 	var sz = int(room.z)
 	#fill with enemies
 	var area = sz * sz
-	var max_enemies: int = max(area / 3, 1)
-	var max_furniture: int = max(area / 5, 1)
+	var spawn_denom = max(20 - level*level, 3)
+	var max_enemies: int = max(area / spawn_denom, 1)
+	var max_furniture: int = max(area / 20, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
 		# spawn the king if on level 6
