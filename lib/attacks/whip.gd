@@ -3,19 +3,21 @@ extends Attack
 func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, _terrain: Terrain = null) -> bool:
 	var attacked = false
 	var forward = pos + DIR.dir_to_vec(dir)
-	attacked = .try_attack_at(ls, forward, dir, anim_delay)
-	var dir2 = flip(DIR.rot(dir))
-	if !attacked:
-		var side = forward + DIR.dir_to_vec(dir2)
-		attacked = .try_attack_at(ls, side, dir2, anim_delay)
-	var dir3 = DIR.invert(dir2)
-	if !attacked:
-		var side = forward + DIR.dir_to_vec(dir3)
-		attacked = .try_attack_at(ls, side, dir3, anim_delay)
-	if !attacked:
-		var side = forward + (2 * DIR.dir_to_vec(dir2))
-		attacked = .try_attack_at(ls, side, dir2, anim_delay)
-	if !attacked:
-		var side = forward + (2 * DIR.dir_to_vec(dir3))
-		attacked = .try_attack_at(ls, side, dir3, anim_delay)
+	var left = flip(DIR.rot(dir))
+	var leftv = DIR.dir_to_vec(left)
+	var right = DIR.invert(left)
+	var rightv = DIR.dir_to_vec(right)
+	var targets = [\
+		forward, \
+		forward + leftv , \
+		forward + rightv , \
+		forward + (2 * leftv), \
+		forward + (2 * rightv), \
+		]
+	var dirs = [dir, left, right, left, right]
+	for i in targets.size():
+		attacked = .try_attack_at(ls, targets[i], dirs[i], anim_delay)
+		if attacked:
+			spawn_indicator(targets[i])
+			break
 	return attacked

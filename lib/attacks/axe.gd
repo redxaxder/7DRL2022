@@ -17,7 +17,12 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, 
 		forward, \
 		]
 	var t = pos
+	var ts = []
 	for d in path:
 		t += DIR.dir_to_vec(d)
+		ts.append(t)
 		attacked = .try_attack_at(ls, t, d, anim_delay) || attacked
+	if attacked:
+		for x in ts:
+			spawn_indicator(x)
 	return attacked

@@ -117,7 +117,6 @@ func _unhandled_input(event):
 				pc.run_speed = 1
 		if acted:
 			if did_attack && (randi()%100 < tempo_chance) && !did_tempo:
-				print("tempo")
 				did_tempo = true
 				return
 			tick += 1

@@ -1,9 +1,9 @@
-extends Sprite
+extends AnimatedSprite
 
-var lifetime = 1.0
+var lifetime = 0.1
 
 func _ready():
-	pass # Replace with function body.
+	self.play("flash")
 
 func _process(delta):
 	lifetime -= delta

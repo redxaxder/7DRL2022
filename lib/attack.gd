@@ -3,6 +3,7 @@ class_name Attack
 var constants = preload("res://lib/const.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
+var parent: Node
 
 var attack_indicator: PackedScene = preload("res://sprites/attack_indicator.tscn")
 var southpaw = false
@@ -36,8 +37,9 @@ func flip(dir: int) -> int:
 
 func spawn_indicator(target: Vector2):
 	var x = attack_indicator.instance()
-	var pos = SCREEN.dungeon_to_screen(target.x, target.y)
-	
+	parent.add_child(x)
+	x.position = SCREEN.dungeon_to_screen(target.x, target.y)
+	x.update()
 
 func xor(l: bool, r: bool) -> bool:
 	return	(l && !r) || (!l && r)

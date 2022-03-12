@@ -9,5 +9,7 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, 
 		m.animation_delay(anim_delay)
 		m.knockback(d, 1000,1 + extra_knockback)
 		attacked = true
+	if attacked:
+		spawn_indicator(target)
 	return attacked
 

@@ -4,7 +4,7 @@
 [ext_resource path="res://resources/FiraCode-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 100
+size = 81
 outline_size = 3
 outline_color = Color( 0.501961, 0.0666667, 0.0666667, 1 )
 font_data = ExtResource( 2 )
@@ -20,12 +20,16 @@ script = ExtResource( 1 )
 [node name="title" type="Label" parent="splash"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -496.0
-margin_right = 496.0
-margin_bottom = 124.0
-custom_colors/font_color = Color( 0.470588, 0.0117647, 0.0117647, 1 )
+margin_left = -317.409
+margin_top = 15.4779
+margin_right = 332.591
+margin_bottom = 139.478
 custom_fonts/font = SubResource( 1 )
-text = "You have died..."
+custom_colors/font_color = Color( 0.470588, 0.0117647, 0.0117647, 1 )
+text = "You have died"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="title2" type="Label" parent="splash/title"]
 anchor_left = 0.5

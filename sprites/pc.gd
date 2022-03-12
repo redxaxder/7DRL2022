@@ -114,7 +114,7 @@ func tick():
 func stop_run():
 	self.run_speed = 1
 	self.run_dir = -1
-	emit_signal(constants.PLAYER_STATUS_CHANGED)		
+	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
 func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false
@@ -126,6 +126,7 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	if can_attack:
 		if weapon != null and not force_bear_hands:
 			weapon.attack.extra_knockback = extra_knockback
+			weapon.attack.parent = terrain
 			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
 			if did_attack && fatigue - (weapons_broken * weapon_break_level) > weapon_break_level:
 				combatLog.say("The {0} crumbles in your grasp.".format([weapon.label]))
@@ -135,6 +136,7 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 				w.queue_free()
 		else:
 			punch.extra_knockback = extra_knockback
+			punch.parent = terrain
 			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
 	return did_attack
 
@@ -155,6 +157,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 	var mobs = locationService.lookup(pos, constants.MOBS)
 	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
 		combatLog.say("You are too weak to walk.")
+		combatLog.say("Press '.' to pass your turn.")
 		return false
 	if mobs.size() > 0 && fatigue > 0 && rage == 0:
 		combatLog.say("You are too exhausted to fight!")
@@ -245,6 +248,7 @@ func throw_item() -> bool:
 	for d in dirs: #first, try to throw at an enemy
 		if !did_throw:
 			throw.combatLog = combatLog
+			throw.parent = terrain
 			throw.message = "You throw your {0} at the ".format([pickup.label]) + "{0}."
 			did_throw = throw.try_attack(locationService, get_pos(), d, self.pending_animation(), terrain)
 	if did_throw:

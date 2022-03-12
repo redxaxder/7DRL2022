@@ -5,10 +5,12 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, 
 	if terrain == null:
 		return false
 	var v = DIR.dir_to_vec(dir)
-	var target = pos
-	for _i in 2:
-		target += v
+	for i in 2:
+		var target = pos + (v * (i + 1))
 		attacked = .try_attack_at(ls, target, dir, anim_delay) || attacked
 		if ls.lookup(target, constants.STOPS_ATTACK).size() > 0 || terrain.is_wall(target):
 			return attacked
+	if attacked:
+		for i in 2:
+			spawn_indicator(pos + (v * (i+1)))
 	return attacked
