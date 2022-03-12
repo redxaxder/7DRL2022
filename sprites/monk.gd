@@ -7,7 +7,6 @@ const knockback_distance: int = 5
 
 func _ready():
 	label = "monk"
-	block()
 	._ready()
 
 func on_turn():
