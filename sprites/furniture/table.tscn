@@ -13,6 +13,7 @@ atlas = ExtResource( 1 )
 region = Rect2( 88, 156, 8, 12 )
 
 [node name="table" type="Sprite"]
+z_index = 5
 texture = SubResource( 1 )
 script = ExtResource( 3 )
 

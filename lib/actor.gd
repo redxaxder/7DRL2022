@@ -84,7 +84,8 @@ func die(dir: Vector2):
 	if is_in_group(self.constants.BLOODBAG):
 		var pos = get_pos()
 		terrain.splatter_blood(pos, dir)
-	self.locationService.delete_node(self)
+	if self.locationService:
+		self.locationService.delete_node(self)
 	queue_free()
 
 func animated_move_to(target: Vector2, duration: float = 1):
