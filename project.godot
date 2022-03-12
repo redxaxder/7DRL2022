@@ -99,6 +99,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/screen.gd"
 }, {
+"base": "Actor",
+"class": "Table",
+"language": "GDScript",
+"path": "res://sprites/furniture/table.gd"
+}, {
 "base": "AnimatedSprite",
 "class": "Target",
 "language": "GDScript",
@@ -133,6 +138,7 @@ _global_script_class_icons={
 "Pickup": "",
 "Scheduler": "",
 "Screen": "",
+"Table": "",
 "Target": "",
 "Terrain": "",
 "Weapon": ""

@@ -34,6 +34,10 @@ const weapon_scene: PackedScene = preload("res://pickups/weapon.tscn")
 const target_scene: PackedScene = preload("res://sprites/Target.tscn")
 
 const door_scene: PackedScene = preload("res://sprites/door.tscn")
+const table_scene: PackedScene = preload("res://sprites/furniture/table.tscn")
+var furniture: Array = [
+	table_scene
+]
 #########################################
 
 #to use for map selection later
@@ -119,6 +123,7 @@ func populate_room(room: Vector3):
 	#fill with enemies
 	var area = sz * sz
 	var max_enemies: int = max(area / 3, 1)
+	var max_furniture: int = max(area / 5, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
 		# spawn the king if on level 6
@@ -131,6 +136,9 @@ func populate_room(room: Vector3):
 	for _i in 1 + (randi() % max_enemies):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
+	for _i in 1 + (randi() % max_furniture):
+		var c = cells.pop_back()
+		if c && terrain.is_floor(c): spawn_random_furniture(c)
 	# add some weapons
 	var max_weapons: int = max(sz/2,1)
 	for _i in randi() % max_weapons:
@@ -202,6 +210,17 @@ func spawn_random_consumable(p: Vector2):
 		parent.add_child(item)
 		item.place(p)
 		item.visible = false
+		
+func spawn_random_furniture(p: Vector2):
+	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
+		furniture.shuffle()
+		var item = furniture[0].instance()
+		item.locationService = locationService
+		item.set_pos(p)
+		item.visible = false
+		item.combatLog = combatLog
+		item.terrain = terrain
+		parent.add_child(item)
 
 func spawn_random_weapon(p: Vector2):
 	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
