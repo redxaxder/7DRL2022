@@ -103,7 +103,7 @@ func attack():
 
 func _draw() -> void:
 	if telegraphing:
-		self.modulate = color.WINDUP_COLOR
+		self.modulate = constants.WINDUP_COLOR
 	else:
 		self.modulate = Color(1, 1, 1)
 	._draw()
