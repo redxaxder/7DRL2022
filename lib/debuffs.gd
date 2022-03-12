@@ -2,8 +2,12 @@ var constants = preload("res://lib/const.gd").new()
 
 var debuffs: Dictionary = {
 	constants.FUMBLE: {
-		constants.THRESH: 10,
+		constants.THRESH: 20,
 		constants.DIV: 2,
+	},
+	constants.LIMP: {
+		constants.THRESH: 40,
+		constants.DIV: 1,
 	},
 	constants.IMMOBILIZED: {
 		constants.THRESH: 40,

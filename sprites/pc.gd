@@ -21,10 +21,11 @@ var starting_recovery: int = 0
 var recovery: int = 0
 var southpaw = false
 var run_speed: int = 1
-const max_run_speed: int = 4
+var max_run_speed: int = 2
 var run_dir: int = -1
 var extra_knockback: int = 0
 var second_wind_bonus: int = 0
+var immune_limp: bool = false
 
 const base_experience_gain_rate: int = 1
 const experience_gain_step: int = 1
@@ -109,12 +110,20 @@ func tick():
 	else:
 		speed = normal_speed
 		recovery = 0
+	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
+			debuffs[self.constants.LIMP] = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
 func stop_run():
 	self.run_speed = 1
 	self.run_dir = -1
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
+
+func max_run_speed() -> int:
+	if debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
+		return 1
+	else:
+		return max_run_speed
 
 func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false
@@ -301,12 +310,19 @@ func _on_pick_perk(p: Perk):
 			extra_knockback += p.bonus
 		p.PERK_TYPE.SECOND_WIND:
 			second_wind_bonus += p.bonus
+		p.PERK_TYPE.SWIFT:
+			if p.bonus == 1:
+				max_run_speed += 1
+			elif p.bonus == 100:
+				immune_limp = true
 		_:
 			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0
 	fatigue = int(fatigue * (1 - second_wind_recovery))
 	for d in debuffs.keys():
 		debuffs[d] = int(debuffs[d] * (1 - second_wind_recovery))
+	if immune_limp && debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
+		debuffs[self.constants.LIMP] = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 	emit_signal(constants.PLAYER_LEVEL_UP)
 

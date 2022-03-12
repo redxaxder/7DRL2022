@@ -11,6 +11,7 @@ var perks: Array = [
 	preload("res://lib/perks/powerattack.gd").new(),
 	preload("res://lib/perks/secondwind.gd").new(),
 	preload("res://lib/perks/tempo.gd").new(),
+	preload("res://lib/perks/swift.gd").new(),
 	]
 
 func _ready():

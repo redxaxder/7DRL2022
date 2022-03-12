@@ -65,7 +65,7 @@ wd: Dijkstra):
 	wander_dijkstra = wd
 	randomize()
 
-const area_targets = [2000,3000,4000,6000,10000,18000]
+const area_targets = [2000,2000,4000,6000,10000,18000]
 func decide_map(lvl: int) -> int:
 	var base_area = 0
 	for i in lvl:
@@ -125,7 +125,7 @@ func populate_room(room: Vector3):
 	var area = sz * sz
 	var spawn_denom = max(20 - level*level, 3)
 	var max_enemies: int = max(area / spawn_denom, 1)
-	var max_furniture: int = max(area / 20, 1)
+	var max_furniture: int = max((area / 20) - 1, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
 		# spawn the king if on level 6
@@ -138,7 +138,7 @@ func populate_room(room: Vector3):
 	for _i in 1 + (randi() % max_enemies):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
-	for _i in 1 + (randi() % max_furniture):
+	for _i in randi() % max_furniture:
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_furniture(c)
 	# add some weapons
