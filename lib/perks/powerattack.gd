@@ -13,7 +13,7 @@ func evolve_perk() -> bool:
 	config()
 	return true
 
-var titles = ["Bull Rush", "Bull Rush II", "Bull Rush III"]
+var titles = ["Smash", "Smash II", "Smash III"]
 func config():
 	title = titles[level]
 	bonus = level + 1
