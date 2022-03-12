@@ -109,6 +109,9 @@ func _unhandled_input(event):
 					if items.size() > 0:
 						pc.pick_up(items[0],p)
 					update_pan(dir)
+				else:
+					pc.stop_run()
+					break
 			if not acted:
 				pc.run_speed = 1
 		if acted:
@@ -131,7 +134,10 @@ func update_status():
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.experience >= pc.experience_needed && pc.rage == 0:
 		status_text += "Press enter to level up\n"
-	status_text += "running speed: {0}\n".format([pc.run_speed])
+	if pc.run_dir >= 0 and pc.run_speed >= 1:
+		status_text += "running speed: {0}\n".format([min(pc.run_speed + 1, pc.max_run_speed)])
+	else:
+		status_text += "running speed: 1\n"
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:

@@ -109,6 +109,7 @@ func tick():
 func stop_run():
 	self.run_speed = 1
 	self.run_dir = -1
+	emit_signal(constants.PLAYER_STATUS_CHANGED)		
 
 func try_attack(dir, force_bear_hands: bool = false) -> bool:
 	var can_attack = false

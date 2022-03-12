@@ -20,10 +20,11 @@ func kick(dir: int, extra_knockback = 0) -> bool:
 	return true
 
 func nudge(_dir: int, player_opened: bool = true) -> bool:
-	if player_opened:
-		combatLog.say("You cautiously open the door.")
-	else:
-		combatLog.say("You hear a door open.")
+	if combatLog != null:
+		if player_opened:
+			combatLog.say("You cautiously open the door.")
+		else:
+			combatLog.say("You hear a door open.")
 	die(Vector2(0,0))
 	return true
 

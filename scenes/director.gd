@@ -80,8 +80,6 @@ func load_next_map():
 	terrain.load_map(map_id)
 	pc_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
-	print("map id: {0} \n area: {1}".format([map_id, terrain.width * terrain.height]))
-	print(area_seen)
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
 		if room.z > 1:
