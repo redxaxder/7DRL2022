@@ -167,33 +167,92 @@ func try_kick_furniture(dir) -> bool:
 	return acted
 
 func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
-	var pos = get_pos() + DIR.dir_to_vec(dir)
-	var mobs = locationService.lookup(pos, constants.MOBS)
 	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
 		combatLog.say("You are too weak to walk.")
 		combatLog.say("Press '.' to pass your turn.")
 		return false
-	if mobs.size() > 0 && fatigue > 0 && rage == 0:
-		combatLog.say("You are too exhausted to fight!")
-		return false
-	var blockers = locationService.lookup(pos, constants.BLOCKER)
-	if terrain.is_wall(pos):
-		if rage > 0:
-			combatLog.say("The wall blocks your path.")
-		else:
-			combatLog.say("The wall looms over you.")
-		return false
-	elif blockers.size() > 0:
-		return false
-	elif terrain.is_exit(pos):
-		combatLog.say("")
-		combatLog.say("You make your way up the stairs.")
-		emit_signal(constants.EXIT_LEVEL)
-		return true
+
+	var vec = DIR.dir_to_vec(dir)
+	var target = get_pos()
+	var ran_to = null
+	var ran = 0
+	var run_dist
+	if dir == run_dir:
+		run_dist = next_run_speed()
 	else:
-		animated_move_to(pos, 1/anim_speed_multiplier)
-		update()
-		return true
+		run_dist = 1
+	while true:
+		target = target + vec
+		var mobs = locationService.lookup(target, constants.MOBS)
+		var blockers = locationService.lookup(target, constants.BLOCKER)
+		if mobs.size() > 0:
+			if ran_to == null && fatigue > 0 && rage == 0:
+				combatLog.say("You are too exhausted to fight!")
+				return false
+			elif ran_to != null && fatigue > 0 && rage == 0:
+				combatLog.say("You collide with the {0}.".format([mobs[0].label]))
+				animated_move_to(ran_to)
+				update()
+			elif ran_to != null:
+				combatLog.say("You trample the {0}.".format([mobs[0].label]))
+				animated_move_to(ran_to)
+				try_attack(dir,true)
+				if locationService.lookup(target, constants.BLOCKER).size() == 0:
+					animated_move_to_combine(target)
+				stop_run()
+				return true
+			else: # we shouldnt reach this branch, but if we do..
+				return false # cancel!
+		if terrain.is_wall(target):
+			if ran_to == null:
+				if rage > 0:
+					combatLog.say("The wall blocks your path.")
+				else:
+					combatLog.say("The wall looms over you.")
+				return false
+			else:
+				combatLog.say("You slam into the wall.",10)
+				animated_move_to(ran_to)
+				stop_run()
+				update()
+				return true
+		elif blockers.size() > 0:
+			if ran_to == null:
+				return false
+			else:
+				if rage == 0:
+					combatLog.say("You collide with the {0}.".format([blockers[0].label]))
+				animated_move_to(ran_to)
+				if rage > 0:
+					try_kick_furniture(dir)
+				if locationService.lookup(target, constants.BLOCKER).size() == 0:
+					animated_move_to_combine(target)
+				stop_run()
+				update()
+				return true
+		elif terrain.is_exit(target):
+			combatLog.say("")
+			combatLog.say("You make your way up the stairs.")
+			emit_signal(constants.EXIT_LEVEL)
+			stop_run()
+			update()
+			return true
+		# the target tile is free!
+		ran_to = target # we're there
+		ran += 1
+		var items = locationService.lookup(target, constants.PICKUPS)
+		if items.size() > 0:
+			pick_up(items[0],target)
+			emit_signal(constants.PLAYER_STATUS_CHANGED)
+		if ran >= run_dist:
+			run_speed = run_dist
+			run_dir = dir
+			animated_move_to(target)
+			update()
+			emit_signal(constants.PLAYER_STATUS_CHANGED)
+			return true
+		# we're not done running. loop
+	return true
 
 func pick_up(p: Pickup, l: Vector2):
 	if debuffs.has(self.constants.FUMBLE) and debuffs[self.constants.FUMBLE] > 0:

@@ -84,6 +84,19 @@ func animated_move_to(target: Vector2, duration: float = 1):
 	anim_screen_offsets.push_back(av)
 	set_pos(target)
 
+func animated_move_to_combine(target: Vector2, backup_duration: float = 1):
+	var start_pos = get_pos()
+	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
+	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
+	var dp = prev_screen_position - target_screen_position
+	var av = Vector3(dp.x,dp.y,0)
+	if anim_screen_offsets.size() > 0:
+		anim_screen_offsets[anim_screen_offsets.size() - 1] += av
+		set_pos(target)
+	else:
+		animated_move_to(target, backup_duration)
+
+
 func animation_delay(duration: float):
 	var av = Vector3(0,0,duration)
 	anim_screen_offsets.push_back(av)
