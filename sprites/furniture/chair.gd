@@ -17,7 +17,7 @@ func kick(dir: int, extra_knockback = 0) -> bool:
 func die(dir):
 	if combatLog != null:
 		combatLog.say("The chair is smashed to pieces!")
-	.dir(dir)
+	.die(dir)
 
 func nudge(dir: int, player_opened: bool = true) -> bool:
 	if combatLog != null:
