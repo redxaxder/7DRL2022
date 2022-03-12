@@ -10,6 +10,7 @@ func _ready():
 	._ready()
 
 func on_turn():
+	block_decay()
 	if .pc_adjacent():
 		attack()
 	else:
@@ -35,6 +36,6 @@ func attack():
 
 func _draw():
 	if cur_knockback_cooldown == 0:
-		self.modulate = Color(0.789062, 0.443848, 0)
+		self.modulate = constants.READY_COLOR
 	else:
 		self.modulate = Color(1, 1, 1)

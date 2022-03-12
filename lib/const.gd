@@ -31,3 +31,8 @@ var DIV = "divisor"
 var FUMBLE = "weak grip"
 var LIMP = "limping"
 var IMMOBILIZED = "immobilized"
+
+# colors
+var PROTECTED_COLOR = Color(0, 0.976471, 1, 0.686275)
+var WINDUP_COLOR = Color(0.898039, 0, 1)
+var READY_COLOR = Color(0.909804, 0.854902, 0)

@@ -21,7 +21,7 @@ animations = [ {
 } ]
 
 [node name="Target" type="AnimatedSprite"]
-modulate = Color( 0.501961, 0.501961, 0.027451, 1 )
+modulate = Color( 0.898039, 0, 1, 1 )
 z_index = 18
 frames = SubResource( 3 )
 animation = "targetting"

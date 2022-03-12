@@ -63,7 +63,7 @@ func attack():
 
 func _draw() -> void:
 	if telegraphing:
-		self.modulate = Color(0.501961, 0.501961, 0.027451)
+		self.modulate = constants.WINDUP_COLOR
 	else:
 		self.modulate = Color(1, 1, 1)
 	._draw()
