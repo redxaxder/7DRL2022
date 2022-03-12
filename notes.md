@@ -66,7 +66,10 @@ TODO:
        + recovery: [+1/+1/+1] starting recovery after rage ends
 
 other important things:
-  - pending debuffs
+  - notify pending level up
+  - make level-up indicator more clear
+  - secondary attack indicators for whip
+  + pending debuffs
   - blood through doors
   - sometimes can't throw??
   - floating text numbers??

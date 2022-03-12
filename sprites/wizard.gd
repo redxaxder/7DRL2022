@@ -20,7 +20,7 @@ func check_alignment():
 
 func on_turn():
 	if rand_range(0, 1) < mutter_chance:
-		combatLog.say("You hear snatches of drunken spellcasting.")
+		combatLog.say("You hear snatches of drunken spellcasting.", 10)
 	var pos = self.get_pos()
 	var dist = self.pc_dijkstra.d_score(pos)
 	var aligned: bool = check_alignment()
