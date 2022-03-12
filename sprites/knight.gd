@@ -20,7 +20,7 @@ func on_turn():
 	var block_chance: float = 1.0 / float(distance) * max_block_chance
 	if rand_range(0, 1) < block_chance and self.cur_block_cooldown == 0:
 		self.combatLog.say("The knight readies his shield!", 20)
-		self.blocking = true
+		block()
 		self.cur_block_duration = 0
 	elif .pc_adjacent():
 		attack()
@@ -36,10 +36,3 @@ func attack():
 	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
 	x.update()
 	self.pc.injure()
-
-func _draw() -> void:
-	if self.blocking:
-		self.modulate = Color(0.460938, 0.460938, 1)
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()

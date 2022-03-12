@@ -6,6 +6,7 @@ var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
 const attack_indicator = preload("res://sprites/attack_indicator.tscn")
+const block_indicator = preload("res://sprites/shield.tscn")
 
 var terrain
 var combatLog: CombatLog
@@ -17,6 +18,7 @@ var speed: int = 3
 var label: String = ""
 var door: bool = false
 var blocking: bool = false
+var block_sprite: AnimatedSprite = null
 const block_duration: int = 2
 var cur_block_duration: int = 0
 
@@ -38,10 +40,14 @@ func block_decay():
 			cur_block_duration += 1
 		else:
 			blocking = false
+			block_sprite.queue_free()
+			block_sprite = null
 
 func block():
 	cur_block_duration = 0
 	blocking = true
+	block_sprite = block_indicator.instance()
+	self.add_child(block_sprite)
 
 func make_ragdoll(dir: Vector2):
 	var ragdoll: Sprite = get_script().new()
