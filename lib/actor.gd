@@ -18,7 +18,8 @@ var speed: int = 3
 var label: String = ""
 var door: bool = false
 var blocking: bool = false
-var block_sprite: AnimatedSprite = null
+var block_mask: Sprite = Sprite.new()
+
 const block_duration: int = 2
 var cur_block_duration: int = 0
 
@@ -40,14 +41,17 @@ func block_decay():
 			cur_block_duration += 1
 		else:
 			blocking = false
-			block_sprite.queue_free()
-			block_sprite = null
+			if block_mask != null:
+				block_mask.modulate = Color(1,1,1)
 
 func block():
 	cur_block_duration = 0
-	blocking = true
-	block_sprite = block_indicator.instance()
-	self.add_child(block_sprite)
+	if !blocking:
+		blocking = true
+		add_child(block_mask)
+		block_mask.texture = texture
+		block_mask.z_index = z_index + 1
+		block_mask.modulate = constants.PROTECTED_COLOR
 
 func make_ragdoll(dir: Vector2):
 	var ragdoll: Sprite = get_script().new()
