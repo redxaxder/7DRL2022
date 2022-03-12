@@ -83,8 +83,8 @@ func has_door(cells: Array) -> bool:
 	return door_placed
 
 func place_exit(room: Vector3):
-	var x = room.x + 2 + (randi() % int(room.z - 2))
-	var y = room.y + 2 + (randi() % int(room.z - 2))
+	var x = room.x + 2 + (randi() % int(room.z - 3))
+	var y = room.y + 2 + (randi() % int(room.z - 3))
 	contents[to_linear(x, y)] = '>'
 
 func is_exit(v: Vector2) -> bool:
@@ -101,17 +101,29 @@ func place_a_door(cells: Array) -> bool:
 	# first, check if a door is already placed:
 	var candidates: Array = []
 	var door_placed = false
+	var door_pos
 	for t in cells:
 		var tile = atv(t)
 		if tile == '.':
 			door_placed = true
+			door_pos = t
 		if can_be_door(t):
 #			spawn_door(t.x,t.y)
 			candidates.append(t)
 	#if not, find a place for it
 	if !door_placed && candidates.size() > 0:
-		var v = candidates[randi() % candidates.size()]
+		var ix = randi() % candidates.size()
+		var v: Vector2 = candidates[ix]
 		door_placed = spawn_door(v.x,v.y)
+		if door_placed && (randi() % 2 == 0): # sometimes, we try to make this a double door
+			var adj: Array = []
+			for c in candidates:
+				if v.distance_to(c) < 1.01:
+					adj.append(c)
+			if adj.size() > 0:
+				adj.shuffle()
+				spawn_door(adj[0].x,adj[0].y)
+			
 	return door_placed
 
 func room_side(room: Vector3, dir: int) -> Array:

@@ -12,6 +12,10 @@ var rage: int = 0
 var rage_decay: int = 0
 const rage_speed: int = 6
 const normal_speed: int = 3
+
+const weapon_break_level: int = 100
+var weapons_broken: int = 0
+
 var fatigue: int = 0
 var starting_recovery: int = 0
 var recovery: int = 0
@@ -58,6 +62,7 @@ var debuffs: Dictionary = {}
 func enter_rage():
 	combatLog.say("You fly into a rage!")
 	emit_signal(self.constants.RAGE_LIGHTING, true)
+	weapons_broken = 0
 	rage += rage_on_got_hit + starting_rage
 	fatigue += fatigue_on_got_hit
 	recovery = starting_recovery
@@ -123,6 +128,12 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 		if weapon != null and not force_bear_hands:
 			weapon.attack.extra_knockback = extra_knockback
 			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation())
+			if did_attack && fatigue - (weapons_broken * weapon_break_level) > weapon_break_level:
+				combatLog.say("The {0} crumbles in your grasp".format([weapon.label]))
+				weapons_broken += 1
+				var w = weapon
+				weapon = null
+				w.queue_free()
 		else:
 			punch.extra_knockback = extra_knockback
 			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation())
@@ -145,6 +156,9 @@ func try_kick_furniture(dir) -> bool:
 func try_move(dir) -> bool:
 	var pos = get_pos() + DIR.dir_to_vec(dir)
 	var mobs = locationService.lookup(pos, constants.MOBS)
+	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
+		combatLog.say("You are too weak to walk.")
+		return false
 	if mobs.size() > 0 && fatigue > 0 && rage == 0:
 		combatLog.say("You are too exhausted to fight!")
 		return false
