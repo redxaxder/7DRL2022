@@ -21,12 +21,12 @@ const samurai_scene: PackedScene = preload("res://sprites/Samurai.tscn")
 const ranger_scene: PackedScene = preload("res://sprites/ranger.tscn")
 const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.tscn")
 const king_scene: PackedScene = preload("res://sprites/king.tscn")
-const enemies: Array = [
-	knight_scene, 
-	monk_scene, 
-	samurai_scene, 
-	ranger_scene, 
-	archaeologist_scene
+const enemies: Array = [ \
+		{ "scene": knight_scene, "min_depth": 1,"weight": 2 }, \
+		{ "scene": monk_scene, "min_depth": 1,"weight": 2 }, \
+		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 }, \
+		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 }, \
+		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 }, \
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -123,8 +123,9 @@ func populate_room(room: Vector3):
 	var sz = int(room.z)
 	#fill with enemies
 	var area = sz * sz
-	var spawn_denom = max(20 - level*level, 3)
+	var spawn_denom = 9 - level
 	var max_enemies: int = max(area / spawn_denom, 1)
+	var min_enemies = max_enemies / 3
 	var max_furniture: int = max((area / 20) - 1, 1)
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
@@ -135,7 +136,7 @@ func populate_room(room: Vector3):
 			var c = cells.pop_back()
 			spawn_dynamic_mob(king_scene, c)
 			king_spawned = true
-	for _i in 1 + (randi() % max_enemies):
+	for _i in min_enemies + (randi() % int(max(max_enemies - min_enemies,1))):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
 	for _i in randi() % max_furniture:
@@ -153,7 +154,12 @@ func populate_room(room: Vector3):
 		if c && terrain.is_floor(c): spawn_random_consumable(c)
 
 func spawn_random_enemy(pos: Vector2):
-	var enemy = enemies[randi() % enemies.size()]
+	var enemy_pool = []
+	for e in enemies:
+		if e.min_depth <= level:
+			for __ in e.weight:
+				enemy_pool.push_back(e.scene)
+	var enemy = enemy_pool[randi() % enemy_pool.size()]
 	spawn_dynamic_mob(enemy, pos)
 
 func room_doors(room: Vector3):
