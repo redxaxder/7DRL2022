@@ -23,6 +23,8 @@ var southpaw = false
 var run_speed: int = 1
 var max_run_speed: int = 2
 var run_dir: int = -1
+var is_drunk: bool = false
+
 var extra_knockback: int = 0
 var second_wind_bonus: int = 0
 var immune_limp: bool = false
@@ -69,7 +71,10 @@ func enter_rage():
 	combatLog.say("You fly into a rage!")
 	emit_signal(self.constants.RAGE_LIGHTING, true)
 	weapons_broken = 0
-	rage += rage_on_got_hit + starting_rage
+	rage += starting_rage
+	if is_drunk:
+		rage += starting_rage
+		is_drunk = false
 	fatigue += fatigue_on_got_hit
 	recovery = starting_recovery
 	speed = rage_speed
@@ -87,9 +92,14 @@ func injure():
 			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
 		emit_signal(self.constants.PLAYER_DIED)
 	else:
+		rage += rage_on_got_hit
 		enter_rage()
-	rage_decay = 1 + fatigue / 40
+	update_rage_decay()
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
+
+func update_rage_decay():
+	var bonus_decay = (float(100 - grit_bonus) / float(100)) * fatigue / 40.0
+	rage_decay = 1 + int(bonus_decay)
 
 func dazzle():
 	if rage > 0:
@@ -125,7 +135,7 @@ func tick():
 	if rage > 0:
 		rage -= rage_decay
 		rage = max(rage,int(0))
-		rage_decay = 1 + int(((100 - grit_bonus) / 100) * fatigue / 40)
+		update_rage_decay()
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = pending_debuffs()
@@ -346,12 +356,13 @@ func consume_calm(p: Pickup) -> bool:
 			recovery += 5
 			combatLog.say("You drink the water. You feel refreshed.")
 		p.ITEM_TYPE.BRANDY:
-			#TODO
 			combatLog.say("You drink the brandy. You're itching for a fight.")
+			is_drunk = true
 		p.ITEM_TYPE.SHARDS:
 			return false
 	pickup.queue_free()
 	pickup = null
+	emit_signal("status_changed")
 	return true
 
 func throw_item() -> bool:
