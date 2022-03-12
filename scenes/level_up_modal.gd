@@ -14,6 +14,7 @@ var perks: Array = [
 	preload("res://lib/perks/swift.gd").new(),
 	preload("res://lib/perks/chinabull.gd").new(),
 	preload("res://lib/perks/overrun.gd").new(),
+	preload("res://lib/perks/grit.gd").new(),
 	]
 
 func _ready():

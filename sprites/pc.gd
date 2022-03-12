@@ -28,6 +28,7 @@ var second_wind_bonus: int = 0
 var immune_limp: bool = false
 var furniture_smash_chance: int = 0
 var overrun_perk: bool = false
+var grit_bonus: int = 0
 
 
 const base_experience_gain_rate: int = 5
@@ -101,7 +102,7 @@ func tick():
 	if rage > 0:
 		rage -= rage_decay
 		rage = max(rage,int(0))
-		rage_decay = 1 + fatigue / 40
+		rage_decay = 1 + int(((100 - grit_bonus) / 100) * fatigue / 40)
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = debuff_effects.get_fatigue_effects(fatigue)
@@ -395,6 +396,8 @@ func _on_pick_perk(p: Perk):
 			furniture_smash_chance += p.bonus
 		p.PERK_TYPE.OVERRUN:
 			overrun_perk = true
+		p.PERK_TYPE.GRIT:
+			grit_bonus += p.bonus
 		_:
 			pass
 	var second_wind_recovery = float(second_wind_bonus) / 100.0
