@@ -119,6 +119,11 @@ func stop_run():
 	self.run_dir = -1
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
+func next_run_speed() -> int:
+	if run_dir < 0:
+		return 1
+	return int(min(pc.max_run_speed(), pc.run_speed + 1))
+
 func max_run_speed() -> int:
 	if debuffs.has(self.constants.LIMP) && debuffs[self.constants.LIMP] > 0:
 		return 1

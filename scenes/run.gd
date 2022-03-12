@@ -93,7 +93,7 @@ func _unhandled_input(event):
 		if dir >= 0 && !acted:
 			var run_multiplier: int = 1
 			if dir == pc.run_dir:
-				pc.run_speed = min(pc.max_run_speed(), pc.run_speed + 1)
+				pc.run_speed = pc.next_run_speed()
 				run_multiplier = pc.run_speed
 			else:
 				pc.stop_run()
@@ -139,9 +139,8 @@ func update_status():
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
 	if pc.experience >= pc.experience_needed && pc.rage == 0:
 		status_text += "Press enter to level up\n"
-	var effective_run = min(pc.run_speed + 1, pc.max_run_speed())
-	if effective_run > 1 && pc.run_dir >= 0:
-		status_text += "running speed: {0}\n".format([effective_run])
+	if pc.next_run_speed() > 1:
+		status_text += "running speed: {0}\n".format([pc.next_run_speed()])
 #	else:
 #		status_text += "running speed: 1\n"
 	if pc.pickup != null || pc.weapon != null:
@@ -226,11 +225,7 @@ func scale(v: Vector2, s: float) -> Vector2:
 
 func update_pan(dir) -> void:
 	var pan := DIR.dir_to_vec(dir)
-	var run
-	if pc.run_dir >= 0 and pc.run_speed >= 1:
-		run = min(pc.run_speed + 1, pc.max_run_speed())
-	else:
-		run = 1
+	var run = pc.next_run_speed()
 	if abs(pan.x) > 0: # vary pan dist based on tile dimension
 		pan = pan * (SCREEN.TILE_WIDTH * run)
 	else:
