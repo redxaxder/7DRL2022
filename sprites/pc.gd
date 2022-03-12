@@ -62,6 +62,7 @@ var starting_rage: int = 40
 var rage_on_got_hit: int = 6
 var rage_on_kill: int = 2
 var fatigue_on_got_hit: int = 5
+var flash_damage: int = 1
 var debuffs: Dictionary = {}
 
 func enter_rage():
@@ -85,6 +86,18 @@ func injure():
 			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
 			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
 		emit_signal(self.constants.PLAYER_DIED)
+	else:
+		enter_rage()
+	rage_decay = 1 + fatigue / 40
+	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
+
+func dazzle():
+	if rage > 0:
+		rage += flash_damage
+		fatigue += flash_damage
+		self.combatLog.say(" +{0} rage  +{0} fatigue".format([flash_damage]))
+	elif fatigue > 0:
+		self.combatLog.say(" +{0} fatigue".format([flash_damage]))
 	else:
 		enter_rage()
 	rage_decay = 1 + fatigue / 40

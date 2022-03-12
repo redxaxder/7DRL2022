@@ -24,7 +24,8 @@ const archaeologist_scene: PackedScene = preload("res://sprites/archaeologist.ts
 const king_scene: PackedScene = preload("res://sprites/king.tscn")
 const wizard_scene: PackedScene = preload("res://sprites/wizard.tscn")
 const rogue_scene: PackedScene = preload("res://sprites/rogue.tscn")
-const enemies: Array = [ \
+const tourist_scene: PackedScene = preload("res://sprites/tourist.tscn")
+const enemies: Array = [
 		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 },
@@ -32,7 +33,7 @@ const enemies: Array = [ \
 		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 },
 		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 },
 #		{ "scene": valkyrie_scene, "min_depth": 3,"weight": 2 },
-#		{ "scene": tourist_scene, "min_depth": 2,"weight": 2 },
+		{ "scene": tourist_scene, "min_depth": 3,"weight": 2 },
 		{ "scene": rogue_scene, "min_depth": 4, "weight": 2},
 #		{ "scene": priest_scene, "min_depth": 4,"weight": 1 },
 	]
