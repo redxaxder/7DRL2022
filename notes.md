@@ -75,6 +75,9 @@ other important things:
   - overlap player
   - sword -> club
   - visual indicators for weapons
+  - double item swap running
+  - running animation speed
+  - animated projectiles
   + visibility
   + knockback should open doors
   + animate

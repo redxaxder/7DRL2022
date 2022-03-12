@@ -102,7 +102,7 @@ func _unhandled_input(event):
 				did_attack = pc.try_attack(dir, true)
 				acted = did_attack
 				acted = pc.try_kick_furniture(dir) || acted
-				var did_move = pc.try_move(dir)
+				var did_move = pc.try_move(dir, run_multiplier)
 				acted = did_move || acted
 				if did_move:
 					var items = locationService.lookup(p, constants.PICKUPS)

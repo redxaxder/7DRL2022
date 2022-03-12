@@ -153,7 +153,7 @@ func try_kick_furniture(dir) -> bool:
 			acted = t.nudge(dir)
 	return acted
 
-func try_move(dir) -> bool:
+func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 	var pos = get_pos() + DIR.dir_to_vec(dir)
 	var mobs = locationService.lookup(pos, constants.MOBS)
 	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
@@ -177,7 +177,7 @@ func try_move(dir) -> bool:
 		emit_signal(constants.EXIT_LEVEL)
 		return true
 	else:
-		animated_move_to(pos)
+		animated_move_to(pos, 1/anim_speed_multiplier)
 		update()
 		return true
 
@@ -247,6 +247,8 @@ func throw_item() -> bool:
 	dirs.shuffle()
 	for d in dirs: #first, try to throw at an enemy
 		if !did_throw:
+			throw.combatLog = combatLog
+			throw.message = "You throw your {0} at the ".format([pickup.label]) + "{0}."
 			did_throw = throw.try_attack(locationService, get_pos(), d, self.pending_animation(), terrain)
 	if did_throw:
 		pickup.queue_free()
