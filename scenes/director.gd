@@ -35,8 +35,9 @@ const target_scene: PackedScene = preload("res://sprites/Target.tscn")
 
 const door_scene: PackedScene = preload("res://sprites/door.tscn")
 const table_scene: PackedScene = preload("res://sprites/furniture/table.tscn")
+const chair_scene: PackedScene = preload("res://sprites/furniture/chair.tscn")
 var furniture: Array = [
-	table_scene
+	table_scene,
 ]
 #########################################
 
@@ -217,11 +218,29 @@ func spawn_random_furniture(p: Vector2):
 		furniture.shuffle()
 		var item = furniture[0].instance()
 		item.locationService = locationService
-		item.set_pos(p)
 		item.visible = false
 		item.combatLog = combatLog
 		item.terrain = terrain
 		parent.add_child(item)
+		if item.label == "table":
+			for _i in range(4):
+				if rand_range(0, 1) < 0.25:
+					# spawn a chair next to the table
+					var candidates = [p + Vector2(1, 0), p + Vector2(-1, 0), p + Vector2(0, 1), p + Vector2(0, -1)]
+					var fc = []
+					for c in candidates:
+						if !terrain.is_wall(c) && locationService.lookup(c).size() == 0:
+							fc.push_back(c)
+					if fc.size() > 0:
+						fc.shuffle()
+						var chair = chair_scene.instance()
+						chair.locationService = locationService
+						chair.visible = false
+						chair.combatLog = combatLog
+						chair.terrain = terrain
+						parent.add_child(chair)
+						chair.set_pos(fc[0])
+		item.set_pos(p)
 
 func spawn_random_weapon(p: Vector2):
 	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
