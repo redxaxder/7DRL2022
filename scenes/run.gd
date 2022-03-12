@@ -139,7 +139,6 @@ func update_status():
 		$hud/status_panel/vbox/level_up.visible = true
 	else:
 		$hud/status_panel/vbox/level_up.visible = false
-#		status_text += "Press enter to level up\n"
 	if pc.next_run_speed() > 1:
 		status_text += "running speed: {0}\n".format([pc.next_run_speed()])
 	if pc.pickup != null || pc.weapon != null:
@@ -156,6 +155,8 @@ func update_status():
 	elif pc.fatigue > 0:
 		status_text += "recovery {0}\n".format([pc.recovery])
 		status_text += "fatigue {0}\n".format([pc.fatigue])
+	if pc.is_drunk:
+		status_text += "drunk\n"
 	var effects = pc.debuffs
 	for name in effects.keys():
 		if effects[name] > 0:
