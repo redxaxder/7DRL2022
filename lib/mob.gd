@@ -40,7 +40,7 @@ func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2
 	else:
 		return seek(pc_dijkstra, run_away)
 
-func seek(d_map: Dijkstra, reverse = false):
+func seek(d_map: Dijkstra, reverse = false) -> Vector2:
 	var e = get_pos()
 	var best_val = d_map.d_score(e)
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
