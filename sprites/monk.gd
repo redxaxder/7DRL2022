@@ -23,7 +23,6 @@ func attack():
 		self.combatLog.say("You go flying!")
 		self.pc.knockback(self.pc.get_pos() - get_pos(), knockback_distance)
 		self.cur_knockback_cooldown = knockback_cooldown
-		$sound.play()
 	else:
 		self.combatLog.say("The monk punches you!")
 		AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)

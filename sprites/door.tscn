@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://sprites/backstop.tscn" type="PackedScene" id=1]
 [ext_resource path="res://resources/curses_8_12.png" type="Texture" id=2]
 [ext_resource path="res://sprites/door.gd" type="Script" id=3]
-[ext_resource path="res://resources/sounds/break.wav" type="AudioStream" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -21,7 +20,3 @@ script = ExtResource( 3 )
 [node name="backstop" parent="." instance=ExtResource( 1 )]
 position = Vector2( 7.62939e-06, -3.8147e-06 )
 texture = SubResource( 2 )
-
-[node name="sound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-volume_db = -20.0

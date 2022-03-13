@@ -254,6 +254,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				if overrun_perk:
 					run_dir = dir
 				emit_signal("status_changed")
+				play_run(ran)
 				return true
 			else: # we shouldnt reach this branch, but if we do..
 				return false # cancel!
@@ -269,6 +270,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				animated_move_to_combine(ran_to)
 				stop_run()
 				update()
+				play_run(ran)
 				return true
 		elif blockers.size() > 0:
 			if ran_to == null:
@@ -283,6 +285,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 					animated_move_to_combine(target)
 				stop_run()
 				update()
+				play_run(ran)
 				return true
 		elif terrain.is_exit(target):
 			combatLog.say("")
@@ -290,6 +293,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 			emit_signal(constants.EXIT_LEVEL)
 			stop_run()
 			update()
+			play_run(ran)
 			return true
 		# the target tile is free!
 		ran_to = target # we're there
@@ -310,10 +314,14 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 			run_dir = dir
 			update()
 			emit_signal(constants.PLAYER_STATUS_CHANGED)
+			play_run(ran)
 			return true
 		# we're not done running. loop
 	return true
 
+func play_run(ran: int):
+	if ran >= 2: $run.play()
+	else: $shuffle.play()
 func pick_up(p: Pickup, l: Vector2):
 	if debuffs.has(self.constants.FUMBLE) and debuffs[self.constants.FUMBLE] > 0:
 		self.combatLog.say("The {0} tumbles from your shaky grip.".format([p.label]))
@@ -463,6 +471,7 @@ func _on_pick_perk(p: Perk):
 func _on_enemy_killed(label: String):
 	if rage == 0:
 		enter_rage()
+	$splat.play()
 	experience += experience_gain_rate
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)

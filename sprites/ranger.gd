@@ -59,7 +59,6 @@ func attack():
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
 	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance(), self.pending_animation() / anim_speed))
-	$sound.play()
 
 func _draw() -> void:
 	if telegraphing:

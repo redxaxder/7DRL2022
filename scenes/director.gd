@@ -36,7 +36,7 @@ const enemies: Array = [
 		{ "scene": wizard_scene, "min_depth": 1, "weight": 9, "max_depth": 5 },
 		{ "scene": monk_scene, "min_depth": 1,"weight": 6, "max_depth": 5 },
 		{ "scene": samurai_scene, "min_depth": 2,"weight": 6, "max_depth": 6 },
-		{ "scene": rogue_scene, "min_depth": 2, "weight": 6, "max_depth": 6 },
+		{ "scene": rogue_scene, "min_depth": 2, "weight": 9, "max_depth": 6 },
 		{ "scene": ranger_scene, "min_depth": 2,"weight": 6, "max_depth": 6 },
 		{ "scene": tourist_scene, "min_depth": 3,"weight": 1, "max_depth": 3 },
 		{ "scene": healer_scene, "min_depth": 3,"weight": 4, "max_depth": 6 },

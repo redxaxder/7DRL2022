@@ -24,8 +24,6 @@ func die(dir):
 	emit_signal("door_opened",get_pos())
 	if combatLog != null:
 		combatLog.say("The table is smashed to pieces!")
-	if not is_ragdoll:
-		$sound.play()
 	.die(dir)
 
 func nudge(_dir: int, player_opened: bool = true) -> bool:

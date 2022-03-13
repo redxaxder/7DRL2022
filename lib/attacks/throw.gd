@@ -3,7 +3,7 @@ extends Attack
 var combatLog = null
 var message = ""
 var sprite: Sprite = null
-const fireball_sprite: PackedScene = preload("res://sprites/fireball.tscn")
+const fireball_sprite: PackedScene = preload("res://sprites/arrow.tscn")
 
 func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, terrain = null) -> bool:
 	if terrain == null:

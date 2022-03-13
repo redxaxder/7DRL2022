@@ -24,6 +24,5 @@ z_index = -1
 z_as_relative = true
 texture = SubResource( 2 )
 
-[node name="sound" type="AudioStreamPlayer" parent="."]
+[node name="dodge" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-volume_db = -20.0

@@ -34,7 +34,6 @@ func on_turn():
 func bless():
 	telegraphing = false
 	combatLog.say("The priest completes his spell!")
-	$sound.play()
 	cur_blessing_cooldown = blessing_cooldown
 	var pos = get_pos()
 	for i in range(-blessing_range, blessing_range+1):

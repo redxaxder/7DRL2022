@@ -6,6 +6,8 @@ var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
 const block_indicator = preload("res://sprites/shield.tscn")
+const thump_scene = preload("res://audio/thump.tscn")
+var thump_node: AudioStreamPlayer = null
 
 var terrain
 var combatLog: CombatLog
@@ -179,6 +181,10 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	if self.player:
 		self.pc.stop_run()
 	update()
+	if thump_node == null:
+		thump_node = thump_scene.instance()
+		add_child(thump_node)
+	thump_node.play()
 
 func pending_animation() -> float:
 	var total = 0

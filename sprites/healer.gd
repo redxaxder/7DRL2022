@@ -24,7 +24,6 @@ func attack():
 	self.combatLog.say("The healer brings forth a wave of calming energy.")
 	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.calm(heal_damage)
-	$sound.play()
 
 func _draw() -> void:
 	if cur_heal_cooldown == 0:

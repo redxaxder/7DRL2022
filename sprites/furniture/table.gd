@@ -20,8 +20,6 @@ func kick(dir: int, extra_knockback = 0) -> bool:
 func die(dir):
 	if combatLog != null:
 		combatLog.say("The table is smashed to pieces!")
-	if not is_ragdoll:
-		$sound.play()
 	.die(dir)
 
 func nudge(dir: int, player_opened: bool = true) -> bool:
@@ -33,6 +31,7 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 				combatLog.say("You hear a table fall over. A plate shatters loudly.")
 			self.texture = fallen_txtr
 			fallen = true
+			$thump.play()
 			var pos = get_pos()
 			var target = get_pos() + DIR.dir_to_vec(dir)
 			if locationService.lookup(target).size() == 0 and not terrain.is_wall(target):

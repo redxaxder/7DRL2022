@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/curses_8_12.png" type="Texture" id=1]
 [ext_resource path="res://sprites/backstop.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/pc.gd" type="Script" id=3]
-[ext_resource path="res://resources/sounds/hitHurt.wav" type="AudioStream" id=4]
+[ext_resource path="res://resources/sounds/thump.wav" type="AudioStream" id=4]
 [ext_resource path="res://resources/sounds/levelup.wav" type="AudioStream" id=5]
+[ext_resource path="res://resources/sounds/splat.wav" type="AudioStream" id=6]
+[ext_resource path="res://resources/sounds/shuffle.wav" type="AudioStream" id=7]
+[ext_resource path="res://resources/sounds/run.wav" type="AudioStream" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -29,3 +32,12 @@ volume_db = -20.0
 [node name="level_up_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -20.0
+
+[node name="splat" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="shuffle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="run" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
