@@ -11,12 +11,11 @@ const blessing_start_cast_range: int = 3
 
 func _ready():
 	label = "priest"
+	cur_blessing_cooldown = randi() % blessing_cooldown
 	._ready()
-
 
 func on_turn():
 	var d_score = self.enemy_dijkstra.d_score(self.get_pos())
-	print(d_score)
 	if telegraphing:
 		if telegraph_timer > 0:
 			telegraph_timer -= 1
@@ -27,21 +26,15 @@ func on_turn():
 		telegraphing = true
 		telegraph_timer = telegraph_duration
 	else:
+		if cur_blessing_cooldown > 0:
+			cur_blessing_cooldown -= 1
 		animated_move_to(seek(enemy_dijkstra))
 	.on_turn()
-
-
-#	var maybe_door = door_adjacent()
-#	if .pc_adjacent():
-#		attack()
-#	elif maybe_door != null:
-#		maybe_door.nudge(0, false)
-#	else:
-#		set_pos(wander_to_door())
 
 func bless():
 	telegraphing = false
 	combatLog.say("The priest completes his spell!")
+	cur_blessing_cooldown = blessing_cooldown
 	var pos = get_pos()
 	for i in range(-blessing_range, blessing_range+1):
 		for j in range(-blessing_range, blessing_range+1):
@@ -53,7 +46,6 @@ func bless():
 				if !mob.blocking:
 					combatLog.say("A shimmering barrier materializes around the {0}.".format([mob.label]), 10)
 					mob.block()
-	pass
 
 func _draw() -> void:
 	if telegraphing:
