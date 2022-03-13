@@ -76,5 +76,5 @@ func attack():
 	x.update()
 	self.pc.injure()
 
-func die(dir: Vector2):
+func die(_dir: Vector2):
 	emit_signal("you_win")

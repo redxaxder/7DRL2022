@@ -32,6 +32,7 @@ func _ready():
 	randomize()
 
 func from_linear(ix: int) -> Vector2:
+# warning-ignore:integer_division
 	return Vector2(ix % width, ix / width)
 
 func to_linear(x,y) -> int:
@@ -187,7 +188,7 @@ func load_map(ix, level: int): # max index: 26460
 				n += 1
 	#fill non-doors with walls
 	for room in map.rooms:
-		for i in range(room.z+1):
+		for __ in range(room.z+1):
 			for v in map.room_outline(room):
 				var t = to_linear(v.x,v.y)
 				if contents[t] == null:

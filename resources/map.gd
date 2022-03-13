@@ -79,7 +79,7 @@ func get_rooms(p: Vector2, fudge: int = 0) -> Array:
 	return results
 
 func flip_v():
-	var rooms2: Array
+	var rooms2: Array = []
 	for r in rooms:
 		var r2 = r
 		r2.y = height - r.z - r.y
@@ -87,7 +87,7 @@ func flip_v():
 	rooms = rooms2
 
 func flip_h():
-	var rooms2: Array
+	var rooms2: Array = []
 	for r in rooms:
 		var r2 = r
 		r2.x = width - r.z - r.x

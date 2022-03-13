@@ -40,6 +40,9 @@ func block_decay():
 		if cur_block_duration < block_duration:
 			cur_block_duration += 1
 		else:
+			end_block()
+
+func end_block():
 			blocking = false
 			if block_mask != null:
 				block_mask.modulate = Color(1,1,1)
@@ -171,6 +174,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 			self.pc.injure()
 		else:
 			self.die(dir)
+			self.end_block()
 	if self.player:
 		self.pc.stop_run()
 	update()

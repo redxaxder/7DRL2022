@@ -6,7 +6,8 @@ var telegraphing: bool = false
 
 var cur_blessing_cooldown: int = 0
 const blessing_cooldown: int = 8
-const blessing_range: int = 3
+const blessing_range: int = 4
+const blessing_start_cast_range: int = 3
 
 func _ready():
 	label = "priest"
@@ -14,19 +15,19 @@ func _ready():
 
 
 func on_turn():
-	return
 	var d_score = self.enemy_dijkstra.d_score(self.get_pos())
+	print(d_score)
 	if telegraphing:
 		if telegraph_timer > 0:
 			telegraph_timer -= 1
 		else:
 			bless()
-	elif d_score <= 5 && cur_blessing_cooldown == 0:
+	elif blessing_start_cast_range <= 5 && cur_blessing_cooldown == 0:
 		combatLog.say("The priest begins chanting.",20)
 		telegraphing = true
 		telegraph_timer = telegraph_duration
 	else:
-		pass # seek
+		animated_move_to(seek(enemy_dijkstra))
 	.on_turn()
 
 
@@ -49,7 +50,7 @@ func bless():
 			var target = pos + Vector2(i,j)
 			var blessing_targets = locationService.lookup(target, constants.MOBS)
 			for mob in blessing_targets:
-				if !mob.block:
+				if !mob.blocking:
 					combatLog.say("A shimmering barrier materializes around the {0}.".format([mob.label]), 10)
 					mob.block()
 	pass

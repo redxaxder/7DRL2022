@@ -27,6 +27,7 @@ const wizard_scene: PackedScene = preload("res://sprites/wizard.tscn")
 const rogue_scene: PackedScene = preload("res://sprites/rogue.tscn")
 const tourist_scene: PackedScene = preload("res://sprites/tourist.tscn")
 const healer_scene: PackedScene = preload("res://sprites/healer.tscn")
+const priest_scene: PackedScene = preload("res://sprites/priest.tscn")
 const enemies: Array = [
 		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
@@ -38,6 +39,7 @@ const enemies: Array = [
 		{ "scene": healer_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": rogue_scene, "min_depth": 4, "weight": 2},
 #		{ "scene": priest_scene, "min_depth": 4,"weight": 1 },
+		{ "scene": priest_scene, "min_depth": 1,"weight": 1 },
 #		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2 },
 	]
 

@@ -51,7 +51,8 @@ func _ready():
 		scheduler,
 		pc_dijkstra,
 		wander_dijkstra,
-		ortho_dijkstra)
+		ortho_dijkstra,
+		enemy_dijkstra)
 	scheduler.register_actor(pc)
 	director.load_next_map()
 	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")

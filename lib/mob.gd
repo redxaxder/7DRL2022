@@ -25,16 +25,16 @@ func is_hit(dir: Vector2, extra_knockback = 0):
 		self.combatLog.say("The {0} blocks your attack!".format([self.label]))
 		self.combatLog.say("The {0} goes flying!".format([self.label]))
 		self.knockback(dir, 1000, 1 + extra_knockback)
-		self.blocking = false
+		self.end_block()
 	else:
 		die(dir)
 
 func on_turn():
 	block_decay()
-	enemy_dijkstra.update([self.get_pos()])
+	if label != "priest":
+		enemy_dijkstra.update([self.get_pos()])
 
 func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2:
-	var d_map
 	if ortho_seek:
 		return seek(ortho_dijkstra, run_away)
 	else:
