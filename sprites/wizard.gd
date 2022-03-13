@@ -4,11 +4,11 @@ var telegraph_timer: int = 2
 const telegraph_duration: int = 2
 var telegraphing: bool = false
 var cur_shot_cooldown: int = 0
-const shot_cooldown: int = 3
-const shot_range: int = 5
+const shot_cooldown: int = 2
+const shot_range: int = 6
 var shot_dir: Vector2
 
-const mutter_chance: float = 0.02
+const mutter_chance: float = 0.05
 
 func _ready():
 	label = "wizard"

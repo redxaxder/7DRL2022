@@ -28,6 +28,7 @@ const rogue_scene: PackedScene = preload("res://sprites/rogue.tscn")
 const tourist_scene: PackedScene = preload("res://sprites/tourist.tscn")
 const healer_scene: PackedScene = preload("res://sprites/healer.tscn")
 const priest_scene: PackedScene = preload("res://sprites/priest.tscn")
+const valkyrie_scene: PackedScene = preload("res://sprites/valkyrie.tscn")
 const enemies: Array = [
 		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
 		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
@@ -39,7 +40,7 @@ const enemies: Array = [
 		{ "scene": priest_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": rogue_scene, "min_depth": 4, "weight": 2},
 		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1 },
-#		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2 },
+		{ "scene": valkyrie_scene, "min_depth": 1,"weight": 2 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -219,6 +220,8 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 			mob.connect(constants.TELEGRAPH, self, "_on_telegraph")
 		if mob.label == "His Highness":
 			mob.connect("you_win", parent, "_handle_win")
+		if mob.label == "valkyrie":
+			mob.connect("valkyrie_summon", self, "_on_valkyrie_summon")
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
@@ -233,6 +236,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		mob.enemy_dijkstra = enemy_dijkstra
 		mob.set_pos(pos)
 		parent.add_child(mob)
+		mob.update()
 		return mob
 
 func spawn_random_consumable(p: Vector2):
@@ -313,3 +317,9 @@ func _on_exit_level():
 	terrain.update()
 	scheduler.register_actor(pc)
 	pc.update()
+
+func _on_valkyrie_summon(targets: Array):
+	for target in targets:
+		var stuff_at = locationService.lookup(target, constants.BLOCKER)
+		if not terrain.is_wall(target) and stuff_at.size() == 0:
+			spawn_random_enemy(target)

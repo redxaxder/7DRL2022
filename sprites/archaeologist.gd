@@ -1,6 +1,6 @@
 extends Mob
 
-const mutter_chance: float = 0.02
+const mutter_chance: float = 0.05
 const wander_chance: float = 0.5
 
 func _ready():

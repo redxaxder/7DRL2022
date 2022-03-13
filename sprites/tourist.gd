@@ -4,7 +4,7 @@ const flash_damage: int = 1
 const flash_range: int = 3
 const flash_cooldown: int = 3
 var cur_flash_cooldown: int = 0
-const mutter_chance: float = 0.02
+const mutter_chance: float = 0.05
 
 func _ready():
 	label = "tourist"
