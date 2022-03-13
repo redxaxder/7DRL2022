@@ -1,6 +1,6 @@
 TODO:
 
-- Make todo list
++ Make todo list
 
 
 + first pass of impl has:
@@ -29,7 +29,7 @@ TODO:
   + first dijktra map
 
 
-- second pass:
++ second pass:
    + 3 enemies
      + knight
      + monk
@@ -67,13 +67,15 @@ TODO:
 
 other important things:
   - spreading blood pools
-  - animated projectiles
+  - the sound of sound
+  - rage zoom
   - secondary attack indicators for whip
   - blood through doors
   - sometimes can't throw??
   - floating text numbers??
   - overlap player
   - sword -> club
+  + animated projectiles
   + make level-up indicator more clear
   + pending debuffs
   + notify pending level up

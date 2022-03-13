@@ -70,6 +70,8 @@ func _ready():
 	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")
 	update_status()
 	update_pan(-1)
+	combatLog.say(prologue[0])
+
 
 var tick = 0
 
@@ -123,6 +125,8 @@ func _unhandled_input(event):
 			if !did_relax:
 				relax_chain = 0
 			tick += 1
+			if tick < prologue.size():
+				combatLog.say(prologue[tick])
 			pc.tick()
 			update_pc_dijkstras()
 			enemy_dijkstra.tick()
@@ -130,17 +134,32 @@ func _unhandled_input(event):
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
 
+const prologue: Array = [\
+	"I once was a king, just and merciful,", \
+	"o'er peaceful lands I ruled with love.", \
+	"Yet dark and treacherous the minds of idle men,", \
+	"By boredom and lies were my foundations cracked.", \
+	"Yet 'til that fateful day I still clinged, to memories of glories past;", \
+	"And with mine idle hands, invited the slaughter of all I loved.", \
+	"Love they took for weakness,", \
+	"compassion they took for gullibility,", \
+	"and justice they called tyranny.", \
+	"Now as I stoke my rage, and feel anew strengths millennia past, I pray:", \
+	"Blood for the Blood God, Skulls for the Skull Throne!", \
+	]
+
 const relax_messages: Array = [\
 	"You try to gain control of your anger.", \
-	"You start to count backward from 10.", \
-	"9...", \
-	"8...", \
-	"7...", \
-	"6...", \
-	"5...", \
-	"4...", \
-	"3...", \
+	"Rage is the death of me that loves all things.", \
+	"Rage is the end of me that desires aught but destruction.", \
+	"Rage is the end that brings total obliteration.", \
+	"I will face my rage, and turn it against itself.", \
+	"I will permit it to make a battleground of my mind.", \
+	"And when it has spent itself, its control shall wain,", \
+	"And I will regain the eye that sees Beauty and Preservation.", \
+	"Where once was rage, now exists peace, and the nothingness that allows me to be...", \
 	]
+
 const relax_bonuses: Array = [0,5,10,10,100,100,1000,1000,1000000000000]
 func do_relax() -> bool:
 	if pc.rage <= 0:

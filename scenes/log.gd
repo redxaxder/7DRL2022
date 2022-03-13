@@ -5,9 +5,6 @@ class_name CombatLog
 var messages = []
 var message_limits = {}
 
-func _ready():
-	say("welcome to the dungeon")
-
 func say(message, limit:int = -1):
 	if limit > 0:
 		if message_limits.has(message):
