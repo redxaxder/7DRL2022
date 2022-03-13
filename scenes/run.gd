@@ -140,8 +140,14 @@ func update_pc_dijkstras():
 func update_status():
 	var status_text = ""
 	status_text += "exp: {0} / {1}\n".format([pc.experience, pc.experience_needed])
-	if pc.experience >= pc.experience_needed && pc.rage == 0:
+	if pc.experience >= pc.experience_needed:
 		$hud/status_panel/vbox/level_up.visible = true
+		if pc.rage == 0:
+			$hud/status_panel/vbox/level_up.text = "PRESS ENTER TO LEVEL UP"
+			$hud/status_panel/vbox/level_up.modulate = Color(0.219608, 1, 0)
+		else:
+			$hud/status_panel/vbox/level_up.text = "CALM DOWN TO LEVEL UP"
+			$hud/status_panel/vbox/level_up.modulate = Color(1, 1, 1)
 	else:
 		$hud/status_panel/vbox/level_up.visible = false
 	if pc.next_run_speed() > 1:

@@ -43,10 +43,10 @@ func block_decay():
 			end_block()
 
 func end_block():
-			blocking = false
-			if block_mask != null:
-				block_mask.modulate = Color(1,1,1)
-				update()
+	blocking = false
+	if block_mask != null:
+		block_mask.modulate = Color(1,1,1)
+		update()
 
 func block():
 	cur_block_duration = 0
