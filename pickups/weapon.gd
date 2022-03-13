@@ -63,6 +63,7 @@ func init(type: int, southpaw: bool = false):
 			label = "whip"
 			pickup_text = "You pick up a whip."
 			sprite = whip_sprite.instance()
+	sprite.modulate = Color(1, 0.788584, 0.788584)
 	add_child(sprite)
 	attack.southpaw = southpaw
 

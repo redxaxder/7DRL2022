@@ -49,6 +49,7 @@ func init(item_type: int):
 			sprite = shards_sprite.instance()
 			label = "glass shards"
 			pickup_text = "You pick up a handful of glass shards."
+	sprite.modulate = Color(1, 0.984314, 0.639216)
 	add_child(sprite)
 
 func take():
