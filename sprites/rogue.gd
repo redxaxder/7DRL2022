@@ -34,7 +34,7 @@ func on_turn():
 			set_pos(sneak_location)
 			sneak_location = seek(enemy_dijkstra, true)
 			set_pos(the_hideout)
-	elif cur_sneak_cooldown <= 0 && dist <= 8: #enter stealth!
+	elif cur_sneak_cooldown <= 0 && dist <= 8 && pc.rage > 0: #enter stealth!
 		combatLog.say("You lose sight of the rogue.", 50)
 		set_pos(the_hideout)
 		sneak_location = pc.get_pos()
@@ -73,6 +73,6 @@ func die(_dir: Vector2):
 		else:
 			combatLog.say("The rogue dodges!", 20)
 			animated_move_to(next)
-			$sound.play()
+			$dodge.play()
 	else:
 		.die(_dir)
