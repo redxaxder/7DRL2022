@@ -1,7 +1,7 @@
 extends Mob
 
-const heal_damage: int = 5
-const heal_cooldown: int = 3
+const heal_damage: int = 50
+const heal_cooldown: int = 0
 var cur_heal_cooldown: int = 0
 
 func _ready():
