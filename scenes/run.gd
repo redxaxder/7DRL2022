@@ -131,7 +131,7 @@ func _unhandled_input(event):
 			did_tempo = false
 
 const relax_messages: Array = [\
-	"You try to gain conatrol of your anger.", \
+	"You try to gain control of your anger.", \
 	"You start to count backward from 10.", \
 	"9...", \
 	"8...", \

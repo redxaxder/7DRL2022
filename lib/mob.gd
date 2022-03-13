@@ -6,6 +6,8 @@ var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
 var ortho_dijkstra: Dijkstra
 var enemy_dijkstra: Dijkstra
+var nme_hurt = preload("res://scenes/nme_hurt.tscn")
+var hurt_sound
 
 signal killed_by_pc(label)
 
@@ -15,6 +17,8 @@ func _ready():
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
 	add_to_group(constants.BLOODBAG)
+	hurt_sound = nme_hurt.instance()
+	add_child(hurt_sound)
 
 func pc_adjacent() -> bool:
 	var v = get_pos() - pc.get_pos()
@@ -27,6 +31,7 @@ func is_hit(dir: Vector2, extra_knockback = 0):
 		self.knockback(dir, 1000, 1 + extra_knockback)
 		self.end_block()
 	else:
+		hurt_sound.play()
 		die(dir)
 
 func on_turn():

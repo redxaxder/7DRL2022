@@ -4,6 +4,9 @@ const anim_frames: int = 7
 var anim_frame: int = 0
 var red: bool = true
 
+func _ready() -> void:
+	$sound.play()
+
 func _process(delta: float) -> void:
 	update()
 

@@ -73,5 +73,6 @@ func die(_dir: Vector2):
 		else:
 			combatLog.say("The rogue dodges!", 20)
 			animated_move_to(next)
+			$sound.play()
 	else:
 		.die(_dir)

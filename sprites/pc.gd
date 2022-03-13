@@ -96,6 +96,7 @@ func injure():
 		enter_rage()
 	update_rage_decay()
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
+	$hurt_sound.play()
 
 func update_rage_decay():
 	var bonus_decay = (float(100 - grit_bonus) / float(100)) * fatigue / 40.0
@@ -142,6 +143,8 @@ func tick():
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = pending_debuffs()
+			if experience > experience_needed:
+				$level_up_sound.play()
 			if fatigue > 0:
 				combatLog.say("After you calm down, the stress of fighting beyond your limits catches up to you.", 5)
 				combatLog.say("In your weakened state you are vulnerable to a fatal strike.", 5)

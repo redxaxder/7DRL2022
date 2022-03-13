@@ -19,12 +19,14 @@ const turkey_sprite: PackedScene = preload("res://pickups/turkey.tscn")
 const brandy_sprite: PackedScene = preload("res://pickups/brandy.tscn")
 const water_sprite: PackedScene = preload("res://pickups/water.tscn")
 const shards_sprite: PackedScene = preload("res://pickups/shards.tscn")
+const pickup_sound_scene = preload("res://scenes/pickup_sound.tscn")
 
 enum ITEM_TYPE{ APPLE, TURKEY, WATER, BRANDY, SHARDS }
 
 func _ready():
 	randomize()
 	add_to_group(constants.PICKUPS)
+	add_child(pickup_sound_scene.instance())
 
 func init(item_type: int):
 	type = item_type
@@ -55,6 +57,7 @@ func init(item_type: int):
 func take():
 	sprite.visible = false
 	locationService.delete_node(self)
+	$pickup_sound.play()
 
 func place(p: Vector2):
 	sprite.position = SCREEN.dungeon_to_screen(p.x,p.y)
