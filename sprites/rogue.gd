@@ -18,6 +18,7 @@ func _ready():
 	._ready()
 
 func on_turn():
+	var dist = self.pc_dijkstra.d_score(get_pos())
 	if cur_sneak_duration > 0:
 		cur_sneak_duration -= 1
 		if cur_sneak_duration <= 0: # surprise!
@@ -33,7 +34,7 @@ func on_turn():
 			set_pos(sneak_location)
 			sneak_location = seek(enemy_dijkstra, true)
 			set_pos(the_hideout)
-	elif cur_sneak_cooldown <= 0: #enter stealth!
+	elif cur_sneak_cooldown <= 0 && dist <= 8: #enter stealth!
 		combatLog.say("You lose sight of the rogue.", 50)
 		set_pos(the_hideout)
 		sneak_location = pc.get_pos()

@@ -58,7 +58,7 @@ func attack():
 		pc.injure()
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
-	terrain.add_child(Projectile.new(3, get_pos(), target, arrow_projectile_scene.instance()))
+	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance()))
 
 func _draw() -> void:
 	if telegraphing:

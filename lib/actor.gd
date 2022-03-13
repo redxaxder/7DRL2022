@@ -60,6 +60,8 @@ func block():
 func make_ragdoll(dir: Vector2):
 	var ragdoll: Sprite = get_script().new()
 	ragdoll.texture = self.texture
+	ragdoll.modulate = self.modulate
+	ragdoll.self_modulate = self.self_modulate
 	get_parent().add_child(ragdoll)
 	for g in ragdoll.get_groups():
 		if g != constants.BLOODBAG :

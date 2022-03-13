@@ -120,6 +120,9 @@ func calm(amount: int):
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = pending_debuffs()
+			if fatigue > 0:
+				combatLog.say("After you calm down, the stress of fighting beyond your limits catches up to you.", 5)
+				combatLog.say("In your weakened state you are vulnerable to a fatal strike.", 5)
 			emit_signal(constants.RAGE_LIGHTING, false)
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
@@ -373,6 +376,7 @@ func throw_item() -> bool:
 		if !did_throw:
 			throw.combatLog = combatLog
 			throw.parent = terrain
+			throw.sprite = pickup.sprite
 			throw.message = "You throw your {0} at the ".format([pickup.label]) + "{0}."
 			did_throw = throw.try_attack(locationService, get_pos(), d, self.pending_animation(), terrain)
 	if did_throw:
