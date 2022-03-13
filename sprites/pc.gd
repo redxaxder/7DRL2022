@@ -121,7 +121,7 @@ func calm(amount: int):
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = pending_debuffs()
 			if fatigue > 0:
-				combatLog.say("After you calm down, the stress of fighting beyond your limits catches up to you.", 5)
+				combatLog.say("The stress of fighting beyond your limits catches up to you.", 5)
 				combatLog.say("In your weakened state you are vulnerable to a fatal strike.", 5)
 			emit_signal(constants.RAGE_LIGHTING, false)
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)

@@ -12,7 +12,6 @@ var _lifetime = 0.15
 var _delay = 0.0
 
 func _init(node: Node, pos: Vector2, delay: float = 0.0, lifetime: float = 0.15):
-	print("init")
 	sprite = scene.instance()
 	add_child(sprite)
 	node.add_child(self)
@@ -23,7 +22,6 @@ func _init(node: Node, pos: Vector2, delay: float = 0.0, lifetime: float = 0.15)
 		sprite.visible = false
 	else:
 		self.play("flash")
-		print("play")
 
 func _process(delta):
 	if _delay > 0:
