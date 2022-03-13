@@ -146,7 +146,7 @@ func tick():
 			if experience > experience_needed:
 				$level_up_sound.play()
 			if fatigue > 0:
-				combatLog.say("After you calm down, the stress of fighting beyond your limits catches up to you.", 5)
+				combatLog.say("The stress of fighting beyond your limits catches up to you.", 5)
 				combatLog.say("In your weakened state you are vulnerable to a fatal strike.", 5)
 			emit_signal(constants.RAGE_LIGHTING, false)
 	elif fatigue > 0:
