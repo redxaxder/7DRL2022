@@ -34,12 +34,11 @@ const enemies: Array = [
 		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 },
 		{ "scene": wizard_scene, "min_depth": 2, "weight": 1},
 		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 },
-		{ "scene": archaeologist_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": tourist_scene, "min_depth": 3,"weight": 2 },
 		{ "scene": healer_scene, "min_depth": 3,"weight": 1 },
+		{ "scene": priest_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": rogue_scene, "min_depth": 4, "weight": 2},
-#		{ "scene": priest_scene, "min_depth": 4,"weight": 1 },
-		{ "scene": priest_scene, "min_depth": 1,"weight": 1 },
+		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1 },
 #		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2 },
 	]
 
@@ -69,7 +68,8 @@ func _init(p,
 		s,
 		pcd: Dijkstra,
 		wd: Dijkstra,
-		od):
+		od: Dijkstra,
+		ed: Dijkstra):
 	pc = p
 	terrain = t
 	locationService = ls
@@ -79,6 +79,7 @@ func _init(p,
 	pc_dijkstra = pcd
 	wander_dijkstra = wd
 	ortho_dijkstra = od
+	enemy_dijkstra = ed
 	randomize()
 
 const area_targets = [2000,2500,4000,6000,10000,18000]
@@ -106,6 +107,7 @@ func load_next_map():
 	var map_id = decide_map(level)
 	terrain.load_map(map_id, level)
 	refresh_pc_dijkstras()
+	enemy_dijkstra.refresh()
 	area_seen += terrain.width * terrain.height
 	var starting_room: Vector3 = Vector3(10000,10000,100000)
 	for room in terrain.map.rooms:
