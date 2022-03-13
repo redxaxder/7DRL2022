@@ -34,6 +34,8 @@ var tempo_chance: int = 0
 var did_tempo: bool = false
 var overrun_perk: bool = false
 
+var relax_chain: int = 0
+
 func _ready():
 	randomize()
 	pc.terrain = terrain
@@ -78,6 +80,7 @@ func _unhandled_input(event):
 		var acted: bool = false
 		var did_attack: bool = false
 		var did_kick: bool = false
+		var did_relax: bool = false
 		var dir: int = -1
 		var ppos = pc.get_pos()
 		if event.is_action_pressed("left"):
@@ -90,7 +93,8 @@ func _unhandled_input(event):
 			dir = Dir.DIR.DOWN
 		elif event.is_action_pressed("pass"):
 			acted = true
-			if acted: pc.stop_run()
+			did_relax = do_relax()
+			pc.stop_run()
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
 			if acted: pc.stop_run()
@@ -112,11 +116,12 @@ func _unhandled_input(event):
 			acted = pc.try_move(dir)
 			if acted:
 				update_pan(dir)
-
 		if acted:
 			if did_attack && (randi()%100 < tempo_chance) && !did_tempo:
 				did_tempo = true
 				return
+			if !did_relax:
+				relax_chain = 0
 			tick += 1
 			pc.tick()
 			update_pc_dijkstras()
@@ -124,6 +129,28 @@ func _unhandled_input(event):
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
+
+const relax_messages: Array = [\
+	"You try to gain conatrol of your anger.", \
+	"You start to count backward from 10.", \
+	"9...", \
+	"8...", \
+	"7...", \
+	"6...", \
+	"5...", \
+	"4...", \
+	"3...", \
+	]
+const relax_bonuses: Array = [0,5,10,10,100,100,1000,1000,1000000000000]
+func do_relax() -> bool:
+	if pc.rage <= 0:
+		return false
+	combatLog.say(relax_messages[relax_chain])
+	var calm = relax_bonuses[relax_chain]
+	if calm > 0:
+		pc.calm(calm)
+	relax_chain = min(1 + relax_chain, relax_messages.size() - 1)
+	return true
 
 func update_pc_dijkstras():
 	var pos = pc.get_pos()
