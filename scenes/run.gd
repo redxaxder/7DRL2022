@@ -256,6 +256,8 @@ func update_pan(dir) -> void:
 	var new_target = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + pan
 	camera_offset += old_target - new_target
 	camera_target = new_target
+	if dir < 0:
+		camera_offset = Vector2(0,0)
 
 func _help_director_out():
 	#not sure why rooms sometimes fail to activate, so..
