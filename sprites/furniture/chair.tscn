@@ -13,6 +13,7 @@ atlas = ExtResource( 1 )
 region = Rect2( 88, 156, 8, 12 )
 
 [node name="chair" type="Sprite"]
+self_modulate = Color( 0.627451, 0.294118, 0, 1 )
 z_index = 5
 texture = SubResource( 1 )
 script = ExtResource( 3 )
