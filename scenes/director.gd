@@ -29,18 +29,20 @@ const tourist_scene: PackedScene = preload("res://sprites/tourist.tscn")
 const healer_scene: PackedScene = preload("res://sprites/healer.tscn")
 const priest_scene: PackedScene = preload("res://sprites/priest.tscn")
 const valkyrie_scene: PackedScene = preload("res://sprites/valkyrie.tscn")
+const caveman_scene: PackedScene = preload("res://sprites/caveman.tscn")
 const enemies: Array = [
-		{ "scene": knight_scene, "min_depth": 1,"weight": 2 },
-		{ "scene": monk_scene, "min_depth": 1,"weight": 2 },
-		{ "scene": rogue_scene, "min_depth": 1, "weight": 2},
-		{ "scene": samurai_scene, "min_depth": 2,"weight": 3 },
-		{ "scene": wizard_scene, "min_depth": 2, "weight": 1},
-		{ "scene": ranger_scene, "min_depth": 2,"weight": 2 },
-		{ "scene": tourist_scene, "min_depth": 3,"weight": 2 },
-		{ "scene": healer_scene, "min_depth": 3,"weight": 1 },
-		{ "scene": priest_scene, "min_depth": 3,"weight": 1 },
-		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1 },
-		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2 },
+		{ "scene": caveman_scene, "min_depth": 1, "weight": 1, "max_depth": 1},
+		{ "scene": knight_scene, "min_depth": 1,"weight": 2, "max_depth": 6 },
+		{ "scene": monk_scene, "min_depth": 1,"weight": 2, "max_depth": 6 },
+		{ "scene": rogue_scene, "min_depth": 1, "weight": 2, "max_depth": 6},
+		{ "scene": samurai_scene, "min_depth": 2,"weight": 3, "max_depth": 6 },
+		{ "scene": wizard_scene, "min_depth": 2, "weight": 1, "max_depth": 6},
+		{ "scene": ranger_scene, "min_depth": 2,"weight": 2, "max_depth": 6 },
+		{ "scene": tourist_scene, "min_depth": 3,"weight": 2, "max_depth": 6 },
+		{ "scene": healer_scene, "min_depth": 3,"weight": 1, "max_depth": 6 },
+		{ "scene": priest_scene, "min_depth": 3,"weight": 1, "max_depth": 6 },
+		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1, "max_depth": 6},
+		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2, "max_depth": 6 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -180,7 +182,7 @@ func populate_room(room: Vector3):
 func spawn_random_enemy(pos: Vector2):
 	var enemy_pool = []
 	for e in enemies:
-		if e.min_depth <= level:
+		if e.min_depth <= level and e.max_depth >= level:
 			for __ in e.weight:
 				enemy_pool.push_back(e.scene)
 	var enemy = enemy_pool[randi() % enemy_pool.size()]
