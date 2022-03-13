@@ -419,6 +419,8 @@ func _on_pick_perk(p: Perk):
 			rage_on_got_hit += p.bonus
 		p.PERK_TYPE.ENDURANCE:
 			starting_recovery += p.bonus
+			if recovery > 0:
+				recovery += 1
 		p.PERK_TYPE.SHORT_TEMPERED:
 			starting_rage += p.bonus
 		p.PERK_TYPE.POWER_ATTACK:
