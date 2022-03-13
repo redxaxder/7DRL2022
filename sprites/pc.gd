@@ -157,6 +157,7 @@ func tick():
 		speed = normal_speed
 		recovery = 0
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
+	terrain.spread_blood()
 
 func pending_debuffs() -> Dictionary:
 	var d = debuff_effects.get_fatigue_effects(fatigue)

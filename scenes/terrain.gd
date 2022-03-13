@@ -208,6 +208,29 @@ func splatter_blood(pos: Vector2, dir: Vector2):
 		pos += dir
 	update()
 
+func spread_blood():
+	for i in blood_map.size():
+		if blood_map[i] > 30:
+			var coord = from_linear(i)
+			var neighs = [
+				coord + Vector2(1, 0),
+				coord + Vector2(-1, 0),
+				coord + Vector2(0, 1),
+				coord + Vector2(0, -1),
+				coord + Vector2(1, 1),
+				coord + Vector2(1, -1),
+				coord + Vector2(-1, 1),
+				coord + Vector2(-1, -1),
+			]
+			var targets = []
+			for n in neighs:
+				if in_bounds(n) and not is_wall(n):
+					targets.push_back(n)
+			blood_map[i] -= targets.size()
+			targets.shuffle()
+			for t in targets:
+				blood_map[to_linear(t.x, t.y)] += 1
+
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
 var exit_txtr = (preload("res://sprites/exit.tscn").instance() as Sprite).texture

@@ -66,15 +66,14 @@ TODO:
        + recovery: [+1/+1/+1] starting recovery after rage ends
 
 other important things:
-  - spreading blood pools
-  - the sound of sound
-  - rage zoom
   - secondary attack indicators for whip
   - blood through doors
   - sometimes can't throw??
   - floating text numbers??
   - overlap player
   - sword -> club
+  + spreading blood pools
+  + the sound of sound
   + animated projectiles
   + make level-up indicator more clear
   + pending debuffs

@@ -325,7 +325,11 @@ func _on_valkyrie_summon(targets: Array):
 	for target in targets:
 		var stuff_at = locationService.lookup(target, constants.BLOCKER)
 		if not terrain.is_wall(target) and stuff_at.size() == 0:
-			var mob = spawn_random_enemy(target)
+			var nmes = []
+			for e in enemies:
+				nmes.push_back(e.scene)
+			var nme = nmes[randi() % nmes.size()]
+			var mob = spawn_dynamic_mob(nme, target)
 			if mob != null:
 				mob.visible = true
 				scheduler.register_actor(mob)
