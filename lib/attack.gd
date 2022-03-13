@@ -36,10 +36,7 @@ func flip(dir: int) -> int:
 		return dir
 
 func spawn_indicator(target: Vector2):
-	var x = attack_indicator.instance()
-	parent.add_child(x)
-	x.position = SCREEN.dungeon_to_screen(target.x, target.y)
-	x.update()
+	AttackIndicator.new(parent, target)
 
 func xor(l: bool, r: bool) -> bool:
 	return	(l && !r) || (!l && r)

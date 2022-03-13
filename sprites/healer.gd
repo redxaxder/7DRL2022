@@ -22,11 +22,7 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The healer brings forth a wave of calming energy.")
-	var x = attack_indicator.instance()
-	terrain.add_child(x)
-	var pos = pc.get_pos()
-	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
-	x.update()
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.calm(heal_damage)
 
 func _draw() -> void:

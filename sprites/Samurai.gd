@@ -39,11 +39,7 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The samurai slashes with his katana!")
-	var x = attack_indicator.instance()
-	terrain.add_child(x)
-	var pos = pc.get_pos()
-	x.position = SCREEN.dungeon_to_screen(pos.x, pos.y)
-	x.update()
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.injure()
 
 func dash_attack(pos: Vector2):
@@ -51,6 +47,7 @@ func dash_attack(pos: Vector2):
 	self.combatLog.say("Before you can even blink, you feel the bite of his katana.")
 	self.cur_dash_cooldown = dash_cooldown
 	self.animated_move_to(pos)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.injure()
 
 func _draw() -> void:

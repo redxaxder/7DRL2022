@@ -5,7 +5,6 @@ class_name Actor
 var constants = preload("res://lib/const.gd").new()
 var SCREEN: Screen = preload("res://lib/screen.gd").new()
 var DIR: Dir = preload("res://lib/dir.gd").new()
-const attack_indicator = preload("res://sprites/attack_indicator.tscn")
 const block_indicator = preload("res://sprites/shield.tscn")
 
 var terrain
