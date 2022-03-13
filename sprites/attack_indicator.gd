@@ -28,10 +28,8 @@ func _init(node: Node, pos: Vector2, delay: float = 0.0, lifetime: float = 0.15)
 func _process(delta):
 	if _delay > 0:
 		_delay -= delta
-		print("{0} {1}".format([_delay, delta]))
 		if _delay <= 0:
 			sprite.play("flash")
-			print("play")
 			sprite.visible = true
 	else:
 		_lifetime -= delta

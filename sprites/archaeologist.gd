@@ -62,7 +62,7 @@ func on_turn():
 	elif maybe_door != null:
 		maybe_door.nudge(0, false)
 	else:
-		set_pos(wander_to_door())
+		animated_move_to(wander_to_door())
 	.on_turn()
 
 func attack():

@@ -24,7 +24,7 @@ func on_turn():
 		# run away
 		if cur_shot_cooldown > 0:
 			cur_shot_cooldown -= 1
-			set_pos(self.seek_to_player(true))
+			animated_move_to(self.seek_to_player(true))
 		# shoot
 		else:
 			combatLog.say("The ranger takes aim!",20)
@@ -45,7 +45,7 @@ func on_turn():
 		else:
 			attack()
 	else:
-		set_pos(seek_to_player())
+		animated_move_to(seek_to_player())
 		cur_shot_cooldown = max(0, cur_shot_cooldown - 1)
 	.on_turn()
 
@@ -58,7 +58,7 @@ func attack():
 		pc.injure()
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
-	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance()))
+	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance(), self.pending_animation() / anim_speed))
 
 func _draw() -> void:
 	if telegraphing:

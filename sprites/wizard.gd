@@ -103,7 +103,7 @@ func attack():
 			combatLog.say("The fireball misses.", 20)
 			cont = false
 		if !cont:
-			terrain.add_child(Projectile.new(15, pos, target, fireball_sprite.instance()))
+			terrain.add_child(Projectile.new(15, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed))
 		target += shot_dir
 		travel += 1
 

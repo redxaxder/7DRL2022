@@ -28,7 +28,7 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 		var pos = get_pos()
 		var target = get_pos() + DIR.dir_to_vec(dir)
 		if locationService.lookup(target).size() == 0 and not terrain.is_wall(target):
-			set_pos(target)
+			animated_move_to(target)
 		else:
 			combatLog.say("But there's something in the way!")
 		update()
