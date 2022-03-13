@@ -101,7 +101,7 @@ func _unhandled_input(event):
 			acted = pc.consume()
 			if acted: pc.stop_run()
 		elif event.is_action_pressed("level_up"):
-			if pc.experience >= pc.experience_needed && pc.rage <= 0:
+			if true: #pc.experience >= pc.experience_needed && pc.rage <= 0:
 				do_level_up()
 		if dir >= 0 && !acted:
 			did_attack = pc.try_attack(dir)
@@ -288,6 +288,10 @@ func _process(delta):
 		camera_offset = camera_offset * pow(0.3,delta)
 		camera_offset = camera_offset.move_toward(Vector2(0,0), SCREEN.TILE_HEIGHT * delta * 2)
 	$camera.position = camera_target + camera_offset
+	$camera.zoom = zoom_level(pc.rage) * Vector2(1,1)
+
+func zoom_level(x: float) -> float:
+	return 0.3 + (0.7 / (1 + exp(-2.5 + (x/300))))
 
 func scale(v: Vector2, s: float) -> Vector2:
 	return Vector2(v.x * s, v.y*s)
