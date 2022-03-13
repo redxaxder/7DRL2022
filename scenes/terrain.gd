@@ -12,6 +12,7 @@ var map
 
 var contents: Array = []
 var blood_map: Array = []
+var blood_spread_frontier: Dictionary = {}
 var active_rooms: Dictionary = {} # used as a set. room -> 0
 
 const cosmetic_map_seed: int = 68000
@@ -163,6 +164,7 @@ func load_map(ix, level: int): # max index: 26460
 	contents = []
 	contents.resize(size)
 	blood_map = []
+	blood_spread_frontier = {}
 	blood_map.resize(size)
 	for i in blood_map.size():
 		blood_map[i] = 0
@@ -201,35 +203,42 @@ func splatter_blood(pos: Vector2, dir: Vector2):
 		var ix = to_linear(pos.x, pos.y)
 		var pool = blood_map[ix]
 		var deposit = max(int((blood - pool) * 0.6),1) + 1
-		blood_map[ix] += deposit
+		add_blood(ix, deposit)
 		blood -= deposit
 		if atv(pos) == '#':
 			break
 		pos += dir
 	update()
 
+func add_blood(ix, deposit):
+	if 0 <= ix && ix < blood_map.size():
+		blood_map[ix] += deposit
+		if blood_map[ix] > 40:
+			blood_spread_frontier[ix] = 0
+
 func spread_blood():
-	for i in blood_map.size():
-		if blood_map[i] > 30:
-			var coord = from_linear(i)
-			var neighs = [
-				coord + Vector2(1, 0),
-				coord + Vector2(-1, 0),
-				coord + Vector2(0, 1),
-				coord + Vector2(0, -1),
-				coord + Vector2(1, 1),
-				coord + Vector2(1, -1),
-				coord + Vector2(-1, 1),
-				coord + Vector2(-1, -1),
-			]
-			var targets = []
-			for n in neighs:
-				if in_bounds(n) and not is_wall(n):
-					targets.push_back(n)
-			blood_map[i] -= targets.size()
-			targets.shuffle()
-			for t in targets:
-				blood_map[to_linear(t.x, t.y)] += 1
+	for i in blood_spread_frontier.keys():
+		var coord = from_linear(i)
+		var neighs = [
+			coord + Vector2(1, 0),
+			coord + Vector2(-1, 0),
+			coord + Vector2(0, 1),
+			coord + Vector2(0, -1),
+			coord + Vector2(1, 1),
+			coord + Vector2(1, -1),
+			coord + Vector2(-1, 1),
+			coord + Vector2(-1, -1),
+		]
+		var targets = []
+		for n in neighs:
+			if in_bounds(n) and not is_wall(n):
+				targets.push_back(n)
+		blood_map[i] -= targets.size()
+		if blood_map[i] <= 40:
+			blood_spread_frontier.erase(i)
+		targets.shuffle()
+		for t in targets:
+			add_blood(to_linear(t.x,t.y), 1)
 
 var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
 var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
