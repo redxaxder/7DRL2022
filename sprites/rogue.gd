@@ -14,7 +14,7 @@ var another_guy: bool = true
 
 func _ready():
 	label = "rogue"
-	cur_sneak_cooldown = randi() % (sneak_cooldown_flat + sneak_cooldown_rand) 
+	cur_sneak_cooldown = randi() % (sneak_cooldown_flat + sneak_cooldown_rand)
 	._ready()
 
 func on_turn():

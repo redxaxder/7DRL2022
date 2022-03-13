@@ -40,7 +40,7 @@ const enemies: Array = [
 		{ "scene": healer_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": priest_scene, "min_depth": 3,"weight": 1 },
 		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1 },
-		{ "scene": valkyrie_scene, "min_depth": 1,"weight": 2 },
+		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")
@@ -184,7 +184,7 @@ func spawn_random_enemy(pos: Vector2):
 			for __ in e.weight:
 				enemy_pool.push_back(e.scene)
 	var enemy = enemy_pool[randi() % enemy_pool.size()]
-	spawn_dynamic_mob(enemy, pos)
+	return spawn_dynamic_mob(enemy, pos)
 
 func room_doors(room: Vector3):
 	for cell in terrain.map.room_outline(room):
@@ -222,6 +222,7 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 			mob.connect("you_win", parent, "_handle_win")
 		if mob.label == "valkyrie":
 			mob.connect("valkyrie_summon", self, "_on_valkyrie_summon")
+		return mob
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
 	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
@@ -322,4 +323,9 @@ func _on_valkyrie_summon(targets: Array):
 	for target in targets:
 		var stuff_at = locationService.lookup(target, constants.BLOCKER)
 		if not terrain.is_wall(target) and stuff_at.size() == 0:
-			spawn_random_enemy(target)
+			var mob = spawn_random_enemy(target)
+			if mob != null:
+				mob.visible = true
+				scheduler.register_actor(mob)
+				if mob.label == "valkyrie":
+					mob.summon = false
