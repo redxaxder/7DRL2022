@@ -12,7 +12,7 @@ func _ready():
 
 func on_turn():
 	if rand_range(0, 1) < mutter_chance:
-		combatLog.say("The tourist says something loudly and slowly in his own language.")
+		combatLog.say("The tourist says something loudly and slowly in his own language.", 5)
 	var pos = self.get_pos()
 	var dist = self.pc_dijkstra.d_score(pos)
 	if cur_flash_cooldown == 0:

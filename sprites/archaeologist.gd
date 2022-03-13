@@ -23,7 +23,7 @@ func door_adjacent():
 
 func wander_to_door():
 	if rand_range(0, 1) < mutter_chance:
-		combatLog.say("You hear someone muttering about artifacts.")
+		combatLog.say("You hear someone muttering about artifacts.", 5)
 	# find the smallest direction in the d_map
 	var e = get_pos()
 	var best_val = self.wander_dijkstra.d_score(e)
