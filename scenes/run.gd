@@ -16,6 +16,7 @@ var director: Director
 var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
 var ortho_dijkstra: Dijkstra
+var enemy_dijkstra: Dijkstra
 
 signal end_player_turn()
 
@@ -40,7 +41,8 @@ func _ready():
 	pc.locationService = locationService
 	pc_dijkstra = Dijkstra.new(terrain, locationService)
 	wander_dijkstra = Dijkstra.new(terrain, locationService)
-	ortho_dijkstra = Dijkstra.new(terrain, locationService)
+	ortho_dijkstra = Dijkstra.new(terrain, locationService, 1000, 1000, 1, 15)
+	enemy_dijkstra = Dijkstra.new(terrain, locationService, 5, 1000, 1, 10)
 	director = Director.new(pc,
 		terrain,
 		locationService,
@@ -115,6 +117,7 @@ func _unhandled_input(event):
 			tick += 1
 			pc.tick()
 			update_pc_dijkstras()
+			enemy_dijkstra.tick()
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false

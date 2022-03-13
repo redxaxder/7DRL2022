@@ -14,6 +14,7 @@ func on_turn():
 	else:
 		var next = .seek_to_player()
 		animated_move_to(next)
+	.on_turn()
 
 func attack():
 	self.combatLog.say("The rogue stabs you!")
@@ -27,7 +28,7 @@ func attack():
 
 func _draw() -> void:
 	if not revealed:
-		self.modulate = Color(0.269531, 0.269531, 0.269531)
+		self.modulate = constants.READY_COLOR
 	else:
 		self.modulate = Color(1, 1, 1)
 	._draw()

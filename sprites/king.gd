@@ -65,6 +65,7 @@ func on_turn():
 		maybe_door.nudge(0, false)
 	else:
 		set_pos(wander_to_door())
+	.on_turn()
 
 func attack():
 	combatLog.say("His Highness strikes you with his sceptre.")

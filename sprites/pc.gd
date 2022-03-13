@@ -110,7 +110,7 @@ func dazzle():
 		self.combatLog.say(" +{0} fatigue".format([flash_damage]))
 	else:
 		enter_rage()
-	rage_decay = 1 + fatigue / 40
+	update_rage_decay()
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
 func calm(amount: int):

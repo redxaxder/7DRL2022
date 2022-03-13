@@ -46,6 +46,7 @@ func on_turn():
 	else:
 		set_pos(seek_to_player())
 		cur_shot_cooldown = max(0, cur_shot_cooldown - 1)
+	.on_turn()
 
 func attack():
 	telegraphing = false

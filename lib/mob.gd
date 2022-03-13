@@ -5,6 +5,7 @@ class_name Mob
 var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
 var ortho_dijkstra: Dijkstra
+var enemy_dijkstra: Dijkstra
 
 signal killed_by_pc(label)
 
@@ -28,13 +29,18 @@ func is_hit(dir: Vector2, extra_knockback = 0):
 	else:
 		die(dir)
 
+func on_turn():
+	block_decay()
+	enemy_dijkstra.update([self.get_pos()])
+
 func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2:
-	# find the smallest direction in the d_map
 	var d_map
 	if ortho_seek:
-		d_map = ortho_dijkstra
+		return seek(ortho_dijkstra, run_away)
 	else:
-		d_map = pc_dijkstra
+		return seek(pc_dijkstra, run_away)
+
+func seek(d_map: Dijkstra, reverse = false):
 	var e = get_pos()
 	var best_val = d_map.d_score(e)
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
@@ -43,7 +49,7 @@ func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2
 		var t = d_map.d_score(c)
 		scores.append(t)
 		if t:
-			if run_away:
+			if reverse:
 				best_val = max(best_val, t)
 			else:
 				best_val = min(best_val, t)
@@ -65,5 +71,3 @@ func seek_to_player(run_away: bool = false, ortho_seek: bool = false) -> Vector2
 		final_candidates = legal_candidates
 
 	return final_candidates[randi() % final_candidates.size()]
-
-

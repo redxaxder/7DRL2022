@@ -16,5 +16,5 @@ func evolve_perk() -> bool:
 var titles = ["Bloodlust", "Bloodlust II", "Bloodlust III"]
 func config():
 	title = titles[level]
-	bonus = level + 1
+	bonus = 1
 	description = "On killing an enemy, gain {0} additional rage.".format([bonus])

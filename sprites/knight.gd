@@ -9,7 +9,6 @@ func _ready():
 	._ready()
 
 func on_turn():
-	block_decay()
 	if self.cur_block_cooldown > 0:
 		self.cur_block_cooldown -= 1
 	# chance to block increases linearly with proximity to player
@@ -27,6 +26,7 @@ func on_turn():
 	else:
 		var next = .seek_to_player()
 		animated_move_to(next)
+	.on_turn()
 
 func attack():
 	self.combatLog.say("The knight stabs you!")

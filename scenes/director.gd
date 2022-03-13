@@ -12,6 +12,7 @@ var scheduler
 var pc_dijkstra
 var wander_dijkstra
 var ortho_dijkstra
+var enemy_dijkstra
 var exits: Array = []
 var king_spawned: bool = false
 
@@ -225,6 +226,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		mob.pc_dijkstra = pc_dijkstra
 		mob.wander_dijkstra = wander_dijkstra
 		mob.ortho_dijkstra = ortho_dijkstra
+		mob.enemy_dijkstra = enemy_dijkstra
 		mob.set_pos(pos)
 		parent.add_child(mob)
 		return mob
