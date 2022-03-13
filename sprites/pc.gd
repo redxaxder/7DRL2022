@@ -142,6 +142,9 @@ func tick():
 		if rage == 0: # we left rage!
 			experience_gain_rate = base_experience_gain_rate
 			debuffs = pending_debuffs()
+			if fatigue > 0:
+				combatLog.say("After you calm down, the stress of fighting beyond your limits catches up to you.", 5)
+				combatLog.say("In your weakened state you are vulnerable to a fatal strike.", 5)
 			emit_signal(constants.RAGE_LIGHTING, false)
 	elif fatigue > 0:
 		speed = normal_speed
@@ -309,7 +312,7 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 
 func pick_up(p: Pickup, l: Vector2):
 	if debuffs.has(self.constants.FUMBLE) and debuffs[self.constants.FUMBLE] > 0:
-		self.combatLog.say("You're too weak to pick up the {0}".format([p.label]))
+		self.combatLog.say("The {0} tumbles from your shaky grip.".format([p.label]))
 		return
 	if p.is_weapon:
 		var wt = -1
