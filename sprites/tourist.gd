@@ -26,6 +26,7 @@ func on_turn():
 		cur_flash_cooldown = max(0, cur_flash_cooldown - 1)
 		var next = .seek_to_player(true)
 		animated_move_to(next)
+	.on_turn()
 
 func attack():
 	self.combatLog.say("A camera flash dazzles you!")
