@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://resources/map.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+width = 165
+height = 137
+size = 22605
+rooms = [ Vector3( 0, 0, 74 ), Vector3( 74, 0, 38 ), Vector3( 112, 0, 53 ), Vector3( 74, 38, 23 ), Vector3( 97, 38, 15 ), Vector3( 97, 53, 8 ), Vector3( 105, 53, 25 ), Vector3( 130, 53, 35 ), Vector3( 74, 61, 13 ), Vector3( 87, 61, 18 ), Vector3( 0, 74, 63 ), Vector3( 63, 74, 24 ), Vector3( 105, 78, 1 ), Vector3( 106, 78, 24 ), Vector3( 87, 79, 19 ), Vector3( 130, 88, 14 ), Vector3( 144, 88, 21 ), Vector3( 63, 98, 39 ), Vector3( 102, 98, 4 ), Vector3( 102, 102, 35 ), Vector3( 137, 102, 7 ), Vector3( 137, 109, 28 ) ]
