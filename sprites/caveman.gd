@@ -8,7 +8,7 @@ func _ready():
 
 func on_turn():
 	if rand_range(0, 1) < mutter_chance:
-		combatLog.say("\"Ooga booga?\"")
+		combatLog.say("\"Ooga booga?\"",5)
 	if pc_adjacent():
 		attack()
 	else:
