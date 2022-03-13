@@ -155,11 +155,11 @@ func update_status():
 	if pc.pickup != null || pc.weapon != null:
 		status_text += "holding:\n"
 		if pc.pickup != null && !pc.southpaw:
-			status_text += "  {0}\n".format([pc.pickup.label])
+			status_text += "  {0} [space]\n".format([pc.pickup.label])
 		if pc.weapon != null:
 			status_text += "  {0}\n".format([pc.weapon.label])
 		if pc.pickup != null && pc.southpaw:
-			status_text += "  {0}\n".format([pc.pickup.label])
+			status_text += "  {0} [space]\n".format([pc.pickup.label])
 	if pc.rage > 0:
 		status_text += "rage {0} [-{1}]\n".format([pc.rage, pc.rage_decay])
 		status_text += "fatigue {0}\n".format([pc.fatigue])
