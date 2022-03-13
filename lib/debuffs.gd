@@ -22,6 +22,6 @@ func get_fatigue_effects(fatigue: int):
 		var debuff = debuffs[d]
 		var threshold = debuff[constants.THRESH]
 		var divisor = debuff[constants.DIV]
-		var duration = int(clamp((fatigue - threshold)/divisor, 0, 100))
+		var duration = int(clamp((fatigue - threshold)/divisor, 0, 1000))
 		result[name] = duration
 	return result
