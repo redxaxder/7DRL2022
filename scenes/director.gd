@@ -31,18 +31,18 @@ const priest_scene: PackedScene = preload("res://sprites/priest.tscn")
 const valkyrie_scene: PackedScene = preload("res://sprites/valkyrie.tscn")
 const caveman_scene: PackedScene = preload("res://sprites/caveman.tscn")
 const enemies: Array = [
-		{ "scene": caveman_scene, "min_depth": 1, "weight": 1, "max_depth": 1},
-		{ "scene": knight_scene, "min_depth": 1,"weight": 2, "max_depth": 6 },
-		{ "scene": monk_scene, "min_depth": 1,"weight": 2, "max_depth": 6 },
-		{ "scene": rogue_scene, "min_depth": 1, "weight": 2, "max_depth": 6},
-		{ "scene": samurai_scene, "min_depth": 2,"weight": 3, "max_depth": 6 },
-		{ "scene": wizard_scene, "min_depth": 2, "weight": 1, "max_depth": 6},
-		{ "scene": ranger_scene, "min_depth": 2,"weight": 2, "max_depth": 6 },
-		{ "scene": tourist_scene, "min_depth": 3,"weight": 2, "max_depth": 6 },
-		{ "scene": healer_scene, "min_depth": 3,"weight": 1, "max_depth": 6 },
-		{ "scene": priest_scene, "min_depth": 3,"weight": 1, "max_depth": 6 },
+		{ "scene": caveman_scene, "min_depth": 1, "weight": 1, "max_depth": 1 },
+		{ "scene": knight_scene, "min_depth": 1,"weight": 6, "max_depth": 4 },
+		{ "scene": wizard_scene, "min_depth": 1, "weight": 9, "max_depth": 5 },
+		{ "scene": monk_scene, "min_depth": 1,"weight": 6, "max_depth": 5 },
+		{ "scene": samurai_scene, "min_depth": 2,"weight": 6, "max_depth": 6 },
+		{ "scene": rogue_scene, "min_depth": 2, "weight": 6, "max_depth": 6 },
+		{ "scene": ranger_scene, "min_depth": 2,"weight": 6, "max_depth": 6 },
+		{ "scene": tourist_scene, "min_depth": 3,"weight": 1, "max_depth": 3 },
+		{ "scene": healer_scene, "min_depth": 3,"weight": 4, "max_depth": 6 },
+		{ "scene": priest_scene, "min_depth": 3,"weight": 4, "max_depth": 6 },
 		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1, "max_depth": 6},
-		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 2, "max_depth": 6 },
+		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 9, "max_depth": 6 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")

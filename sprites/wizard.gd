@@ -1,11 +1,9 @@
 extends Mob
 
-var telegraph_timer: int = 2
-const telegraph_duration: int = 2
 var telegraphing: bool = false
 var cur_shot_cooldown: int = 0
-const shot_cooldown: int = 2
-const shot_range: int = 6
+const shot_cooldown: int = 0
+const shot_range: int = 12
 var shot_dir: Vector2
 
 const mutter_chance: float = 0.05
@@ -27,9 +25,6 @@ func on_turn():
 	var dist = self.pc_dijkstra.d_score(pos)
 	var aligned: bool = check_alignment()
 	if telegraphing:
-		if telegraph_timer > 0:
-			telegraph_timer -= 1
-		else:
 			attack()
 	elif dist > shot_range or not aligned:
 		animated_move_to(self.seek_to_player(false, true))
@@ -63,7 +58,6 @@ func on_turn():
 			if clear_shot:
 				combatLog.say("The wizard begins chanting.",20)
 				telegraphing = true
-				telegraph_timer = telegraph_duration
 			else:
 				animated_move_to(self.seek_to_player(false, true))
 
@@ -103,7 +97,7 @@ func attack():
 			combatLog.say("The fireball misses.", 20)
 			cont = false
 		if !cont:
-			terrain.add_child(Projectile.new(15, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed))
+			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed))
 		target += shot_dir
 		travel += 1
 
