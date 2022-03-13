@@ -2,7 +2,7 @@ extends Mob
 
 
 const the_hideout: Vector2 = Vector2(-1000,-1000)
-const sneak_cooldown_flat: int = 12
+const sneak_cooldown_flat: int = 20
 const sneak_cooldown_rand: int = 4
 const sneak_duration_flat: int = 3
 const sneak_duration_rand: int = 3
