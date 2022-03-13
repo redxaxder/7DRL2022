@@ -9,6 +9,7 @@ const shot_range: int = 8
 var target: Vector2
 var target_obj: Object = null
 
+const arrow_projectile_scene: PackedScene = preload("res://sprites/arrow.tscn")
 signal telegraph(target)
 signal remove_target(target)
 
@@ -57,10 +58,7 @@ func attack():
 		pc.injure()
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
-	var x = attack_indicator.instance()
-	terrain.add_child(x)
-	x.position = SCREEN.dungeon_to_screen(target.x, target.y)
-	x.update()
+	terrain.add_child(Projectile.new(3, get_pos(), target, arrow_projectile_scene.instance()))
 
 func _draw() -> void:
 	if telegraphing:

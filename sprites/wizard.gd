@@ -10,6 +10,8 @@ var shot_dir: Vector2
 
 const mutter_chance: float = 0.05
 
+const fireball_sprite: PackedScene = preload("res://sprites/fireball.tscn")
+
 func _ready():
 	label = "wizard"
 	._ready()
@@ -74,6 +76,7 @@ func attack():
 	var ppos = pc.get_pos()
 	#march the fireball until it hits something
 	var target = pos + shot_dir
+	var travel = 1
 	var cont = true
 	while cont:
 		var stuff_at = locationService.lookup(target)
@@ -99,7 +102,10 @@ func attack():
 		if terrain.is_wall(target):
 			combatLog.say("The fireball misses.", 20)
 			cont = false
+		if !cont:
+			terrain.add_child(Projectile.new(15, pos, target, fireball_sprite.instance()))
 		target += shot_dir
+		travel += 1
 
 func _draw() -> void:
 	if telegraphing:

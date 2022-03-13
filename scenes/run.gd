@@ -90,8 +90,10 @@ func _unhandled_input(event):
 			dir = Dir.DIR.DOWN
 		elif event.is_action_pressed("pass"):
 			acted = true
+			if acted: pc.stop_run()
 		elif event.is_action_pressed("action"):
 			acted = pc.consume()
+			if acted: pc.stop_run()
 		elif event.is_action_pressed("level_up"):
 			if pc.experience >= pc.experience_needed && pc.rage <= 0:
 				do_level_up()
