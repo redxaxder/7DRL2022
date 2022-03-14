@@ -213,7 +213,7 @@ func spawn_door(pos: Vector2) -> Actor:
 	return door
 
 func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
-	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
+	if terrain.is_floor(pos) && locationService.lookup(pos).size() == 0:
 		var mob = spawn_mob(prefab, pos)
 		mob.visible = false
 		mob.connect(constants.KILLED_BY_PC, pc, "_on_enemy_killed")
@@ -227,7 +227,7 @@ func spawn_dynamic_mob(prefab: PackedScene, pos: Vector2):
 		return mob
 
 func spawn_mob(prefab: PackedScene, pos: Vector2):
-	if !terrain.is_wall(pos) && locationService.lookup(pos).size() == 0:
+	if terrain.is_floor(pos) && locationService.lookup(pos).size() == 0:
 		var mob = prefab.instance() as Mob
 		mob.pc = pc
 		mob.terrain = terrain
@@ -243,7 +243,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 		return mob
 
 func spawn_random_consumable(p: Vector2):
-	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
+	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:
 		var item = pickup_scene.instance() as Pickup
 		item.locationService = locationService
 		item.random_consumable()
@@ -252,7 +252,7 @@ func spawn_random_consumable(p: Vector2):
 		item.visible = false
 
 func spawn_random_furniture(p: Vector2):
-	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
+	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:
 		furniture.shuffle()
 		var item = furniture[0].instance()
 		item.locationService = locationService
@@ -267,7 +267,7 @@ func spawn_random_furniture(p: Vector2):
 					var candidates = [p + Vector2(1, 0), p + Vector2(-1, 0), p + Vector2(0, 1), p + Vector2(0, -1)]
 					var fc = []
 					for c in candidates:
-						if !terrain.is_wall(c) && locationService.lookup(c).size() == 0:
+						if terrain.is_floor(c) && locationService.lookup(c).size() == 0:
 							fc.push_back(c)
 					if fc.size() > 0:
 						fc.shuffle()
@@ -281,7 +281,7 @@ func spawn_random_furniture(p: Vector2):
 		item.set_pos(p)
 
 func spawn_random_weapon(p: Vector2):
-	if !terrain.is_wall(p) && locationService.lookup(p).size() == 0:
+	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:
 		var item = weapon_scene.instance()
 		item.locationService = locationService
 		item.random_weapon(pc.southpaw)
