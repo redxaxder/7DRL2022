@@ -24,10 +24,3 @@ func attack():
 	self.combatLog.say("The healer brings forth a wave of calming energy.")
 	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.calm(heal_damage)
-
-func _draw() -> void:
-	if cur_heal_cooldown == 0:
-		self.modulate = constants.READY_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()

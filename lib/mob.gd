@@ -17,8 +17,6 @@ func _ready():
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
 	add_to_group(constants.BLOODBAG)
-#	hurt_sound = nme_hurt.instance()
-	add_child(hurt_sound)
 
 func pc_adjacent() -> bool:
 	var v = get_pos() - pc.get_pos()
