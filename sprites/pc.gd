@@ -359,17 +359,24 @@ func recover(amount: int):
 	for d in debuffs.keys():
 		if fatigue == 0:
 			debuffs[d] = 0
-		else:
+		elif debuffs[d] > 0:
 			debuffs[d] = max(0, debuffs[d] - amount)
+			if debuffs[d] == 0:
+				if d == constants.FUMBLE:
+					combatLog.say("You regain your ability to pick things up.",5)
+				elif d == constants.IMMOBILIZED:
+					combatLog.say("You regain your ability to walk.")
+				elif d == constants.LIMP:
+					combatLog.say("You regain your ability to run.",5)
 
 func consume_calm(p: Pickup) -> bool:
 	match p.type:
 		p.ITEM_TYPE.APPLE:
-			recover(30)
 			combatLog.say("You eat the apple. Delicious!")
+			recover(30)
 		p.ITEM_TYPE.TURKEY:
-			recover(fatigue)
 			combatLog.say("You choke down the entire turkey. You feel in fighting shape.")
+			recover(fatigue)
 		p.ITEM_TYPE.WATER:
 			recovery += 5
 			combatLog.say("You drink the water. You feel refreshed.")
