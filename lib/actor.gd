@@ -1,4 +1,4 @@
-extends Sprite
+extends OffsetSprite
 
 class_name Actor
 
@@ -25,9 +25,6 @@ var cur_block_duration: int = 0
 
 var is_ragdoll: bool = false
 var ragdoll_dir: Vector2
-
-var anim_screen_offsets: Array
-var anim_speed: float = 7
 
 signal killed_by_pc(label)
 
@@ -59,12 +56,16 @@ func block():
 		block_mask.z_index = z_index + 1
 		block_mask.modulate = constants.PROTECTED_COLOR
 
+#const ragdoll_scene = preload("res://sprites/ragdoll.tscn")
 func make_ragdoll(dir: Vector2):
 	var ragdoll: Sprite = get_script().new()
 	ragdoll.texture = self.texture
 	ragdoll.modulate = self.modulate
 	ragdoll.self_modulate = self.self_modulate
+	var p = get_parent()
+	print("before {0}".format([p.get_child_count()]))
 	get_parent().add_child(ragdoll)
+	print("after {0}".format([p.get_child_count()]))
 	for g in ragdoll.get_groups():
 		if g != constants.BLOODBAG :
 			ragdoll.remove_from_group(g)
@@ -83,13 +84,17 @@ func die(dir: Vector2):
 	if is_in_group(self.constants.MOBS):
 		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
-	if  !is_ragdoll:# && elf.anim_screen_offsets.size() > 0:
-		var _ragdoll = make_ragdoll(dir)
-		self.remove_from_group(constants.BLOODBAG)
-	# splatter blood everywhere
-	if is_in_group(self.constants.BLOODBAG):
-		var pos = get_pos()
-		terrain.splatter_blood(pos, dir)
+	Ragdoll.new(
+		texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
+		anim_screen_offsets, terrain, get_pos(), dir, get_parent()
+	)
+#	if  !is_ragdoll:# && elf.anim_screen_offsets.size() > 0:
+#		var _ragdoll = make_ragdoll(dir)
+#		self.remove_from_group(constants.BLOODBAG)
+#	# splatter blood everywhere
+#	if is_in_group(self.constants.BLOODBAG):
+#		var pos = get_pos()
+#		terrain.splatter_blood(pos, dir)
 	if self.locationService:
 		self.locationService.delete_node(self)
 	queue_free()
@@ -118,11 +123,6 @@ func animated_move_to_combine(target: Vector2, backup_duration: float = 1):
 		set_pos(target)
 	else:
 		animated_move_to(target, backup_duration)
-
-
-func animation_delay(duration: float):
-	var av = Vector3(0,0,duration)
-	anim_screen_offsets.push_back(av)
 
 const knockback_anim_tile = 0.2
 func knockback(dir: Vector2, distance: int = 1000, power = 1):
@@ -190,28 +190,9 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 		add_child(thump_node)
 	thump_node.play()
 
-func pending_animation() -> float:
-	var total = 0
-	for v in self.anim_screen_offsets:
-		total += v.z
-	return total
-
-
 func _process(delta):
-	if anim_screen_offsets.size() > 0:
-		if is_zero_approx(anim_screen_offsets[0].z):
-			anim_screen_offsets.pop_front()
-		else:
-			var speed_mult = max(1,anim_screen_offsets.size() - 2)
-			var v: Vector3 = anim_screen_offsets[0]
-			var dz = anim_speed * delta * speed_mult
-			var z1 = max(0,v.z - dz)
-			var c = z1 / v.z
-			v *= Vector3(c, c, 1)
-			v.z = z1
-			anim_screen_offsets[0] = v
-		update()
-	elif is_ragdoll:
+	var did_animation_step = self.animations_step(delta)
+	if is_ragdoll && !did_animation_step:
 		die(ragdoll_dir)
 
 func _draw() -> void:
