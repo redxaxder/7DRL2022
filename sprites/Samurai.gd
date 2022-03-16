@@ -6,6 +6,7 @@ const dash_distance: int = 5
 
 func _ready():
 	self.label = "samurai"
+	tiebreaker = 90
 	._ready()
 
 func on_turn():

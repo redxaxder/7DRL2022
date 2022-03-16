@@ -7,6 +7,7 @@ const knockback_distance: int = 5
 
 func _ready():
 	label = "monk"
+	tiebreaker = 85
 	._ready()
 
 func on_turn():

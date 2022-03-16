@@ -6,6 +6,7 @@ var cur_heal_cooldown: int = 0
 
 func _ready():
 	label = "healer"
+	tiebreaker = 45
 	._ready()
 
 func on_turn():

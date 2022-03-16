@@ -8,6 +8,7 @@ const mutter_chance: float = 0.05
 
 func _ready():
 	label = "tourist"
+	tiebreaker = 70
 	._ready()
 
 func on_turn():

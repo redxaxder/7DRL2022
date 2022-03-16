@@ -27,7 +27,7 @@ func register_actor(actor: Actor):
 		actors[actor] = 0
 
 func next_turn() -> bool:
-	var largest: int = 0
+	var largest: float = 0
 	for actor in actors.keys():
 		if legit(actor):
 			if priority(actor) > largest:
@@ -37,9 +37,13 @@ func next_turn() -> bool:
 		recalculate_turns()
 		return true
 	var current_actors = []
+	var prios = {}
 	for actor in actors.keys():
 		if legit(actor) && priority(actor) == largest:
 			current_actors.push_back(actor)
+		prios[actor] = priority(actor)
+	print("t")
+	print(prios)
 	current_actors.shuffle()
 	for actor in current_actors:
 		if pc_dead:
@@ -58,7 +62,7 @@ func next_turn() -> bool:
 
 func priority(a) -> int:
 	if is_instance_valid(a):
-		return actors[a] * 30 / a.speed
+		return (1000 * actors[a] * 30 / a.speed) +  a.tiebreaker - 100
 	else:
 		return -1
 

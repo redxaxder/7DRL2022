@@ -6,6 +6,7 @@ const wander_chance: float = 0.5
 func _ready():
 	label = "archaeologist"
 	self.speed = 1
+	tiebreaker = 35
 	._ready()
 
 func door_adjacent():

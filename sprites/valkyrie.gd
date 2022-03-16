@@ -7,6 +7,7 @@ signal valkyrie_summon(targets)
 
 func _ready():
 	label = "valkyrie"
+	tiebreaker = 80
 	._ready()
 
 func on_turn():

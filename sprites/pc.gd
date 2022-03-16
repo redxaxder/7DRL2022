@@ -57,6 +57,7 @@ func _ready():
 	self.player = true
 	self.speed = normal_speed
 	self.pc = self
+	tiebreaker = 100
 	southpaw = randi() % 4 == 0
 	add_to_group(self.constants.PLAYER)
 
@@ -450,7 +451,7 @@ func _on_pick_perk(p: Perk):
 			rage_on_got_hit += p.bonus
 		p.PERK_TYPE.ENDURANCE:
 			starting_recovery += p.bonus
-			if recovery > 0:
+			if rage == 0 && fatigue > 0:
 				recovery += 1
 		p.PERK_TYPE.SHORT_TEMPERED:
 			starting_rage += p.bonus

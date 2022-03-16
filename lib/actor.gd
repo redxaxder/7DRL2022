@@ -12,6 +12,7 @@ var terrain
 var combatLog: CombatLog
 var locationService: LocationService
 var pc
+var tiebreaker: int = 50 # for actors with the same priority in the scheduler
 
 var player: bool = false
 var speed: int = 3

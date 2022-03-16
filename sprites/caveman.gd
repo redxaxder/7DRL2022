@@ -4,6 +4,7 @@ const mutter_chance: float = 0.05
 
 func _ready():
 	label = "caveman"
+	tiebreaker = 40
 	._ready()
 
 func on_turn():

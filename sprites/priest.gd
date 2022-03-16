@@ -12,6 +12,7 @@ const blessing_start_cast_range: int = 3
 func _ready():
 	label = "priest"
 	cur_blessing_cooldown = randi() % blessing_cooldown
+	tiebreaker = 10
 	._ready()
 
 func on_turn():

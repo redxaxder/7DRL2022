@@ -12,6 +12,7 @@ const fireball_sprite: PackedScene = preload("res://sprites/fireball.tscn")
 
 func _ready():
 	label = "wizard"
+	tiebreaker = 1
 	._ready()
 
 func check_alignment():

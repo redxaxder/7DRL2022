@@ -16,6 +16,7 @@ signal remove_target(target)
 func _ready():
 	label = "ranger"
 	speed = 6
+	tiebreaker = 5
 	._ready()
 
 func on_turn():

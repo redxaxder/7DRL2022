@@ -1,11 +1,12 @@
 extends Mob
 
-const block_cooldown: int = 1
+const block_cooldown: int = 2
 var cur_block_cooldown: int = 0
 const max_block_chance: float = 0.40
 
 func _ready():
 	label = "knight"
+	tiebreaker = 20
 	._ready()
 
 func on_turn():
