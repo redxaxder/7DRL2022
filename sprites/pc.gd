@@ -377,6 +377,7 @@ func consume_calm(p: Pickup) -> bool:
 			combatLog.say("You drink the brandy. You're itching for a fight.")
 			is_drunk = true
 		p.ITEM_TYPE.SHARDS:
+			combatLog.say("Careful not to cut yourself.")
 			return false
 	pickup.queue_free()
 	pickup = null
@@ -407,12 +408,15 @@ func throw_item() -> bool:
 func consume_angry(p: Pickup) -> bool:
 	match p.type:
 		p.ITEM_TYPE.APPLE:
+			combatLog.say("You direct your rage at the apple.", 2)
 			return throw_item()
 		p.ITEM_TYPE.TURKEY:
+			combatLog.say("You direct your rage at the turkey.", 2)
 			return throw_item()
 		p.ITEM_TYPE.SHARDS:
 			return throw_item()
 		p.ITEM_TYPE.WATER:
+			combatLog.say("You direct your rage at the bottle of water.", 2)
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
 			pickup =	 make_shards()
@@ -420,6 +424,7 @@ func consume_angry(p: Pickup) -> bool:
 			#TODO: put out fire. maybe add wet?
 			return true
 		p.ITEM_TYPE.BRANDY:
+			combatLog.say("You direct your rage at the bottle of brandy.", 2)
 			combatLog.say("You smash the bottle against your face. You're soaked.")
 			pickup.queue_free()
 			pickup =	 make_shards()
