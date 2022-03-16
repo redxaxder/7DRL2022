@@ -37,13 +37,9 @@ func next_turn() -> bool:
 		recalculate_turns()
 		return true
 	var current_actors = []
-	var prios = {}
 	for actor in actors.keys():
 		if legit(actor) && priority(actor) == largest:
 			current_actors.push_back(actor)
-		prios[actor] = priority(actor)
-	print("t")
-	print(prios)
 	current_actors.shuffle()
 	for actor in current_actors:
 		if pc_dead:

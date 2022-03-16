@@ -67,10 +67,7 @@ func make_ragdoll(dir: Vector2):
 	ragdoll.texture = self.texture
 	ragdoll.modulate = self.modulate
 	ragdoll.self_modulate = self.self_modulate
-	var p = get_parent()
-	print("before {0}".format([p.get_child_count()]))
 	get_parent().add_child(ragdoll)
-	print("after {0}".format([p.get_child_count()]))
 	for g in ragdoll.get_groups():
 		if g != constants.BLOODBAG :
 			ragdoll.remove_from_group(g)
@@ -175,11 +172,11 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 		if self.blocking:
 			if travel == 0 && strong_collision:
 				self.die(dir)
+			self.end_block()
 		elif self.player:
 			self.pc.injure()
 		else:
 			self.die(dir)
-			self.end_block()
 	if self.player:
 		self.pc.stop_run()
 	update()
