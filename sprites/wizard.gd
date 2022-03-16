@@ -81,9 +81,9 @@ func attack():
 			cont = false
 		if stuff_at.size() > 0:
 			for thing in stuff_at:
-				var screen_here = SCREEN.dungeon_to_screen(pos.x,pos.y)
-				var screen_target = SCREEN.dungeon_to_screen(target.x, target.y)
-				var fireball_delay = screen_target.distance_to(screen_here) / 20
+				var screen_here = SCREEN.dungeon_to_screen(pos)
+				var screen_target = SCREEN.dungeon_to_screen(target)
+				var fireball_delay = screen_target.distance_to(screen_here) / 30
 				if thing.is_in_group(constants.FURNITURE):
 					combatLog.say("The {0} bursts into flames!".format([thing.label]))
 					thing.animation_delay(self.pending_animation() + fireball_delay)

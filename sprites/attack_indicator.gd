@@ -17,7 +17,7 @@ func _init(node: Node, pos: Vector2, delay: float = 0.0, lifetime: float = 0.15)
 	node.add_child(self)
 	_delay = delay
 	_lifetime = lifetime
-	position = SCREEN.dungeon_to_screen(pos.x, pos.y)
+	position = SCREEN.dungeon_to_screen(pos)
 	if _delay > 0:
 		sprite.visible = false
 	else:
@@ -32,4 +32,5 @@ func _process(delta):
 	else:
 		_lifetime -= delta
 		if _lifetime <= 0:
+			sprite.visible = false
 			queue_free()

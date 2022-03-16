@@ -16,8 +16,8 @@ func _init(speed: float, from: Vector2, to: Vector2, sprite: Sprite, delay: floa
 	if distance <= 0:
 		queue_free()
 		return
-	source = SCREEN.dungeon_to_screen(from.x, from.y)
-	target = SCREEN.dungeon_to_screen(to.x, to.y)
+	source = SCREEN.dungeon_to_screen(from)
+	target = SCREEN.dungeon_to_screen(to)
 	duration = distance / speed
 	sprite.z_index = 20
 	add_child(sprite)

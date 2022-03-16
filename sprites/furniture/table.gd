@@ -3,13 +3,15 @@ extends Actor
 class_name Table
 
 var fallen: bool = false
-var fallen_txtr = (preload("res://sprites/furniture/fallen_table.tscn").instance() as Sprite).texture
+var fallen_inst = preload("res://sprites/furniture/fallen_table.tscn").instance() as Sprite
 
 func _ready():
 	self.label = "table"
 	add_to_group(self.constants.FURNITURE)
 	add_to_group(self.constants.BLOCKER)
 	add_to_group(self.constants.PATHING_BLOCKER)
+	add_child(fallen_inst)
+	fallen_inst.visible = false
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
@@ -29,7 +31,7 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 				combatLog.say("You knock over the table.")
 			else:
 				combatLog.say("You hear a table fall over. A plate shatters loudly.")
-			self.texture = fallen_txtr
+			self.texture = fallen_inst.texture
 			fallen = true
 			$thump.play()
 			var pos = get_pos()

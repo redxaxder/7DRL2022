@@ -15,6 +15,7 @@ var ortho_dijkstra
 var enemy_dijkstra
 var exits: Array = []
 var king_spawned: bool = false
+var __
 
 ############templates###################
 const knight_scene: PackedScene = preload("res://sprites/knight.tscn")
@@ -97,7 +98,8 @@ func decide_map(lvl: int) -> int:
 	var selector: int = int(randf() * (big_area - small_area) + small_area)
 	selector = int(0.66 * (selector - 1000))
 	if true: # TODO: remove this when adding rest of maps
-		selector = int(max(selector - (selector % 100) + 100, 100))
+		selector -= (selector % 100)
+	selector = int(max(selector, 100))
 	return selector
 
 func refresh_pc_dijkstras():
@@ -149,10 +151,11 @@ func populate_room(room: Vector3):
 	#fill with enemies
 	var area = sz * sz
 	var spawn_denom = 9 - level
-	var max_enemies: int = max(area / spawn_denom, 1)
+	var max_enemies = int(max(area / spawn_denom, 1))
 	var min_enemies = max_enemies / 3
 	var min_furniture: int = int(sz / 2)
-	var max_furniture: int = max((area / 20) - 1, 1)
+# warning-ignore:integer_division
+	var max_furniture: int = int(max((int(area) / int(20)) - 1, 1))
 	var cells = terrain.map.room_cells(room)
 	cells.shuffle()
 		# spawn the king if on level 6
@@ -169,12 +172,12 @@ func populate_room(room: Vector3):
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c) && terrain.map.is_in_room(c, room, -1): spawn_random_furniture(c)
 	# add some weapons
-	var max_weapons: int = max(sz/2,1)
+	var max_weapons := int(max(sz/2,1))
 	for _i in randi() % max_weapons:
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_weapon(c)
 	# add some consumables
-	var max_consumables: int = max(sz/4,1)
+	var max_consumables := int(max(sz/4,1))
 	for _i in randi() % max_consumables:
 		var c = cells.pop_back()
 		if c && terrain.is_floor(c): spawn_random_consumable(c)
@@ -183,7 +186,7 @@ func spawn_random_enemy(pos: Vector2):
 	var enemy_pool = []
 	for e in enemies:
 		if e.min_depth <= level and e.max_depth >= level:
-			for __ in e.weight:
+			for _ix in e.weight:
 				enemy_pool.push_back(e.scene)
 	var enemy = enemy_pool[randi() % enemy_pool.size()]
 	return spawn_dynamic_mob(enemy, pos)
@@ -191,7 +194,7 @@ func spawn_random_enemy(pos: Vector2):
 func room_doors(room: Vector3):
 	for cell in terrain.map.room_outline(room):
 		if terrain.atv(cell) == '.':
-			spawn_door(cell)
+			__ = spawn_door(cell)
 
 func spawn_door(pos: Vector2) -> Actor:
 	if locationService.lookup(pos).size() > 0:

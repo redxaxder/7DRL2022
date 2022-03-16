@@ -9,8 +9,6 @@ var enemy_dijkstra: Dijkstra
 #var nme_hurt = preload("res://scenes/nme_hurt.tscn")
 var hurt_sound
 
-signal killed_by_pc(label)
-
 func _ready():
 	randomize()
 	add_to_group(self.constants.MOBS)

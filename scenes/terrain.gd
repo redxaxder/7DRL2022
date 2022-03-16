@@ -17,6 +17,32 @@ var active_rooms: Dictionary = {} # used as a set. room -> 0
 
 const cosmetic_map_seed: int = 68000
 
+
+var wall_inst = preload("res://sprites/wall.tscn").instance() as Sprite
+var floor_inst = preload("res://sprites/floor.tscn").instance() as Sprite
+var exit_inst = preload("res://sprites/exit.tscn").instance() as Sprite
+var blood_inst = preload("res://sprites/blood.tscn").instance() as Sprite
+var some_blood_inst = preload("res://sprites/lots_of_blood.tscn").instance() as Sprite
+var more_blood_inst = preload("res://sprites/more_blood.tscn").instance() as Sprite
+var most_blood_inst = preload("res://sprites/most_blood.tscn").instance() as Sprite
+
+func _ready():
+	randomize()
+	add_child(wall_inst)
+	wall_inst.visible = false
+	add_child(floor_inst)
+	floor_inst.visible = false
+	add_child(exit_inst)
+	exit_inst.visible = false
+	add_child(blood_inst)
+	blood_inst.visible = false
+	add_child(some_blood_inst)
+	some_blood_inst.visible = false
+	add_child(more_blood_inst)
+	more_blood_inst.visible = false
+	add_child(most_blood_inst)
+	most_blood_inst.visible = false
+
 func at(x,y):
 	return atv(Vector2(x,y))
 
@@ -28,9 +54,6 @@ func atv(v: Vector2):
 
 func in_bounds(v: Vector2) -> bool:
 	return v.x >= 0 && v.x < width && v.y >= 0 && v.y < height
-
-func _ready():
-	randomize()
 
 func from_linear(ix: int) -> Vector2:
 # warning-ignore:integer_division
@@ -67,9 +90,9 @@ func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])
 	return load(path)
 
-func spawn_door(x: int, y: int):
+func spawn_door(v:Vector2):
 	#terrain marks door spawn locations with '.' and they get filled later
-	contents[to_linear(x, y)] = '.'
+	contents[to_linear(v.x, v.y)] = '.'
 	return true
 
 func can_be_door(loc: Vector2) -> bool:
@@ -103,20 +126,17 @@ func place_a_door(cells: Array) -> bool:
 	# first, check if a door is already placed:
 	var candidates: Array = []
 	var door_placed = false
-	var door_pos
 	for t in cells:
 		var tile = atv(t)
 		if tile == '.':
 			door_placed = true
-			door_pos = t
 		if can_be_door(t):
-#			spawn_door(t.x,t.y)
 			candidates.append(t)
 	#if not, find a place for it
 	if !door_placed && candidates.size() > 0:
 		var ix = randi() % candidates.size()
 		var v: Vector2 = candidates[ix]
-		door_placed = spawn_door(v.x,v.y)
+		door_placed = spawn_door(v)
 		if door_placed && (randi() % 2 == 0): # sometimes, we try to make this a double door
 			var adj: Array = []
 			for c in candidates:
@@ -124,7 +144,7 @@ func place_a_door(cells: Array) -> bool:
 					adj.append(c)
 			if adj.size() > 0:
 				adj.shuffle()
-				spawn_door(adj[0].x,adj[0].y)
+				spawn_door(adj[0])
 
 	return door_placed
 
@@ -235,18 +255,12 @@ func spread_blood():
 				targets.push_back(n)
 		blood_map[i] -= targets.size()
 		if blood_map[i] <= 40:
+# warning-ignore:return_value_discarded
 			blood_spread_frontier.erase(i)
 		targets.shuffle()
 		for t in targets:
 			add_blood(to_linear(t.x,t.y), 1)
 
-var wall_txtr = (preload("res://sprites/wall.tscn").instance() as Sprite).texture
-var floor_txtr = (preload("res://sprites/floor.tscn").instance() as Sprite).texture
-var exit_txtr = (preload("res://sprites/exit.tscn").instance() as Sprite).texture
-var blood_txtr = (preload("res://sprites/blood.tscn").instance() as Sprite).texture
-var some_blood_txtr = (preload("res://sprites/lots_of_blood.tscn").instance() as Sprite).texture
-var more_blood_txtr = (preload("res://sprites/more_blood.tscn").instance() as Sprite).texture
-var most_blood_txtr = (preload("res://sprites/most_blood.tscn").instance() as Sprite).texture
 var max_floor_color = Color(0.300781, 0.300781, 0.300781)
 var min_floor_color = Color(0.460938, 0.460938, 0.460938)
 var blood_color = Color(1, 0, 0)
@@ -262,28 +276,28 @@ func _draw():
 			var blood = blood_map[ix]
 			var n: int = r[0]
 			r = rand_seed(r[1])
-			var pos = SCREEN.dungeon_to_screen(cell.x,cell.y)
+			var pos = SCREEN.dungeon_to_screen(cell)
 			var tile = atv(cell)
 			if tile == '#':
 				if blood == 0:
-					draw_texture(wall_txtr,pos + offset)
+					draw_texture(wall_inst.texture,pos + offset)
 				else:
-					draw_texture(wall_txtr,pos + offset, blood_color)
+					draw_texture(wall_inst.texture,pos + offset, blood_color)
 			elif tile == '>':
 				if blood == 0:
-					draw_texture(exit_txtr,pos + offset)
+					draw_texture(exit_inst.texture,pos + offset)
 				else:
-					draw_texture(exit_txtr,pos + offset, blood_color)
+					draw_texture(exit_inst.texture,pos + offset, blood_color)
 			else:
 				if blood == 0:
 					var weight: float = float(n % 4) / 4.0
 					var floor_color = min_floor_color.linear_interpolate(max_floor_color, weight)
-					draw_texture(floor_txtr,pos + offset, floor_color)
+					draw_texture(floor_inst.texture,pos + offset, floor_color)
 				elif blood < 10:
-					draw_texture(blood_txtr,pos + offset, blood_color)
+					draw_texture(blood_inst.texture,pos + offset, blood_color)
 				elif blood < 20:
-					draw_texture(some_blood_txtr,pos + offset, blood_color)
+					draw_texture(some_blood_inst.texture,pos + offset, blood_color)
 				elif blood < 30:
-					draw_texture(more_blood_txtr,pos + offset, blood_color)
+					draw_texture(more_blood_inst.texture,pos + offset, blood_color)
 				else:
-					draw_texture(most_blood_txtr,pos + offset, blood_color)
+					draw_texture(most_blood_inst.texture,pos + offset, blood_color)

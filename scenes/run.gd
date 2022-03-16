@@ -133,6 +133,7 @@ func _unhandled_input(event):
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
+			print_stray_nodes()
 
 const prologue: Array = [\
 	"I once was a king, just and merciful,", \
@@ -305,7 +306,7 @@ func update_pan(dir) -> void:
 		pan = pan * (SCREEN.TILE_HEIGHT * run)
 	var old_target = camera_target
 	var ppos = pc.get_pos()
-	var new_target = SCREEN.dungeon_to_screen(ppos.x, ppos.y) + pan
+	var new_target = SCREEN.dungeon_to_screen(ppos) + pan
 	camera_offset += old_target - new_target
 	camera_target = new_target
 	if dir < 0:

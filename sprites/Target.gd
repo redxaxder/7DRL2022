@@ -30,4 +30,4 @@ func _process(delta):
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
-		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		self.position = self.SCREEN.dungeon_to_screen(pos)

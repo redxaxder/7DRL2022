@@ -4,6 +4,8 @@ class_name LocationService
 
 var constants = preload("res://lib/const.gd").new()
 
+var __
+
 # a map from position to array of Node
 var __forward: Dictionary = {}
 # a map from Node to position
@@ -31,9 +33,10 @@ func delete_node(n: Node):
 	if l != null: # delete forward
 		var here = __forward.get(l,[])
 		if here.size() > 0:
-			here.erase(n)
+			__ = here.erase(n)
 			if here.size() == 0:
-				__forward.erase(l)
+				__ = __forward.erase(l)
+# warning-ignore:return_value_discarded
 	__backward.erase(n) # delete backward
 
 func insert(n: Node, p: Vector2):

@@ -57,7 +57,7 @@ func take():
 	locationService.delete_node(self)
 
 func place(p: Vector2):
-	sprite.position = SCREEN.dungeon_to_screen(p.x,p.y)
+	sprite.position = SCREEN.dungeon_to_screen(p)
 	sprite.visible = true
 	locationService.insert(self, p)
 

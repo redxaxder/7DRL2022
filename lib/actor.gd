@@ -30,6 +30,8 @@ var ragdoll_dir: Vector2
 var anim_screen_offsets: Array
 var anim_speed: float = 7
 
+signal killed_by_pc(label)
+
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
 
@@ -77,11 +79,10 @@ func make_ragdoll(dir: Vector2):
 	ragdoll.update()
 
 func die(dir: Vector2):
-	var p = self.get_pos()
 	#notify PC of kills
 	#TODO: maybe handle if it was killed by someone else (eg: wizard)
 	if is_in_group(self.constants.MOBS):
-		emit_signal(constants.KILLED_BY_PC, label)
+		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
 	if  !is_ragdoll:# && elf.anim_screen_offsets.size() > 0:
 		var _ragdoll = make_ragdoll(dir)
@@ -96,8 +97,10 @@ func die(dir: Vector2):
 
 func animated_move_to(target: Vector2, duration: float = 1):
 	var start_pos = get_pos()
-	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
-	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
+# warning-ignore:narrowing_conversion
+	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos)
+# warning-ignore:narrowing_conversion
+	var target_screen_position = self.SCREEN.dungeon_to_screen(target)
 	var dp = prev_screen_position - target_screen_position
 	var av = Vector3(dp.x,dp.y,duration)
 	anim_screen_offsets.push_back(av)
@@ -105,8 +108,10 @@ func animated_move_to(target: Vector2, duration: float = 1):
 
 func animated_move_to_combine(target: Vector2, backup_duration: float = 1):
 	var start_pos = get_pos()
-	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos.x, start_pos.y)
-	var target_screen_position = self.SCREEN.dungeon_to_screen(target.x, target.y)
+	var prev_screen_position = self.SCREEN.dungeon_to_screen(start_pos)
+# warning-ignore:narrowing_conversion
+# warning-ignore:narrowing_conversion
+	var target_screen_position = self.SCREEN.dungeon_to_screen(target)
 	var dp = prev_screen_position - target_screen_position
 	var av = Vector3(dp.x,dp.y,0)
 	if anim_screen_offsets.size() > 0:
@@ -200,7 +205,6 @@ func _process(delta):
 		else:
 			var speed_mult = max(1,anim_screen_offsets.size() - 2)
 			var v: Vector3 = anim_screen_offsets[0]
-			var v0 = v
 			var dz = anim_speed * delta * speed_mult
 			var z1 = max(0,v.z - dz)
 			var c = z1 / v.z
@@ -214,6 +218,6 @@ func _process(delta):
 func _draw() -> void:
 	var pos = get_pos()
 	if pos != null:
-		self.position = self.SCREEN.dungeon_to_screen(pos.x,pos.y)
+		self.position = self.SCREEN.dungeon_to_screen(pos)
 		for v in anim_screen_offsets:
 			 self.position += Vector2(v.x,v.y)

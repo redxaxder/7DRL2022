@@ -10,7 +10,7 @@ var southpaw = false
 var extra_knockback: int = 0
 
 #returns true if an attack was made
-func try_attack(_ls: LocationService, _pos: Vector2, _dir: int, anim_delay: float, _terr = null) -> bool:
+func try_attack(_ls: LocationService, _pos: Vector2, _dir: int, _anim_delay: float, _terr = null) -> bool:
 	return false
 
 func try_attack_at(ls: LocationService, target: Vector2, dir: int, anim_delay: float, terr = null) -> bool:
@@ -36,6 +36,7 @@ func flip(dir: int) -> int:
 		return dir
 
 func spawn_indicator(target: Vector2):
+# warning-ignore:return_value_discarded
 	AttackIndicator.new(parent, target)
 
 func xor(l: bool, r: bool) -> bool:
