@@ -133,7 +133,6 @@ func _unhandled_input(event):
 			update_status()
 			emit_signal(constants.END_PLAYER_TURN)
 			did_tempo = false
-			print_stray_nodes()
 
 const prologue: Array = [\
 	"I once was a king, just and merciful,", \

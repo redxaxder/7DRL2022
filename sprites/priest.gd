@@ -1,7 +1,7 @@
 extends Mob
 
 var telegraph_timer: int = 2
-const telegraph_duration: int = 2
+const telegraph_duration: int = 4
 var telegraphing: bool = false
 
 var cur_blessing_cooldown: int = 0

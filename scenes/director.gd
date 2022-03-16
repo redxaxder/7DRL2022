@@ -41,9 +41,9 @@ const enemies: Array = [
 		{ "scene": ranger_scene, "min_depth": 2,"weight": 6, "max_depth": 6 },
 		{ "scene": tourist_scene, "min_depth": 3,"weight": 1, "max_depth": 3 },
 		{ "scene": healer_scene, "min_depth": 3,"weight": 4, "max_depth": 6 },
-		{ "scene": priest_scene, "min_depth": 3,"weight": 4, "max_depth": 6 },
+		{ "scene": priest_scene, "min_depth": 3,"weight": 3, "max_depth": 6 },
 		{ "scene": archaeologist_scene, "min_depth": 4,"weight": 1, "max_depth": 6},
-		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 9, "max_depth": 6 },
+		{ "scene": valkyrie_scene, "min_depth": 4,"weight": 6, "max_depth": 6 },
 	]
 
 const pickup_scene: PackedScene = preload("res://pickups/pickup.tscn")

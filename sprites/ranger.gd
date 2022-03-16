@@ -15,6 +15,7 @@ signal remove_target(target)
 
 func _ready():
 	label = "ranger"
+	speed = 6
 	._ready()
 
 func on_turn():
@@ -24,7 +25,8 @@ func on_turn():
 		# run away
 		if cur_shot_cooldown > 0:
 			cur_shot_cooldown -= 1
-			animated_move_to(self.seek_to_player(true))
+			if dist < shot_range:
+				animated_move_to(self.seek_to_player(true))
 		# shoot
 		else:
 			combatLog.say("The ranger takes aim!",20)
@@ -51,6 +53,7 @@ func on_turn():
 
 func attack():
 	telegraphing = false
+	cur_shot_cooldown = shot_cooldown
 	emit_signal("remove_target", target_obj)
 	target_obj = null
 	if pc.get_pos() == target:

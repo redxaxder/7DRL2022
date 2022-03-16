@@ -8,10 +8,7 @@ var DIR: Dir = preload("res://lib/dir.gd").new()
 
 var locationService: LocationService
 
-const player: bool = false
 var label: String = ""
-const door: bool = false
-const blocking: bool = false
 
 func _ready():
 	label = "target"
@@ -23,8 +20,6 @@ func get_pos(default = null) -> Vector2:
 func set_pos(p: Vector2):
 	locationService.insert(self,p)
 
-func _process(delta):
-		update()
 
 func _draw() -> void:
 	var pos = get_pos()
