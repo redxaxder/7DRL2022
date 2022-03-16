@@ -35,9 +35,9 @@ func flip(dir: int) -> int:
 	else:
 		return dir
 
-func spawn_indicator(target: Vector2):
+func spawn_indicator(target: Vector2, delay: float = 0.0):
 # warning-ignore:return_value_discarded
-	AttackIndicator.new(parent, target)
+	AttackIndicator.new(parent, target, delay)
 
 func xor(l: bool, r: bool) -> bool:
 	return	(l && !r) || (!l && r)

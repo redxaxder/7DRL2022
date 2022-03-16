@@ -8,6 +8,7 @@ var bloodbag: bool
 var pos: Vector2
 var dir: Vector2
 var undead: float = -1
+var lifetime = 0
 
 var SCREEN = preload("res://lib/screen.gd").new()
 
@@ -43,6 +44,9 @@ func _process(delta):
 			die()
 		var did_animation_step = self.animations_step(delta)
 		if !did_animation_step:
+			die()
+		lifetime += delta
+		if lifetime >= 3.0:
 			die()
 
 func _draw() -> void:

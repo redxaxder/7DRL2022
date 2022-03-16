@@ -12,5 +12,5 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, 
 			return attacked
 	if attacked:
 		for i in 2:
-			spawn_indicator(pos + (v * (i+1)))
+			spawn_indicator(pos + (v * (i+1)), anim_delay + i * 0.017)
 	return attacked
