@@ -9,6 +9,7 @@ const mutter_chance: float = 0.05
 func _ready():
 	label = "tourist"
 	tiebreaker = 70
+	get_ready()
 	._ready()
 
 func on_turn():
@@ -19,12 +20,15 @@ func on_turn():
 	if cur_flash_cooldown == 0:
 		if dist <= flash_range:
 			cur_flash_cooldown = flash_cooldown
+			end_ready()
 			attack()
 		else:
 			var next = seek_to_player()
 			animated_move_to(next)
 	else:
 		cur_flash_cooldown = max(0, cur_flash_cooldown - 1)
+		if cur_flash_cooldown <= 0:
+			get_ready()
 		var next = .seek_to_player(true)
 		animated_move_to(next)
 	.on_turn()

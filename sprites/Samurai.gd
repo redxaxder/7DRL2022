@@ -7,6 +7,7 @@ const dash_distance: int = 5
 func _ready():
 	self.label = "samurai"
 	tiebreaker = 90
+	get_ready()
 	._ready()
 
 func on_turn():
@@ -14,6 +15,8 @@ func on_turn():
 	var dir: Vector2 = self.pc.get_pos() - pos
 	if cur_dash_cooldown > 0:
 		cur_dash_cooldown -= 1
+		if cur_dash_cooldown <= 1: # this seems correct given relative order of countdown
+			get_ready()
 	if .pc_adjacent():
 		attack()
 	elif cur_dash_cooldown == 0 and (dir.x == 0 or dir.y ==0) and dir.length() <= dash_distance:
@@ -47,13 +50,7 @@ func dash_attack(pos: Vector2):
 	self.combatLog.say("The samurai dashes at you with blinding speed!")
 	self.combatLog.say("Before you can even blink, you feel the bite of his katana.")
 	self.cur_dash_cooldown = dash_cooldown
+	end_ready()
 	self.animated_move_to(pos)
 	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.injure()
-
-func _draw() -> void:
-	if cur_dash_cooldown == 0:
-		self.modulate = constants.READY_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()

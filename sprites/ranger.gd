@@ -2,7 +2,6 @@ extends Mob
 
 var telegraph_timer: int = 2
 const telegraph_duration: int = 2
-var telegraphing: bool = false
 var cur_shot_cooldown: int = 0
 const shot_cooldown: int = 3
 const shot_range: int = 8
@@ -40,6 +39,7 @@ func on_turn():
 			legal_candidates.shuffle()
 			target = legal_candidates.pop_back()
 			telegraphing = true
+			update()
 			telegraph_timer = telegraph_duration
 			emit_signal("telegraph", target, self)
 	elif telegraphing:
@@ -54,6 +54,7 @@ func on_turn():
 
 func attack():
 	telegraphing = false
+	update()
 	cur_shot_cooldown = shot_cooldown
 	emit_signal("remove_target", target_obj)
 	target_obj = null
@@ -64,12 +65,6 @@ func attack():
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
 	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance(), self.pending_animation() / anim_speed))
 
-func _draw() -> void:
-	if telegraphing:
-		self.modulate = constants.WINDUP_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()
 
 func die(dir: Vector2):
 	emit_signal("remove_target", target_obj)

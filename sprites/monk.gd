@@ -8,6 +8,7 @@ const knockback_distance: int = 5
 func _ready():
 	label = "monk"
 	tiebreaker = 85
+	get_ready()
 	._ready()
 
 func on_turn():
@@ -19,20 +20,17 @@ func on_turn():
 	.on_turn()
 
 func attack():
-	if cur_knockback_cooldown == 0:
+	if cur_knockback_cooldown <= 0:
 		self.combatLog.say("The monk yells something in Japanese and kicks you.")
 		self.combatLog.say("You go flying!")
 		self.pc.knockback(self.pc.get_pos() - get_pos(), knockback_distance)
 		self.cur_knockback_cooldown = knockback_cooldown
+		end_ready()
 	else:
 		self.combatLog.say("The monk punches you!")
 		AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 		self.pc.injure()
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1
-
-func _draw():
-	if cur_knockback_cooldown == 0:
-		self.modulate = constants.READY_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
+			if cur_knockback_cooldown <= 0:
+				get_ready()

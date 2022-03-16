@@ -1,6 +1,5 @@
 extends Mob
 
-var telegraphing: bool = false
 var cur_shot_cooldown: int = 0
 const shot_cooldown: int = 0
 const shot_range: int = 12
@@ -59,11 +58,13 @@ func on_turn():
 			if clear_shot:
 				combatLog.say("The wizard begins chanting.",20)
 				telegraphing = true
+				update()
 			else:
 				animated_move_to(self.seek_to_player(false, true))
 
 func attack():
 	telegraphing = false
+	update()
 	combatLog.say("A fireball erupts from the wizard's fingers!", 20)
 	var aligned = check_alignment()
 	var dist = self.ortho_dijkstra.d_score(get_pos())
@@ -106,10 +107,3 @@ func attack():
 			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed))
 		target += shot_dir
 		travel += 1
-
-func _draw() -> void:
-	if telegraphing:
-		self.modulate = constants.WINDUP_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()

@@ -2,7 +2,6 @@ extends Mob
 
 var telegraph_timer: int = 2
 const telegraph_duration: int = 4
-var telegraphing: bool = false
 
 var cur_blessing_cooldown: int = 0
 const blessing_cooldown: int = 8
@@ -25,6 +24,7 @@ func on_turn():
 	elif blessing_start_cast_range <= 5 && cur_blessing_cooldown == 0:
 		combatLog.say("The priest begins chanting.",20)
 		telegraphing = true
+		update()
 		telegraph_timer = telegraph_duration
 	else:
 		if cur_blessing_cooldown > 0:
@@ -34,6 +34,7 @@ func on_turn():
 
 func bless():
 	telegraphing = false
+	update()
 	combatLog.say("The priest completes his spell!", 50)
 	cur_blessing_cooldown = blessing_cooldown
 	var pos = get_pos()
@@ -47,10 +48,3 @@ func bless():
 				if !mob.blocking:
 					combatLog.say("A shimmering barrier materializes around the {0}.".format([mob.label]), 10)
 					mob.block()
-
-func _draw() -> void:
-	if telegraphing:
-		self.modulate = constants.WINDUP_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()

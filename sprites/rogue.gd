@@ -10,12 +10,11 @@ var cur_sneak_duration: int = 0
 var cur_sneak_cooldown:int = 0
 var sneak_location: Vector2
 
-var another_guy: bool = true
-
 func _ready():
 	label = "rogue"
 	tiebreaker = 75
 	cur_sneak_cooldown = randi() % (sneak_cooldown_flat + sneak_cooldown_rand)
+	get_ready()
 	._ready()
 
 func on_turn():
@@ -57,16 +56,9 @@ func attack():
 	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
 	self.pc.injure()
 
-func _draw() -> void:
-	if another_guy:
-		self.modulate = constants.READY_COLOR
-	else:
-		self.modulate = Color(1, 1, 1)
-	._draw()
-
 func die(_dir: Vector2):
-	if another_guy and not is_ragdoll:
-		another_guy = false
+	if is_ready and not is_ragdoll:
+		end_ready()
 		var next: Vector2
 		next = seek_to_player(true)
 		if next == get_pos():

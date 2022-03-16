@@ -19,7 +19,8 @@ var speed: int = 3
 var label: String = ""
 var door: bool = false
 var blocking: bool = false
-var block_mask: Sprite = Sprite.new()
+var telegraphing: bool = false
+var is_ready: bool = false
 
 const block_duration: int = 2
 var cur_block_duration: int = 0
@@ -44,18 +45,21 @@ func block_decay():
 
 func end_block():
 	blocking = false
-	if block_mask != null:
-		block_mask.modulate = Color(1,1,1)
-		update()
+	update()
 
 func block():
 	cur_block_duration = 0
 	if !blocking:
 		blocking = true
-		add_child(block_mask)
-		block_mask.texture = texture
-		block_mask.z_index = z_index + 1
-		block_mask.modulate = constants.PROTECTED_COLOR
+		update()
+
+func get_ready():
+	is_ready = true
+	update()
+
+func end_ready():
+	is_ready = false
+	update()
 
 #const ragdoll_scene = preload("res://sprites/ragdoll.tscn")
 func make_ragdoll(dir: Vector2):
@@ -85,17 +89,10 @@ func die(dir: Vector2):
 	if is_in_group(self.constants.MOBS):
 		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
-	Ragdoll.new(
+	var __ = Ragdoll.new(
 		texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
 		anim_screen_offsets, terrain, get_pos(), dir, get_parent()
 	)
-#	if  !is_ragdoll:# && elf.anim_screen_offsets.size() > 0:
-#		var _ragdoll = make_ragdoll(dir)
-#		self.remove_from_group(constants.BLOODBAG)
-#	# splatter blood everywhere
-#	if is_in_group(self.constants.BLOODBAG):
-#		var pos = get_pos()
-#		terrain.splatter_blood(pos, dir)
 	if self.locationService:
 		self.locationService.delete_node(self)
 	queue_free()
@@ -202,3 +199,18 @@ func _draw() -> void:
 		self.position = self.SCREEN.dungeon_to_screen(pos)
 		for v in anim_screen_offsets:
 			 self.position += Vector2(v.x,v.y)
+	if self.is_in_group(constants.MOBS):
+		if blocking:
+			if telegraphing:
+				self.self_modulate = constants.WINDUP_AND_PROTECTED_COLOR
+			elif is_ready:
+				self.self_modulate = constants.READY_AND_PROTECTED_COLOR
+			else:
+				self.self_modulate = constants.PROTECTED_COLOR
+		else:
+			if telegraphing:
+				self.self_modulate = constants.WINDUP_COLOR
+			elif is_ready:
+				self.self_modulate = constants.READY_COLOR
+			else:
+				self.self_modulate = Color(1,1,1)

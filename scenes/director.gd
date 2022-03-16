@@ -337,4 +337,4 @@ func _on_valkyrie_summon(targets: Array):
 				mob.visible = true
 				scheduler.register_actor(mob)
 				if mob.label == "valkyrie":
-					mob.summon = false
+					mob.end_ready()
