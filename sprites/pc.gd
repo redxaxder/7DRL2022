@@ -17,7 +17,7 @@ const weapon_break_level: int = 100
 var weapons_broken: int = 0
 
 var fatigue: int = 0
-var starting_recovery: int = 0
+var starting_recovery: int = 1
 var recovery: int = 0
 var southpaw = false
 var run_speed: int = 1
@@ -86,12 +86,17 @@ func injure():
 		fatigue += fatigue_on_got_hit
 		self.combatLog.say(" +{0} rage  +{1} fatigue".format([rage_on_got_hit, fatigue_on_got_hit]))
 	elif fatigue > 0:
-		var pos = get_pos()
-		for dir in [Dir.DIR.UP, Dir.DIR.LEFT, Dir.DIR.DOWN, Dir.DIR.RIGHT]:
-			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
-			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
-			terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
-		emit_signal(self.constants.PLAYER_DIED)
+		if recovery > starting_recovery:
+			var pos = get_pos()
+			for dir in [Dir.DIR.UP, Dir.DIR.LEFT, Dir.DIR.DOWN, Dir.DIR.RIGHT]:
+				terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
+				terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
+				terrain.splatter_blood(pos, DIR.dir_to_vec(dir))
+			emit_signal(self.constants.PLAYER_DIED)
+		else:
+			self.combatLog.say("You barely endure the blow.")
+			fatigue += fatigue_on_got_hit
+			self.combatLog.say(" +{0} fatigue".format([fatigue_on_got_hit]))
 	else:
 		rage += rage_on_got_hit
 		enter_rage()
@@ -220,8 +225,7 @@ func try_kick_furniture(dir) -> bool:
 
 func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 	if debuffs.has(self.constants.IMMOBILIZED) and debuffs[self.constants.IMMOBILIZED] > 0:
-		combatLog.say("You are too weak to walk.")
-		combatLog.say("Press '.' to pass your turn.")
+		combatLog.say("You are too weak to walk. \nPress '.' to pass your turn.")
 		return false
 
 	var vec = DIR.dir_to_vec(dir)
