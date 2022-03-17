@@ -43,8 +43,8 @@ func _ready():
 	pc.locationService = locationService
 	pc_dijkstra = Dijkstra.new(terrain, locationService)
 	wander_dijkstra = Dijkstra.new(terrain, locationService)
-	ortho_dijkstra = Dijkstra.new(terrain, locationService, 1000, 1000, 1, 15)
-	enemy_dijkstra = Dijkstra.new(terrain, locationService, 5, 1000, 1, 10)
+	ortho_dijkstra = Dijkstra.new(terrain, locationService, 100, 1000, 1, 15)
+	enemy_dijkstra = Dijkstra.new(terrain, locationService, 0, 1000, 1, 10)
 	director = Director.new(pc,
 		terrain,
 		locationService,

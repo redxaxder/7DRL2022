@@ -21,8 +21,8 @@ improvization:
     - furniture, debris, bodies, etc
 
 overrun tree:
-  - while running, you may trample an additional target
-  - after attacking, immediately attain your top running speed
+  - Trampling enemies doesn't interrupt your run.
+  - Trampling enemies extends your run distance.
 
 shock:
   - killing an enemy stuns nearby enemies
