@@ -86,7 +86,7 @@ func _init(p,
 	enemy_dijkstra = ed
 	randomize()
 
-const area_targets = [2000,2500,3000,4000,5000,6000]
+const area_targets = [2000,2500,3000,3500,4000,4000]
 func decide_map(lvl: int) -> int:
 	var base_area = 0
 	for i in lvl:
