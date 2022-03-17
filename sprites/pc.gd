@@ -102,7 +102,7 @@ func injure():
 		enter_rage()
 	update_rage_decay()
 	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
-	$hurt_sound.play()
+	$thump.play()
 
 func update_rage_decay():
 	var bonus_decay = (float(100 - grit_bonus) / float(100)) * fatigue / 40.0
@@ -485,7 +485,12 @@ func _on_pick_perk(p: Perk):
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 	emit_signal(constants.PLAYER_LEVEL_UP)
 
+func _on_thump():
+	$thump.play()
+
 func _on_enemy_killed(label: String):
+	if rage == 0 && fatigue > 0:
+		return
 	if rage == 0:
 		enter_rage()
 	experience += experience_gain_rate

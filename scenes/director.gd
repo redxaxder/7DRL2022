@@ -212,6 +212,7 @@ func spawn_door(pos: Vector2) -> Actor:
 	parent.add_child(door)
 	door.visible = false
 	door.connect(constants.DOOR_OPENED,self,"_on_door_opened")
+	door.connect("thump",pc,"_on_thump")
 	exits.push_back(pos)
 	exits.push_back(pos + Vector2(1, 0))
 	exits.push_back(pos + Vector2(-1, 0))
@@ -237,6 +238,7 @@ func spawn_mob(prefab: PackedScene, pos: Vector2):
 	if terrain.is_floor(pos) && locationService.lookup(pos).size() == 0:
 		var mob = prefab.instance() as Mob
 		mob.pc = pc
+		mob.connect("thump",pc,"_on_thump")
 		mob.terrain = terrain
 		mob.combatLog = combatLog
 		mob.locationService = locationService
@@ -262,6 +264,7 @@ func spawn_random_furniture(p: Vector2):
 	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:
 		furniture.shuffle()
 		var item = furniture[0].instance()
+		item.connect("thump",pc,"_on_thump")
 		item.locationService = locationService
 		item.visible = false
 		item.combatLog = combatLog
@@ -279,6 +282,7 @@ func spawn_random_furniture(p: Vector2):
 					if fc.size() > 0:
 						fc.shuffle()
 						var chair = chair_scene.instance()
+						chair.connect("thump",pc,"_on_thump")
 						chair.locationService = locationService
 						chair.visible = false
 						chair.combatLog = combatLog

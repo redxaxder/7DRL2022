@@ -23,15 +23,13 @@ func _init(speed: float, from: Vector2, to: Vector2, sprite: Sprite, delay: floa
 	add_child(sprite)
 	_delay = delay
 	_sprite = sprite
-	if _delay > 0:
-		sprite.visible = false
+	sprite.visible = false
 
 func _process(delta):
 	if _delay > 0:
 		_delay -= delta
-		if _delay <= 0:
-			_sprite.visible = true
 	else:
+		_sprite.visible = true
 		elapsed += delta
 		if duration <= 0.001:
 			queue_free()

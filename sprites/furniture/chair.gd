@@ -7,8 +7,6 @@ func _ready():
 	add_to_group(self.constants.FURNITURE)
 	add_to_group(self.constants.BLOCKER)
 	add_to_group(self.constants.PATHING_BLOCKER)
-	thump_node = thump_scene.instance()
-	add_child(thump_node)
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
@@ -33,5 +31,6 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 			animated_move_to(target)
 		else:
 			combatLog.say("But there's something in the way!")
+			return false
 		update()
 	return true

@@ -20,7 +20,7 @@ z_as_relative = false
 texture = SubResource( 1 )
 script = ExtResource( 3 )
 
-[node name="hurt_sound" type="AudioStreamPlayer" parent="."]
+[node name="thump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 volume_db = -20.0
 

@@ -29,6 +29,7 @@ var is_ragdoll: bool = false
 var ragdoll_dir: Vector2
 
 signal killed_by_pc(label)
+signal thump()
 
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
@@ -180,8 +181,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	if self.player:
 		self.pc.stop_run()
 	update()
-	if thump_node != null:
-		thump_node.play()
+	emit_signal("thump")
 
 func _process(delta):
 	var did_animation_step = self.animations_step(delta)
