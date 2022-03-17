@@ -86,7 +86,7 @@ func _init(p,
 	enemy_dijkstra = ed
 	randomize()
 
-const area_targets = [2000,2500,4000,6000,8000,10000]
+const area_targets = [2000,2500,3000,4000,5000,6000]
 func decide_map(lvl: int) -> int:
 	var base_area = 0
 	for i in lvl:
@@ -124,14 +124,16 @@ func load_next_map():
 	var candidates = terrain.map.room_cells(starting_room)
 	var start = candidates[randi() % candidates.size()]
 	pc.set_pos(start)
-	activate_room(starting_room)
 	populated_rooms[starting_room] = 0
+	activate_room(starting_room)
 	wander_dijkstra.refresh()
 	wander_dijkstra.update(exits)
 
 func activate_room(room: Vector3):
-	if terrain.active_rooms.has(room):
-		return
+#	if !populated_rooms.has(room):
+#		populate_room(room)
+#	if terrain.active_rooms.has(room):
+#		return
 	terrain.active_rooms[room] = 0 # add it to the dict. the 0 is meaningless.
 	for cell in terrain.map.room_cells(room, 1):
 		for node in locationService.lookup(cell):

@@ -21,7 +21,7 @@ func on_turn():
 			telegraph_timer -= 1
 		else:
 			bless()
-	elif blessing_start_cast_range <= 5 && cur_blessing_cooldown == 0:
+	elif blessing_start_cast_range <= 5 && cur_blessing_cooldown == 0 && d_score <= blessing_start_cast_range:
 		combatLog.say("The priest begins chanting.",20)
 		telegraphing = true
 		update()

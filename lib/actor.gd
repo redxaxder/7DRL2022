@@ -180,10 +180,8 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	if self.player:
 		self.pc.stop_run()
 	update()
-	if thump_node == null:
-		thump_node = thump_scene.instance()
-		add_child(thump_node)
-	thump_node.play()
+	if thump_node != null:
+		thump_node.play()
 
 func _process(delta):
 	var did_animation_step = self.animations_step(delta)

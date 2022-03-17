@@ -11,7 +11,6 @@ func _ready():
 
 func on_turn():
 	var pos = self.get_pos()
-	var dist = self.pc_dijkstra.d_score(pos)
 	if cur_heal_cooldown == 0 and pc_adjacent():
 		cur_heal_cooldown = heal_cooldown
 		attack()

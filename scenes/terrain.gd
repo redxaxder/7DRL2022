@@ -230,7 +230,7 @@ func splatter_blood(pos: Vector2, dir: Vector2):
 		pos += dir
 	update()
 
-func add_blood(ix, deposit):
+func add_blood(ix, deposit): #TODO: dirty flags for rooms here
 	if 0 <= ix && ix < blood_map.size():
 		blood_map[ix] += deposit
 		if blood_map[ix] > 40:
