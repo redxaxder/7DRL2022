@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://sprites/monk.wav" type="AudioStream" id=1]
+[ext_resource path="res://resources/sounds/thump.wav" type="AudioStream" id=1]
 
 [node name="thump" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
