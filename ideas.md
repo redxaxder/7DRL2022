@@ -16,9 +16,6 @@ tempo iii: (maybe even iv?)
   - another extra attack
     - helps equalize spear/whip
 
-improvization:
-  - use other things as weapons.
-    - furniture, debris, bodies, etc
 
 overrun tree:
   - Trampling enemies doesn't interrupt your run.
@@ -47,7 +44,6 @@ bug:
   - saw a persistent block effect on wizard after priest shield
     - did not end from being attacked
     - didnt repro when spawning a bunch of priests and wizards
-  - exp message desync
   - leftover ragdolls
     - maybe something with high pending animation queues?
   - a million memory leaks!
