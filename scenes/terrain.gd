@@ -81,10 +81,12 @@ func array_min(arr: Array) -> int:
 		if i < m:
 			m = i
 	return m
-#
-#func load_random_map():
-#	var ix = (randi() % 263 + 1) * 100
-#	load_map(ix)
+
+func in_active_room(target: Vector2) -> bool:
+	var is_active = false
+	for room in map.get_rooms(target,1):
+		is_active = is_active || active_rooms.has(room)
+	return is_active
 
 func load_map_resource(ix):
 	var path = "res://resources/maps/map{0}.tres".format([ix])

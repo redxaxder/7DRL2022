@@ -494,8 +494,8 @@ func _on_enemy_killed(label: String):
 	if rage == 0:
 		enter_rage()
 	experience += experience_gain_rate
+	combatLog.say("The {0} dies. \n +{1} rage  +{2} exp".format([label, rage_on_kill, experience_gain_rate]))
 	experience_gain_rate += experience_gain_step
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)
 	rage += rage_on_kill
-	combatLog.say("The {0} dies. \n +{1} rage  +{2} exp".format([label, rage_on_kill, experience_gain_rate]))
 	emit_signal(constants.PLAYER_STATUS_CHANGED)

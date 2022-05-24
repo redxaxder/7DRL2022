@@ -22,7 +22,7 @@ func on_turn():
 	if cur_sneak_duration > 0:
 		cur_sneak_duration -= 1
 		if cur_sneak_duration <= 0: # surprise!
-			if locationService.lookup(sneak_location, constants.BLOCKER).size() > 0:
+			if locationService.lookup(sneak_location, constants.BLOCKER).size() > 0 || !terrain.in_active_room(sneak_location):
 				cur_sneak_duration = 1
 			else:
 				combatLog.say("A rogue steps out of the shadows.", 500)

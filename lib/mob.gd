@@ -6,7 +6,6 @@ var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
 var ortho_dijkstra: Dijkstra
 var enemy_dijkstra: Dijkstra
-var hurt_sound
 
 func _ready():
 	randomize()

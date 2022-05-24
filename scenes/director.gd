@@ -335,7 +335,7 @@ func _on_exit_level():
 func _on_valkyrie_summon(targets: Array):
 	for target in targets:
 		var stuff_at = locationService.lookup(target, constants.BLOCKER)
-		if not terrain.is_wall(target) and stuff_at.size() == 0:
+		if not terrain.is_wall(target) and stuff_at.size() == 0 and terrain.in_active_room(target):
 			var nmes = []
 			for e in enemies:
 				nmes.push_back(e.scene)
