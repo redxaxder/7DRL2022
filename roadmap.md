@@ -29,4 +29,7 @@ V 0.3 plans:
 
 technical debt ideas:
   - individual scenes for images
+  - manual side-arguments
+  - import constants
+  - animation system rework
 
