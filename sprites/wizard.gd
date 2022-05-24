@@ -8,6 +8,7 @@ var shot_dir: Vector2
 const mutter_chance: float = 0.05
 
 const fireball_sprite: PackedScene = preload("res://sprites/fireball.tscn")
+const fireball_trail: PackedScene = preload("res://sprites/firetrail.tscn")
 
 func _ready():
 	label = "wizard"
@@ -104,6 +105,6 @@ func attack():
 			combatLog.say("The fireball misses.", 20)
 			cont = false
 		if !cont:
-			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed))
+			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed,  fireball_trail.instance()))
 		target += shot_dir
 		travel += 1
