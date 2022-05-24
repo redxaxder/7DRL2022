@@ -64,7 +64,6 @@ func on_turn():
 		maybe_door.nudge(0, false)
 	else:
 		animated_move_to(wander_to_door())
-	.on_turn()
 
 func attack():
 	combatLog.say("The archaeologist bashes you with a trowel!")

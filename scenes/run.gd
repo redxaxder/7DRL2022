@@ -12,6 +12,7 @@ onready var combatLog: CombatLog = $hud/CombatLog
 onready var locationService = $LocationService
 onready var level_up_modal = $hud/level_up_modal
 onready var scheduler = $Scheduler
+onready var father_time = $FatherTime
 var director: Director
 var pc_dijkstra: Dijkstra
 var wander_dijkstra: Dijkstra
@@ -41,6 +42,9 @@ func _ready():
 	pc.terrain = terrain
 	pc.combatLog = combatLog
 	pc.locationService = locationService
+	father_time.locationService = locationService
+	father_time.set_pos(Const.THE_HIDEOUT)
+	father_time.pc = pc
 	pc_dijkstra = Dijkstra.new(terrain, locationService)
 	wander_dijkstra = Dijkstra.new(terrain, locationService)
 	ortho_dijkstra = Dijkstra.new(terrain, locationService, 100, 1000, 1, 15)
@@ -56,21 +60,23 @@ func _ready():
 		ortho_dijkstra,
 		enemy_dijkstra)
 	scheduler.register_actor(pc)
+	scheduler.register_actor(father_time)
 	director.load_next_map()
-	connect(constants.END_PLAYER_TURN, scheduler, "_end_player_turn")
-	connect(constants.END_PLAYER_TURN, self, "_help_director_out") # kludge
-	pc.connect(constants.PLAYER_DIED, self, "_handle_death")
-	pc.connect(constants.PLAYER_DIED, scheduler, "_on_player_death")
-	pc.connect(constants.PLAYER_STATUS_CHANGED, self, "update_status")
+	connect(Const.END_PLAYER_TURN, scheduler, "_end_player_turn")
+	connect(Const.END_PLAYER_TURN, self, "_help_director_out") # kludge
+	pc.connect(Const.PLAYER_DIED, self, "_handle_death")
+	pc.connect(Const.PLAYER_DIED, scheduler, "_on_player_death")
+	pc.connect(Const.PLAYER_STATUS_CHANGED, self, "update_status")
 	level_up_modal.connect("exit_level_up",self,"_on_exit_level_up")
 	level_up_modal.connect("pick_perk",pc,"_on_pick_perk")
 	level_up_modal.connect("pick_perk",self,"_on_pick_perk")
-	pc.connect(constants.PLAYER_LEVEL_UP,self,"_on_level_up")
-	pc.connect(constants.EXIT_LEVEL,director,"_on_exit_level")
-	pc.connect(constants.RAGE_LIGHTING, $camera, "rage_lighting")
+	pc.connect(Const.PLAYER_LEVEL_UP,self,"_on_level_up")
+	pc.connect(Const.EXIT_LEVEL,director,"_on_exit_level")
+	pc.connect(Const.RAGE_LIGHTING, $camera, "rage_lighting")
 	update_status()
 	update_pan(-1)
 	combatLog.say(prologue[0])
+	pc.ignite()
 
 
 var tick = 0
@@ -131,7 +137,7 @@ func _unhandled_input(event):
 			update_pc_dijkstras()
 			enemy_dijkstra.tick()
 			update_status()
-			emit_signal(constants.END_PLAYER_TURN)
+			emit_signal(Const.END_PLAYER_TURN)
 			did_tempo = false
 
 const prologue: Array = [\

@@ -30,7 +30,6 @@ func on_turn():
 		if cur_blessing_cooldown > 0:
 			cur_blessing_cooldown -= 1
 		animated_move_to(seek(enemy_dijkstra))
-	.on_turn()
 
 func bless():
 	telegraphing = false

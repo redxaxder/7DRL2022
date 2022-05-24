@@ -21,6 +21,7 @@ var door: bool = false
 var blocking: bool = false
 var telegraphing: bool = false
 var is_ready: bool = false
+var on_fire: bool = false
 
 const block_duration: int = 2
 var cur_block_duration: int = 0
@@ -209,3 +210,10 @@ func _draw() -> void:
 				self.self_modulate = constants.READY_COLOR
 			else:
 				self.self_modulate = Color(1,1,1)
+
+func on_fire():
+	print("{0}: aaa I'm on fire".format([label]))
+
+func ignite():
+	on_fire = true
+	add_to_group(Const.ON_FIRE)

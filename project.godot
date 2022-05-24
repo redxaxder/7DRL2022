@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://sprites/door.gd"
 }, {
+"base": "Actor",
+"class": "FatherTime",
+"language": "GDScript",
+"path": "res://lib/father_time.gd"
+}, {
 "base": "Node",
 "class": "LocationService",
 "language": "GDScript",
@@ -156,6 +161,7 @@ _global_script_class_icons={
 "Dir": "",
 "Director": "",
 "Door": "",
+"FatherTime": "",
 "LocationService": "",
 "Map": "",
 "Mob": "",

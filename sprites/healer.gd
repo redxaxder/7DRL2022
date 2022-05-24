@@ -18,7 +18,6 @@ func on_turn():
 		cur_heal_cooldown = max(0, cur_heal_cooldown - 1)
 		var next = seek_to_player(cur_heal_cooldown > 0)
 		animated_move_to(next)
-	.on_turn()
 
 func attack():
 	self.combatLog.say("The healer brings forth a wave of calming energy.")

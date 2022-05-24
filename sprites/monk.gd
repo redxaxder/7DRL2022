@@ -17,7 +17,6 @@ func on_turn():
 	else:
 		var next = .seek_to_player()
 		animated_move_to(next)
-	.on_turn()
 
 func attack():
 	if cur_knockback_cooldown <= 0:

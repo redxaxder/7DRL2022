@@ -1,7 +1,6 @@
 extends Mob
 
 
-const the_hideout: Vector2 = Vector2(-1000,-1000)
 const sneak_cooldown_flat: int = 20
 const sneak_cooldown_rand: int = 4
 const sneak_duration_flat: int = 3
@@ -33,10 +32,10 @@ func on_turn():
 		else: # sneaky rogue is sneaking
 			set_pos(sneak_location)
 			sneak_location = seek(enemy_dijkstra, true)
-			set_pos(the_hideout)
+			set_pos(Const.THE_HIDEOUT)
 	elif cur_sneak_cooldown <= 0 && dist <= 8 && pc.rage > 0: #enter stealth!
 		combatLog.say("You lose sight of the rogue.", 50)
-		set_pos(the_hideout)
+		set_pos(Const.THE_HIDEOUT)
 		sneak_location = pc.get_pos()
 		self.visible = false
 		speed = 1
@@ -49,7 +48,6 @@ func on_turn():
 		else:
 			var next = .seek_to_player()
 			animated_move_to(next)
-		.on_turn()
 
 func attack():
 	self.combatLog.say("The rogue stabs you!")

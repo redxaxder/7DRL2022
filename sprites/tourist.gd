@@ -31,7 +31,6 @@ func on_turn():
 			get_ready()
 		var next = .seek_to_player(true)
 		animated_move_to(next)
-	.on_turn()
 
 func attack():
 	self.combatLog.say("A camera flash dazzles you!")

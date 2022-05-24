@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
 [ext_resource path="res://resources/light.png" type="Texture" id=9]
 [ext_resource path="res://scenes/camera.gd" type="Script" id=10]
+[ext_resource path="res://lib/father_time.gd" type="Script" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 7 )
@@ -182,3 +183,8 @@ color = Color( 0.878431, 0, 0, 1 )
 mode = 2
 
 [node name="LocationService" parent="." instance=ExtResource( 4 )]
+
+[node name="FatherTime" type="Sprite" parent="."]
+visible = false
+position = Vector2( 268.288, 92.4556 )
+script = ExtResource( 11 )
