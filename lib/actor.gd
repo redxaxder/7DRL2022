@@ -21,7 +21,7 @@ var door: bool = false
 var blocking: bool = false
 var telegraphing: bool = false
 var is_ready: bool = false
-var on_fire: bool = false
+var on_fire: int = 0
 
 const block_duration: int = 2
 var cur_block_duration: int = 0
@@ -31,6 +31,28 @@ var ragdoll_dir: Vector2
 
 signal killed_by_pc(label)
 signal thump()
+
+func do_turn():
+	if on_fire <= 0 || player:
+		if has_method("on_turn"):
+			call("on_turn")
+		return
+	# we're on fire! run around screaming
+	on_fire -= 1
+	if on_fire <= 0:
+		die(Dir.dir_to_vec(randi() % 4))
+		remove_from_group(Const.ON_FIRE)
+		return
+	var e = get_pos()
+	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+	var legal_candidates = []
+	for c in candidates:
+		if self.locationService.lookup(c, constants.BLOCKER).size() == 0:
+			if not terrain.is_wall(c) and c != pc.get_pos():
+				legal_candidates.append(c)
+	if legal_candidates.size() > 0:
+		var target = legal_candidates[randi() % legal_candidates.size()]
+		animated_move_to(target)
 
 func get_pos(default = null) -> Vector2:
 	return locationService.lookup_backward(self, default)
@@ -184,10 +206,16 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	update()
 	emit_signal("thump")
 
+var fire_colors = [Color(1, 0, 0), Color(1, 1, 0)]
 func _process(delta):
 	var did_animation_step = self.animations_step(delta)
 	if is_ragdoll && !did_animation_step:
 		die(ragdoll_dir)
+	if on_fire > 0:
+		if self_modulate == fire_colors[0]:
+			self_modulate = fire_colors[1]
+		else:
+			self_modulate = fire_colors[0]
 
 func _draw() -> void:
 	var pos = get_pos()
@@ -195,7 +223,7 @@ func _draw() -> void:
 		self.position = self.SCREEN.dungeon_to_screen(pos)
 		for v in anim_screen_offsets:
 			 self.position += Vector2(v.x,v.y)
-	if self.is_in_group(constants.MOBS):
+	if self.is_in_group(constants.MOBS) && !self.is_in_group(Const.ON_FIRE):
 		if blocking:
 			if telegraphing:
 				self.self_modulate = constants.WINDUP_AND_PROTECTED_COLOR
@@ -212,8 +240,8 @@ func _draw() -> void:
 				self.self_modulate = Color(1,1,1)
 
 func on_fire():
-	print("{0}: aaa I'm on fire".format([label]))
+	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
 
 func ignite():
-	on_fire = true
+	self.on_fire = 3 * self.speed
 	add_to_group(Const.ON_FIRE)

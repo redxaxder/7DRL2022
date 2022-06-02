@@ -8,6 +8,9 @@ V 0.2 plans:
     - normal maps
   - spreading
   - brandy interaction
+  - rogues with a dodge stop, drop, and roll to extinguish
+    - make sure to change the combat log
+  - Things that die from fire shouldn't splatter blood
 - wizard shoots over tables/chairs
 - fireball ignites furniture
 - brazier

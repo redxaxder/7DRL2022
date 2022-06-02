@@ -52,7 +52,7 @@ func next_turn() -> bool:
 				turns_since_player = 0
 				return false
 			actor.animation_delay(sqrt(turns_since_player) * 0.15 + actor.pc.pending_animation())
-			actor.on_turn()
+			actor.do_turn()
 			actor.update()
 	return true
 
