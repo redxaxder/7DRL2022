@@ -38,11 +38,6 @@ func do_turn():
 			call("on_turn")
 		return
 	# we're on fire! run around screaming
-	on_fire -= 1
-	if on_fire <= 0:
-		die(Dir.dir_to_vec(randi() % 4))
-		extinguish()
-		return
 	var e = get_pos()
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	var legal_candidates = []
@@ -110,10 +105,11 @@ func die(dir: Vector2):
 	if is_in_group(self.constants.MOBS):
 		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
-	var __ = Ragdoll.new(
-		texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
-		anim_screen_offsets, terrain, get_pos(), dir, get_parent()
-	)
+	if get_pos() != null:
+		var __ = Ragdoll.new(
+			texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
+			anim_screen_offsets, terrain, get_pos(), dir, get_parent()
+		)
 	if self.locationService:
 		self.locationService.delete_node(self)
 	queue_free()
@@ -241,15 +237,21 @@ func _draw() -> void:
 
 func on_fire():
 	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
+	on_fire -= 1
+	if on_fire <= 0:
+		if not player:
+			die(Dir.dir_to_vec(randi() % 4))
+		extinguish()
 
 var fire_particles: Node = null
 func ignite():
-	self.on_fire = 3 * self.speed
+	self.on_fire = 3
 	add_to_group(Const.ON_FIRE)
 	fire_particles = preload("res://scenes/burning.tscn").instance()
 	add_child(fire_particles)
 
 func extinguish():
 	remove_from_group(Const.ON_FIRE)
-	fire_particles.queue_free()
-	fire_particles = null
+	if fire_particles != null:
+		fire_particles.queue_free()
+		fire_particles = null
