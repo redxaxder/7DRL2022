@@ -6,6 +6,7 @@ colors = PoolColorArray( 1, 0, 0, 1, 1, 0.716667, 0, 1, 1, 0.133333, 0, 1 )
 
 [node name="burning" type="CPUParticles2D"]
 position = Vector2( 0, -3 )
+z_index = 7
 amount = 7
 local_coords = false
 emission_shape = 2
@@ -15,3 +16,16 @@ angle = 720.0
 angle_random = 0.58
 scale_amount = 2.0
 color_ramp = SubResource( 1 )
+
+[node name="smoke" type="CPUParticles2D" parent="."]
+amount = 5
+lifetime = 10.0
+emission_shape = 2
+emission_rect_extents = Vector2( 5, 5 )
+gravity = Vector2( 0, -2 )
+initial_velocity = 3.0
+initial_velocity_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale_amount = 5.0
+color = Color( 0.6, 0.537255, 0.537255, 0.52549 )
