@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.00655738, 0.35082, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0.716667, 0, 1, 1, 0.133333, 0, 1 )
+
+[node name="burning" type="CPUParticles2D"]
+position = Vector2( 0, -3 )
+amount = 7
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 3, 3 )
+gravity = Vector2( 0, -8 )
+angle = 720.0
+angle_random = 0.58
+scale_amount = 2.0
+color_ramp = SubResource( 1 )

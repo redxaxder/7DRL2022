@@ -20,6 +20,7 @@ func check_alignment():
 	return alignment.x == 0 or alignment.y == 0
 
 func on_turn():
+	ignite()
 	if rand_range(0, 1) < mutter_chance:
 		combatLog.say("You hear snatches of drunken spellcasting.", 5)
 	var pos = self.get_pos()

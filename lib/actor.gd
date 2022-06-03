@@ -41,7 +41,7 @@ func do_turn():
 	on_fire -= 1
 	if on_fire <= 0:
 		die(Dir.dir_to_vec(randi() % 4))
-		remove_from_group(Const.ON_FIRE)
+		extinguish()
 		return
 	var e = get_pos()
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
@@ -242,6 +242,14 @@ func _draw() -> void:
 func on_fire():
 	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
 
+var fire_particles: Node = null
 func ignite():
 	self.on_fire = 3 * self.speed
 	add_to_group(Const.ON_FIRE)
+	fire_particles = preload("res://scenes/burning.tscn").instance()
+	add_child(fire_particles)
+
+func extinguish():
+	remove_from_group(Const.ON_FIRE)
+	fire_particles.queue_free()
+	fire_particles = null
