@@ -11,7 +11,7 @@ colors = PoolColorArray( 1, 0, 0, 1, 1, 0.716667, 0, 1, 1, 0.133333, 0, 1 )
 [sub_resource type="AnimatedTexture" id=2]
 flags = 4
 frames = 2
-fps = 0.909091
+fps = 1.42857
 frame_0/texture = ExtResource( 1 )
 frame_1/texture = ExtResource( 2 )
 frame_1/delay_sec = 0.0
@@ -47,4 +47,4 @@ color = Color( 0.6, 0.537255, 0.537255, 0.52549 )
 
 [node name="light" type="Light2D" parent="."]
 texture = SubResource( 2 )
-energy = 0.5
+energy = 0.25
