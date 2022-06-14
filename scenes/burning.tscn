@@ -1,10 +1,23 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/light.png" type="Texture" id=1]
+[ext_resource path="res://resources/unlight.png" type="Texture" id=2]
+[ext_resource path="res://scenes/burning.gd" type="Script" id=3]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.00655738, 0.35082, 1 )
 colors = PoolColorArray( 1, 0, 0, 1, 1, 0.716667, 0, 1, 1, 0.133333, 0, 1 )
 
+[sub_resource type="AnimatedTexture" id=2]
+flags = 4
+frames = 2
+fps = 0.909091
+frame_0/texture = ExtResource( 1 )
+frame_1/texture = ExtResource( 2 )
+frame_1/delay_sec = 0.0
+
 [node name="burning" type="CPUParticles2D"]
+light_mask = 0
 position = Vector2( 0, -3 )
 z_index = 7
 amount = 7
@@ -16,8 +29,10 @@ angle = 720.0
 angle_random = 0.58
 scale_amount = 2.0
 color_ramp = SubResource( 1 )
+script = ExtResource( 3 )
 
 [node name="smoke" type="CPUParticles2D" parent="."]
+light_mask = 0
 amount = 5
 lifetime = 10.0
 emission_shape = 2
@@ -29,3 +44,7 @@ angle = 720.0
 angle_random = 1.0
 scale_amount = 5.0
 color = Color( 0.6, 0.537255, 0.537255, 0.52549 )
+
+[node name="light" type="Light2D" parent="."]
+texture = SubResource( 2 )
+energy = 0.5

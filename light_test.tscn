@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/burning.tscn" type="PackedScene" id=1]
+[ext_resource path="res://pickups/apple.tscn" type="PackedScene" id=2]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="apple" parent="." instance=ExtResource( 2 )]
+position = Vector2( -17, -7 )
+
+[node name="burning" parent="." instance=ExtResource( 1 )]
+rate = 3
+
+[node name="burning2" parent="." instance=ExtResource( 1 )]
+rate = 4
+
+[node name="burning3" parent="." instance=ExtResource( 1 )]
+rate = 4
+
+[node name="burning4" parent="." instance=ExtResource( 1 )]
+rate = 4

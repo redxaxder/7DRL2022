@@ -6,6 +6,7 @@ V 0.2 plans:
   + flickering
   - lighting
     - normal maps
+    - occlude lights
   - spreading
   - brandy interaction
   - rogues with a dodge stop, drop, and roll to extinguish
