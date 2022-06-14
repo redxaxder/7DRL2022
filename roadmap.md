@@ -3,7 +3,7 @@ V 0.2 plans:
 
 - fire for sure
   - particles
-  - flickering
+  + flickering
   - lighting
     - normal maps
   - spreading
@@ -35,4 +35,7 @@ technical debt ideas:
   - manual side-arguments
   - import constants
   - animation system rework
+  - weak refs for removal detection
+    - use in scheduler
+    - use in location service
 

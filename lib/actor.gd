@@ -244,14 +244,20 @@ func on_fire():
 		extinguish()
 
 var fire_particles: Node = null
+var pre_fire_color = null
+
 func ignite():
 	self.on_fire = 3
+	if pre_fire_color == null:
+		pre_fire_color = self_modulate
 	add_to_group(Const.ON_FIRE)
 	fire_particles = preload("res://scenes/burning.tscn").instance()
 	add_child(fire_particles)
 
 func extinguish():
 	remove_from_group(Const.ON_FIRE)
+	self_modulate = pre_fire_color
+	pre_fire_color = null
 	if fire_particles != null:
 		fire_particles.queue_free()
 		fire_particles = null
