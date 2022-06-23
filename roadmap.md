@@ -2,12 +2,13 @@
 V 0.2 plans:
 
 - fire for sure
-  - particles
+  + particles
   + flickering
   - lighting
     - normal maps
     - occlude lights
   - spreading
+    - a burning object knocked into an enemy should light them on fire
   - brandy interaction
   - rogues with a dodge stop, drop, and roll to extinguish
     - make sure to change the combat log
