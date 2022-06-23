@@ -19,7 +19,8 @@ const primes = [7, 8, 9, 11, 13]
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	add_child($light.duplicate())
+	var tex = $light.texture.duplicate()
+	$light.texture = tex
 	$light.texture.fps = 10.0 / primes[randi() % 5]
 
 

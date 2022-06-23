@@ -7,6 +7,7 @@ V 0.2 plans:
   - lighting
     - normal maps
     - occlude lights
+    - rework rage bulbs into something that doesn't interact with fire lighting
   - spreading
     - a burning object knocked into an enemy should light them on fire
   - brandy interaction
