@@ -15,6 +15,7 @@ func _ready():
 	add_to_group(constants.BLOODBAG)
 	thump_node = thump_scene.instance()
 	add_child(thump_node)
+	._ready()
 
 
 func pc_adjacent() -> bool:

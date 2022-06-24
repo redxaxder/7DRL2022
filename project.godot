@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/father_time.gd"
 }, {
+"base": "Sprite",
+"class": "Glyph",
+"language": "GDScript",
+"path": "res://sprites/glyph.gd"
+}, {
 "base": "Node",
 "class": "LocationService",
 "language": "GDScript",
@@ -84,7 +89,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/mob.gd"
 }, {
-"base": "Sprite",
+"base": "Node2D",
 "class": "OffsetSprite",
 "language": "GDScript",
 "path": "res://lib/offset_sprite.gd"
@@ -162,6 +167,7 @@ _global_script_class_icons={
 "Director": "",
 "Door": "",
 "FatherTime": "",
+"Glyph": "",
 "LocationService": "",
 "Map": "",
 "Mob": "",

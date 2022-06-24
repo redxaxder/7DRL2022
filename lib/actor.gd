@@ -32,6 +32,9 @@ var ragdoll_dir: Vector2
 signal killed_by_pc(label)
 signal thump()
 
+func _ready():
+	._ready()
+
 func do_turn():
 	if on_fire <= 0 || player:
 		if has_method("on_turn"):
@@ -106,10 +109,12 @@ func die(dir: Vector2):
 		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
 	if get_pos() != null:
-		var __ = Ragdoll.new(
-			texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
+		var rag = Ragdoll.new(
+			_glyph.texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
 			anim_screen_offsets, terrain, get_pos(), dir, get_parent()
 		)
+		if self.get("_glyph") != null:
+			rag.scale = self._glyph.scale
 	if self.locationService:
 		self.locationService.delete_node(self)
 	queue_free()
@@ -209,9 +214,9 @@ func _process(delta):
 		die(ragdoll_dir)
 	if on_fire > 0:
 		if self_modulate == fire_colors[0]:
-			self_modulate = fire_colors[1]
+			set_color(fire_colors[1])
 		else:
-			self_modulate = fire_colors[0]
+			set_color(fire_colors[0])
 
 func _draw() -> void:
 	var pos = get_pos()
@@ -219,21 +224,21 @@ func _draw() -> void:
 		self.position = self.SCREEN.dungeon_to_screen(pos)
 		for v in anim_screen_offsets:
 			 self.position += Vector2(v.x,v.y)
-	if self.is_in_group(constants.MOBS) && !self.is_in_group(Const.ON_FIRE):
+	if self.is_in_group(Const.MOBS) && !self.is_in_group(Const.ON_FIRE):
 		if blocking:
 			if telegraphing:
-				self.self_modulate = constants.WINDUP_AND_PROTECTED_COLOR
+				set_color(Const.WINDUP_AND_PROTECTED_COLOR)
 			elif is_ready:
-				self.self_modulate = constants.READY_AND_PROTECTED_COLOR
+				set_color(Const.READY_AND_PROTECTED_COLOR)
 			else:
-				self.self_modulate = constants.PROTECTED_COLOR
+				set_color(Const.PROTECTED_COLOR)
 		else:
 			if telegraphing:
-				self.self_modulate = constants.WINDUP_COLOR
+				set_color(Const.WINDUP_COLOR)
 			elif is_ready:
-				self.self_modulate = constants.READY_COLOR
+				set_color(Const.READY_COLOR)
 			else:
-				self.self_modulate = Color(1,1,1)
+				set_color(Color(1,1,1))
 
 func on_fire():
 	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
@@ -256,7 +261,7 @@ func ignite():
 
 func extinguish():
 	remove_from_group(Const.ON_FIRE)
-	self_modulate = pre_fire_color
+	set_color(pre_fire_color)
 	pre_fire_color = null
 	if fire_particles != null:
 		fire_particles.queue_free()

@@ -1,3 +1,4 @@
+tool
 extends Actor
 
 class_name PC
@@ -60,6 +61,7 @@ func _ready():
 	tiebreaker = 100
 	southpaw = randi() % 4 == 0
 	add_to_group(self.constants.PLAYER)
+	._ready()
 
 var starting_rage: int = 40
 var rage_on_got_hit: int = 6

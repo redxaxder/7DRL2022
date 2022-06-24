@@ -1,3 +1,4 @@
+tool
 extends Mob
 
 var cur_shot_cooldown: int = 0

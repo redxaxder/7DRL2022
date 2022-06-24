@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://resources/curses_8_12.png" type="Texture" id=1]
 [ext_resource path="res://sprites/pc.gd" type="Script" id=3]
 [ext_resource path="res://resources/sounds/thump.wav" type="AudioStream" id=4]
 [ext_resource path="res://resources/sounds/levelup.wav" type="AudioStream" id=5]
@@ -8,17 +7,13 @@
 [ext_resource path="res://resources/sounds/shuffle.wav" type="AudioStream" id=7]
 [ext_resource path="res://resources/sounds/run.wav" type="AudioStream" id=8]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 48, 8, 12 )
-
 [node name="pc" type="Sprite"]
 self_modulate = Color( 0.196078, 0.407843, 0.137255, 1 )
-position = Vector2( 64, 64 )
 z_index = 10
 z_as_relative = false
-texture = SubResource( 1 )
 script = ExtResource( 3 )
+glyph_index = 64
+glyph_opaque = true
 
 [node name="thump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
