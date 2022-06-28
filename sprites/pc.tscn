@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://scenes/burning.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/pc.gd" type="Script" id=3]
 [ext_resource path="res://resources/sounds/thump.wav" type="AudioStream" id=4]
 [ext_resource path="res://resources/sounds/levelup.wav" type="AudioStream" id=5]
@@ -31,3 +32,15 @@ stream = ExtResource( 7 )
 
 [node name="run" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+
+[node name="burning" parent="." instance=ExtResource( 1 )]
+
+[node name="burning2" parent="." instance=ExtResource( 1 )]
+
+[node name="burning3" parent="." instance=ExtResource( 1 )]
+
+[node name="burning4" parent="." instance=ExtResource( 1 )]
+
+[node name="burning5" parent="." instance=ExtResource( 1 )]
+
+[node name="burning6" parent="." instance=ExtResource( 1 )]

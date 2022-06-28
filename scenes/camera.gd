@@ -12,7 +12,7 @@ func _ready():
 
 func rage_lighting(switch: bool):
 	for c in get_children():
-		c.enabled = switch
+		c.enabled = false #switch
 	update()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -280,26 +280,27 @@ func _draw():
 			r = rand_seed(r[1])
 			var pos = SCREEN.dungeon_to_screen(cell)
 			var tile = atv(cell)
+			var target = Rect2(pos + offset, Glyph.cell_size / 8)
 			if tile == '#':
 				if blood == 0:
-					draw_texture(wall_inst.texture,pos + offset)
+					draw_texture_rect(wall_inst.texture,target, false, Color(0.7, 0.7, 0.7), false, wall_inst.normal_map)
 				else:
-					draw_texture(wall_inst.texture,pos + offset, blood_color)
+					draw_texture_rect(wall_inst.texture,target, false, blood_color, false, wall_inst.normal_map)
 			elif tile == '>':
 				if blood == 0:
-					draw_texture(exit_inst.texture,pos + offset)
+					draw_texture(exit_inst.texture,pos + offset, Color(1,1,1,1), exit_inst.normal_map)
 				else:
-					draw_texture(exit_inst.texture,pos + offset, blood_color)
+					draw_texture(exit_inst.texture,pos + offset, blood_color, exit_inst.normal_map)
 			else:
 				if blood == 0:
 					var weight: float = float(n % 4) / 4.0
 					var floor_color = min_floor_color.linear_interpolate(max_floor_color, weight)
-					draw_texture(floor_inst.texture,pos + offset, floor_color)
+					draw_texture(floor_inst.texture,pos + offset, floor_color, floor_inst.normal_map)
 				elif blood < 10:
-					draw_texture(blood_inst.texture,pos + offset, blood_color)
+					draw_texture(blood_inst.texture,pos + offset, blood_color, blood_inst.normal_map)
 				elif blood < 20:
-					draw_texture(some_blood_inst.texture,pos + offset, blood_color)
+					draw_texture(some_blood_inst.texture,pos + offset, blood_color, some_blood_inst.normal_map)
 				elif blood < 30:
-					draw_texture(more_blood_inst.texture,pos + offset, blood_color)
+					draw_texture(more_blood_inst.texture,pos + offset, blood_color, more_blood_inst.normal_map)
 				else:
-					draw_texture(most_blood_inst.texture,pos + offset, blood_color)
+					draw_texture(most_blood_inst.texture,pos + offset, blood_color, most_blood_inst.normal_map)

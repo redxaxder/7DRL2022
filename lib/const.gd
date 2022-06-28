@@ -35,11 +35,11 @@ const LIMP = "limping"
 const IMMOBILIZED = "immobilized"
 
 # colors
-const PROTECTED_COLOR = Color(0, 0.976471, 1)
-const WINDUP_COLOR = Color(0.898039, 0, 1)
-const READY_COLOR = Color(0.909804, 0.854902, 0)
-const READY_AND_PROTECTED_COLOR = Color(0.454902, 0.913725, 0.501961)
-const WINDUP_AND_PROTECTED_COLOR = Color(0.45098, 0.490196, 1)
+const PROTECTED_COLOR = Color(0, 0.688334, 0.7)
+const WINDUP_COLOR = Color(0.63, 0, 0.7)
+const READY_COLOR = Color(0.7, 0.653333, 0)
+const READY_AND_PROTECTED_COLOR = Color(0.35, 0.7, 0.385)
+const WINDUP_AND_PROTECTED_COLOR = Color(0.315, 0.340667, 0.7)
 
 # misc
 const THE_HIDEOUT: Vector2 = Vector2(-1000,-1000)

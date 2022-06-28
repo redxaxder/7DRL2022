@@ -238,7 +238,7 @@ func _draw() -> void:
 			elif is_ready:
 				set_color(Const.READY_COLOR)
 			else:
-				set_color(Color(1,1,1))
+				set_color(Color(0.7, 0.7, 0.7))
 
 func on_fire():
 	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
