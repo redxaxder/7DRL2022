@@ -42,3 +42,5 @@ technical debt ideas:
     - use in scheduler
     - use in location service
 
+QOL stuff:
+- An option to dial back particle effects
