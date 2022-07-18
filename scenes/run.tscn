@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://resources/light.png" type="Texture" id=9]
 [ext_resource path="res://scenes/camera.gd" type="Script" id=10]
 [ext_resource path="res://lib/father_time.gd" type="Script" id=11]
+[ext_resource path="res://scenes/angry_panel.tscn" type="PackedScene" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 7 )
@@ -142,6 +143,9 @@ margin_bottom = 59.5945
 
 [node name="level_up_modal" parent="hud" instance=ExtResource( 6 )]
 visible = false
+
+[node name="angry_panel" parent="hud" instance=ExtResource( 12 )]
+alpha = 0.0
 
 [node name="Scheduler" parent="." instance=ExtResource( 5 )]
 

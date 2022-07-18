@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/angry_panel.gd" type="Script" id=1]
+[ext_resource path="res://gragient.tres" type="StyleBox" id=2]
+
+[node name="angry" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+alpha = 0.4
+
+[node name="Panel3" type="Panel" parent="."]
+anchor_left = 0.47424
+anchor_right = 1.00354
+anchor_bottom = 1.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel4" type="Panel" parent="."]
+anchor_left = 0.000821888
+anchor_top = -1.01725e-07
+anchor_right = 0.000821888
+anchor_bottom = -1.01725e-07
+margin_left = 542.0
+margin_top = 600.0
+margin_right = 1084.0
+margin_bottom = 1200.0
+rect_rotation = 180.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel5" type="Panel" parent="."]
+anchor_top = 0.5
+anchor_bottom = 1.0
+margin_left = 1024.0
+margin_right = 1324.0
+margin_bottom = 724.0
+rect_rotation = 90.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Panel6" type="Panel" parent="."]
+anchor_top = -0.00110463
+anchor_right = 1.0
+anchor_bottom = -0.00110463
+margin_top = 300.0
+margin_right = -724.0
+margin_bottom = 1324.0
+rect_rotation = 270.0
+custom_styles/panel = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}

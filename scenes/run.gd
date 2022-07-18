@@ -72,7 +72,7 @@ func _ready():
 	level_up_modal.connect("pick_perk",self,"_on_pick_perk")
 	pc.connect(Const.PLAYER_LEVEL_UP,self,"_on_level_up")
 	pc.connect(Const.EXIT_LEVEL,director,"_on_exit_level")
-	pc.connect(Const.RAGE_LIGHTING, $camera, "rage_lighting")
+	pc.connect(Const.RAGE_LIGHTING, $hud/angry_panel, "set_visibility")
 	update_status()
 	update_pan(-1)
 	combatLog.say(prologue[0])
