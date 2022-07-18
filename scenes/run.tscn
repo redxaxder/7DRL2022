@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/run.gd" type="Script" id=1]
 [ext_resource path="res://sprites/pc.tscn" type="PackedScene" id=2]
@@ -8,8 +8,6 @@
 [ext_resource path="res://scenes/level_up_modal.tscn" type="PackedScene" id=6]
 [ext_resource path="res://resources/FiraCode-Regular.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://scenes/log.gd" type="Script" id=8]
-[ext_resource path="res://resources/light.png" type="Texture" id=9]
-[ext_resource path="res://scenes/camera.gd" type="Script" id=10]
 [ext_resource path="res://lib/father_time.gd" type="Script" id=11]
 [ext_resource path="res://scenes/angry_panel.tscn" type="PackedScene" id=12]
 
@@ -152,39 +150,6 @@ alpha = 0.0
 [node name="camera" type="Camera2D" parent="."]
 position = Vector2( -2648.25, 389.474 )
 current = true
-script = ExtResource( 10 )
-
-[node name="Ragebulb1" type="Light2D" parent="camera"]
-position = Vector2( -150, -150 )
-scale = Vector2( 0.4, 0.4 )
-enabled = false
-texture = ExtResource( 9 )
-color = Color( 0.878431, 0, 0, 1 )
-mode = 2
-
-[node name="Ragebulb2" type="Light2D" parent="camera"]
-position = Vector2( 150, 150 )
-scale = Vector2( 0.4, 0.4 )
-enabled = false
-texture = ExtResource( 9 )
-color = Color( 0.878431, 0, 0, 1 )
-mode = 2
-
-[node name="Ragebulb3" type="Light2D" parent="camera"]
-position = Vector2( -150, 150 )
-scale = Vector2( 0.4, 0.4 )
-enabled = false
-texture = ExtResource( 9 )
-color = Color( 0.878431, 0, 0, 1 )
-mode = 2
-
-[node name="Ragebulb4" type="Light2D" parent="camera"]
-position = Vector2( 150, -150 )
-scale = Vector2( 0.4, 0.4 )
-enabled = false
-texture = ExtResource( 9 )
-color = Color( 0.878431, 0, 0, 1 )
-mode = 2
 
 [node name="LocationService" parent="." instance=ExtResource( 4 )]
 
