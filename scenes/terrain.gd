@@ -17,31 +17,12 @@ var active_rooms: Dictionary = {} # used as a set. room -> 0
 
 const cosmetic_map_seed: int = 68000
 
-
-var wall_inst = preload("res://sprites/wall.tscn").instance() as Sprite
-var floor_inst = preload("res://sprites/floor.tscn").instance() as Sprite
-var exit_inst = preload("res://sprites/exit.tscn").instance() as Sprite
-var blood_inst = preload("res://sprites/blood.tscn").instance() as Sprite
-var some_blood_inst = preload("res://sprites/lots_of_blood.tscn").instance() as Sprite
-var more_blood_inst = preload("res://sprites/more_blood.tscn").instance() as Sprite
-var most_blood_inst = preload("res://sprites/most_blood.tscn").instance() as Sprite
+var terrain_glyph = Glyph.new()
 
 func _ready():
 	randomize()
-	add_child(wall_inst)
-	wall_inst.visible = false
-	add_child(floor_inst)
-	floor_inst.visible = false
-	add_child(exit_inst)
-	exit_inst.visible = false
-	add_child(blood_inst)
-	blood_inst.visible = false
-	add_child(some_blood_inst)
-	some_blood_inst.visible = false
-	add_child(more_blood_inst)
-	more_blood_inst.visible = false
-	add_child(most_blood_inst)
-	most_blood_inst.visible = false
+	add_child(terrain_glyph)
+	terrain_glyph.visible = false
 
 func at(x,y):
 	return atv(Vector2(x,y))
@@ -281,26 +262,34 @@ func _draw():
 			var pos = SCREEN.dungeon_to_screen(cell)
 			var tile = atv(cell)
 			var target = Rect2(pos + offset, Glyph.cell_size / 8)
+			var glyph_color = Color(1, 1, 1)
 			if tile == '#':
+				terrain_glyph.index = Glyph.from('#')
 				if blood == 0:
-					draw_texture_rect(wall_inst.texture,target, false, Color(0.7, 0.7, 0.7), false, wall_inst.normal_map)
+					glyph_color = Color(0.2, 0.2, 0.2)
 				else:
-					draw_texture_rect(wall_inst.texture,target, false, blood_color, false, wall_inst.normal_map)
+					glyph_color = blood_color
 			elif tile == '>':
+				terrain_glyph.index = Glyph.from('>')
 				if blood == 0:
-					draw_texture(exit_inst.texture,pos + offset, Color(1,1,1,1), exit_inst.normal_map)
+					glyph_color = Color(1, 1, 1)
 				else:
-					draw_texture(exit_inst.texture,pos + offset, blood_color, exit_inst.normal_map)
+					glyph_color = blood_color
 			else:
 				if blood == 0:
+					terrain_glyph.index = Glyph.from('.')
 					var weight: float = float(n % 4) / 4.0
-					var floor_color = min_floor_color.linear_interpolate(max_floor_color, weight)
-					draw_texture(floor_inst.texture,pos + offset, floor_color, floor_inst.normal_map)
+					glyph_color = min_floor_color.linear_interpolate(max_floor_color, weight)
 				elif blood < 10:
-					draw_texture(blood_inst.texture,pos + offset, blood_color, blood_inst.normal_map)
+					terrain_glyph.index = 250
+					glyph_color = blood_color
 				elif blood < 20:
-					draw_texture(some_blood_inst.texture,pos + offset, blood_color, some_blood_inst.normal_map)
+					terrain_glyph.index = 249
+					glyph_color = blood_color
 				elif blood < 30:
-					draw_texture(more_blood_inst.texture,pos + offset, blood_color, more_blood_inst.normal_map)
+					terrain_glyph.index = 248
+					glyph_color = blood_color
 				else:
-					draw_texture(most_blood_inst.texture,pos + offset, blood_color, most_blood_inst.normal_map)
+					terrain_glyph.index = 247
+					glyph_color = blood_color
+			draw_texture_rect(terrain_glyph.texture,target, false, glyph_color, false, terrain_glyph.normal_map)
