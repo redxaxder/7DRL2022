@@ -7,7 +7,7 @@ V 0.2 plans:
   - lighting
     - normal maps
     - occlude lights
-    - rework rage bulbs into something that doesn't interact with fire lighting
+    + rework rage bulbs into something that doesn't interact with fire lighting
   - spreading
     - a burning object knocked into an enemy should light them on fire
   - brandy interaction
@@ -44,3 +44,6 @@ technical debt ideas:
 
 QOL stuff:
 - An option to dial back particle effects
+
+Strech Goals:
+- dial up the anger along a curve like the zoom
