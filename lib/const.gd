@@ -25,6 +25,7 @@ const PATHING_BLOCKER = "pathing_blocker"
 const STOPS_ATTACK = "stops_attack"
 const FURNITURE = "furniture"
 const ON_FIRE = "on_fire"
+const FLAMMABLE = "flammable"
 
 #debuffs
 const THRESH = "threshold"

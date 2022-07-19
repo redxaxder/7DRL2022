@@ -47,3 +47,4 @@ QOL stuff:
 
 Strech Goals:
 - dial up the anger along a curve like the zoom
+- fireproof doors spawn on higher levels

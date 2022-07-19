@@ -22,6 +22,7 @@ var blocking: bool = false
 var telegraphing: bool = false
 var is_ready: bool = false
 var on_fire: int = 0
+var flammability: float = 0.3
 
 const block_duration: int = 2
 var cur_block_duration: int = 0
@@ -240,13 +241,21 @@ func _draw() -> void:
 			else:
 				set_color(Color(0.7, 0.7, 0.7))
 
-func on_fire():
-	print("{0}: aaa I'm on fire {1} {2}".format([label, on_fire, self.get("label")]))
+func do_fire():
 	on_fire -= 1
 	if on_fire <= 0:
 		if not player:
 			die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
+	# spread the fire
+	var e = get_pos()
+	if e != null:
+		var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+		for c in candidates:
+			for thing in self.locationService.lookup(c, Const.FLAMMABLE):
+				if randf() < thing.flammability:
+					thing.ignite()
+
 
 var fire_particles: Node = null
 var pre_fire_color = null

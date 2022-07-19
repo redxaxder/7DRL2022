@@ -14,6 +14,7 @@ const fireball_trail: PackedScene = preload("res://sprites/firetrail.tscn")
 func _ready():
 	label = "wizard"
 	tiebreaker = 1
+	flammability = 0.9
 	._ready()
 
 func check_alignment():
@@ -21,7 +22,6 @@ func check_alignment():
 	return alignment.x == 0 or alignment.y == 0
 
 func on_turn():
-	ignite()
 	if rand_range(0, 1) < mutter_chance:
 		combatLog.say("You hear snatches of drunken spellcasting.", 5)
 	var pos = self.get_pos()
@@ -49,7 +49,7 @@ func on_turn():
 			while cont:
 				var stuff_at = locationService.lookup(target)
 				for thing in stuff_at:
-					if thing.is_in_group(constants.FURNITURE) or thing.is_in_group(constants.MOBS):
+					if thing.is_in_group(Const.PROJECTILE_BLOCKER) or thing.is_in_group(Const.MOBS):
 						cont = false
 						clear_shot = false
 				if terrain.is_wall(target):
@@ -83,26 +83,28 @@ func attack():
 			# hit the player
 			combatLog.say("The fireball slams into you!")
 			pc.injure()
+			pc.ignite()
 			cont = false
 		if stuff_at.size() > 0:
 			for thing in stuff_at:
 				var screen_here = SCREEN.dungeon_to_screen(pos)
 				var screen_target = SCREEN.dungeon_to_screen(target)
 				var fireball_delay = screen_target.distance_to(screen_here) / 30
-				if thing.is_in_group(constants.FURNITURE):
-					combatLog.say("The {0} bursts into flames!".format([thing.label]))
-					thing.animation_delay(self.pending_animation() + fireball_delay)
-					thing.die(shot_dir)
+				if thing.is_in_group(Const.FURNITURE):
+					if randf() < thing.flammability:
+						combatLog.say("The {0} bursts into flames!".format([thing.label]))
+						thing.animation_delay(self.pending_animation() + fireball_delay)
+						thing.ignite()
+				if thing.is_in_group(Const.PROJECTILE_BLOCKER):
 					cont = false
-				if thing.is_in_group(constants.MOBS):
+				if thing.is_in_group(Const.MOBS):
 					thing.animation_delay(self.pending_animation() + fireball_delay)
 					if thing.blocking:
 						combatLog.say("The fireball is blocked by the {0}".format([thing.label]))
 						thing.knockback(shot_dir)
 					else:
 						combatLog.say("The {0} bursts into flames!".format([thing.label]))
-						thing.die(shot_dir)
-					cont = false
+						thing.ignite()
 		if terrain.is_wall(target):
 			combatLog.say("The fireball misses.", 20)
 			cont = false

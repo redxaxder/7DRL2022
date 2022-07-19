@@ -47,7 +47,7 @@ func _refresh():
 	if normals:
 		normal_map = AtlasTexture.new()
 		normal_map.atlas = normal_atlas
-	
+
 	var region: Rect2
 	if index < 0 || index > 255:
 #		push_warning("glyph index out of bounds")

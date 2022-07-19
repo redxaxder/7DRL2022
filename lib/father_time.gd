@@ -14,4 +14,4 @@ func on_turn():
 	# this needs to be realtime because call_group has a one-frame delay
 	# that delay causes die() to be called twice for things that are on fire
 	# double dying crashes the game
-	get_tree().call_group_flags(SceneTree.GROUP_CALL_REALTIME, Const.ON_FIRE, "on_fire")
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_REALTIME, Const.ON_FIRE, "do_fire")

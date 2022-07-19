@@ -13,6 +13,7 @@ func _ready():
 	add_to_group(constants.BLOCKER)
 	add_to_group(constants.PROJECTILE_BLOCKER)
 	add_to_group(constants.BLOODBAG)
+	add_to_group(constants.FLAMMABLE)
 	thump_node = thump_scene.instance()
 	add_child(thump_node)
 	._ready()

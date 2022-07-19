@@ -8,9 +8,11 @@ var fallen_idx = 180
 
 func _ready():
 	self.label = "table"
-	add_to_group(self.constants.FURNITURE)
-	add_to_group(self.constants.BLOCKER)
-	add_to_group(self.constants.PATHING_BLOCKER)
+	add_to_group(Const.FURNITURE)
+	add_to_group(Const.BLOCKER)
+	add_to_group(Const.PATHING_BLOCKER)
+	add_to_group(Const.FLAMMABLE)
+	self.flammability = 0.5
 #	add_child(fallen_inst)
 #	fallen_inst.visible = false
 
@@ -35,6 +37,7 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 			self.glyph_index = fallen_idx
 			self._refresh()
 			fallen = true
+			add_to_group(Const.PROJECTILE_BLOCKER)
 			emit_signal("thump")
 			var pos = get_pos()
 			var target = get_pos() + DIR.dir_to_vec(dir)

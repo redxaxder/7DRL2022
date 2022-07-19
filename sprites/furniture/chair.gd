@@ -4,9 +4,11 @@ class_name Chair
 
 func _ready():
 	self.label = "chair"
-	add_to_group(self.constants.FURNITURE)
-	add_to_group(self.constants.BLOCKER)
-	add_to_group(self.constants.PATHING_BLOCKER)
+	add_to_group(Const.FURNITURE)
+	add_to_group(Const.BLOCKER)
+	add_to_group(Const.PATHING_BLOCKER)
+	add_to_group(Const.FLAMMABLE)
+	self.flammability = 0.5
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:

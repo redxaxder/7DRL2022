@@ -12,6 +12,8 @@ func _ready():
 	add_to_group(self.constants.PROJECTILE_BLOCKER)
 	add_to_group(self.constants.PATHING_BLOCKER)
 	add_to_group(self.constants.STOPS_ATTACK)
+	add_to_group(Const.FLAMMABLE)
+	self.flammability = 0.5
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	if combatLog != null:
