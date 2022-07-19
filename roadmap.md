@@ -8,14 +8,14 @@ V 0.2 plans:
     - normal maps
     - occlude lights
     + rework rage bulbs into something that doesn't interact with fire lighting
-  - spreading
+  x spreading
     - a burning object knocked into an enemy should light them on fire
   - brandy interaction
   - rogues with a dodge stop, drop, and roll to extinguish
     - make sure to change the combat log
   - Things that die from fire shouldn't splatter blood
-- wizard shoots over tables/chairs
-- fireball ignites furniture
+x wizard shoots over tables/chairs
+x fireball ignites furniture
 - brazier
 - bookshelf
 - wall torch
