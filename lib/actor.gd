@@ -84,25 +84,6 @@ func end_ready():
 	is_ready = false
 	update()
 
-#const ragdoll_scene = preload("res://sprites/ragdoll.tscn")
-func make_ragdoll(dir: Vector2):
-	var ragdoll: Sprite = get_script().new()
-	ragdoll.texture = self.texture
-	ragdoll.modulate = self.modulate
-	ragdoll.self_modulate = self.self_modulate
-	get_parent().add_child(ragdoll)
-	for g in ragdoll.get_groups():
-		if g != constants.BLOODBAG :
-			ragdoll.remove_from_group(g)
-	ragdoll.add_to_group("idle_process")
-	ragdoll.anim_screen_offsets = anim_screen_offsets.duplicate(true)
-	ragdoll.locationService = locationService
-	ragdoll.terrain = terrain
-	ragdoll.set_pos(get_pos())
-	ragdoll.is_ragdoll = true
-	ragdoll.ragdoll_dir = dir
-	ragdoll.update()
-
 func die(dir: Vector2):
 	#notify PC of kills
 	#TODO: maybe handle if it was killed by someone else (eg: wizard)
@@ -245,6 +226,7 @@ func do_fire():
 	on_fire -= 1
 	if on_fire <= 0:
 		if not player:
+			self.remove_from_group(Const.BLOODBAG)
 			die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
 	# spread the fire
