@@ -18,6 +18,9 @@ V 0.2 plans:
   + Things that die from fire shouldn't splatter blood
 x wizard shoots over tables/chairs
 x fireball ignites furniture
+- water should put out the PC fire
+- water should clear alchohol soak
+- being on fire should affect the pc
 - brazier
 - bookshelf
 - wall torch
