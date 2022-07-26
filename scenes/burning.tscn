@@ -42,7 +42,7 @@ script = ExtResource( 3 )
 
 [node name="smoke" type="CPUParticles2D" parent="."]
 light_mask = 0
-amount = 5
+amount = 4
 lifetime = 10.0
 emission_shape = 2
 emission_rect_extents = Vector2( 5, 5 )
@@ -52,7 +52,7 @@ initial_velocity_random = 1.0
 angle = 720.0
 angle_random = 1.0
 scale_amount = 5.0
-color = Color( 0.6, 0.537255, 0.537255, 0.52549 )
+color = Color( 0.6, 0.54, 0.54, 0.313726 )
 
 [node name="light" type="Light2D" parent="."]
 position = Vector2( 13.841, 16.0231 )

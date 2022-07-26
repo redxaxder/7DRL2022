@@ -21,7 +21,7 @@ func on_turn():
 	if cur_sneak_duration > 0:
 		cur_sneak_duration -= 1
 		if cur_sneak_duration <= 0: # surprise!
-			if locationService.lookup(sneak_location, constants.BLOCKER).size() > 0 || !terrain.in_active_room(sneak_location):
+			if locationService.lookup(sneak_location, Const.BLOCKER).size() > 0 || !terrain.in_active_room(sneak_location):
 				cur_sneak_duration = 1
 			else:
 				combatLog.say("A rogue steps out of the shadows.", 500)
@@ -62,7 +62,10 @@ func die(_dir: Vector2):
 		if next == get_pos():
 			.die(_dir)
 		else:
-			combatLog.say("The rogue dodges!", 20)
+			if is_in_group(Const.ON_FIRE):
+				combatLog.say("The rogue stops, drops, and rolls!")
+			else:
+				combatLog.say("The rogue dodges!", 20)
 			animated_move_to(next)
 			$dodge.play()
 	else:

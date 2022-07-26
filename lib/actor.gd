@@ -46,7 +46,7 @@ func do_turn():
 	var candidates = [e, Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
 	var legal_candidates = []
 	for c in candidates:
-		if self.locationService.lookup(c, constants.BLOCKER).size() == 0:
+		if self.locationService.lookup(c, Const.BLOCKER).size() == 0:
 			if not terrain.is_wall(c) and c != pc.get_pos():
 				legal_candidates.append(c)
 	if legal_candidates.size() > 0:
@@ -87,12 +87,12 @@ func end_ready():
 func die(dir: Vector2):
 	#notify PC of kills
 	#TODO: maybe handle if it was killed by someone else (eg: wizard)
-	if is_in_group(self.constants.MOBS):
+	if is_in_group(Const.MOBS):
 		emit_signal("killed_by_pc", label)
 	# spawn an animation dummy that dies on completing animation
 	if get_pos() != null:
 		var rag = Ragdoll.new(
-			_glyph.texture, modulate, self_modulate, is_in_group(self.constants.BLOODBAG),
+			_glyph.texture, modulate, self_modulate, is_in_group(Const.BLOODBAG) && !is_in_group(Const.ON_FIRE),
 			anim_screen_offsets, terrain, get_pos(), dir, get_parent()
 		)
 		if self.get("_glyph") != null:
@@ -147,7 +147,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 			collision = true
 			strong_collision = true
 			break
-		var blockers = locationService.lookup(next, constants.BLOCKER)
+		var blockers = locationService.lookup(next, Const.BLOCKER)
 		if blockers.size() > 0:
 			if !self.player:
 				combatLog.say("The {0} collides with the {1}.".format([self.label, blockers[0].label]))
@@ -164,7 +164,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 					b.knockback(dir, distance, rem)
 					strong_collision = true
 					break
-				elif	 b.is_in_group(constants.FURNITURE):
+				elif	 b.is_in_group(Const.FURNITURE):
 					b.animation_delay(self.pending_animation()+anim)
 					b.die(dir)
 				elif b.player:
@@ -226,7 +226,6 @@ func do_fire():
 	on_fire -= 1
 	if on_fire <= 0:
 		if not player:
-			self.remove_from_group(Const.BLOODBAG)
 			die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
 	# spread the fire

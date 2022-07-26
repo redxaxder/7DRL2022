@@ -5,15 +5,15 @@ V 0.2 plans:
   + particles
   + flickering
   - lighting
-    - normal maps
+    + normal maps
     - occlude lights
     + rework rage bulbs into something that doesn't interact with fire lighting
-  x spreading
+  + spreading
     - a burning object knocked into an enemy should light them on fire
   - brandy interaction
-  - rogues with a dodge stop, drop, and roll to extinguish
-    - make sure to change the combat log
-  - Things that die from fire shouldn't splatter blood
+  + rogues with a dodge stop, drop, and roll to extinguish
+    + make sure to change the combat log
+  + Things that die from fire shouldn't splatter blood
 x wizard shoots over tables/chairs
 x fireball ignites furniture
 - brazier
