@@ -10,7 +10,9 @@ V 0.2 plans:
     + rework rage bulbs into something that doesn't interact with fire lighting
   + spreading
     - a burning object knocked into an enemy should light them on fire
-  - brandy interaction
+  X brandy interaction
+    - Re-up fire duration if you smash brandy in your face when already on fire
+  - Fire enrages and fatigues player
   + rogues with a dodge stop, drop, and roll to extinguish
     + make sure to change the combat log
   + Things that die from fire shouldn't splatter blood

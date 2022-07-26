@@ -60,6 +60,7 @@ func _ready():
 	self.pc = self
 	tiebreaker = 100
 	southpaw = randi() % 4 == 0
+	flammability = 0
 	add_to_group(self.constants.PLAYER)
 	._ready()
 
@@ -435,7 +436,11 @@ func consume_angry(p: Pickup) -> bool:
 			pickup.queue_free()
 			pickup =	 make_shards()
 			make_shards().place(get_pos())
-			#TODO: put out fire. maybe add wet?
+			flammability = 0.0
+			if is_in_group(Const.ON_FIRE):
+				combatLog.say("You are no longer on fire but your rage still smolders.")
+				extinguish()
+				emit_signal(Const.PLAYER_STATUS_CHANGED)
 			return true
 		p.ITEM_TYPE.BRANDY:
 			combatLog.say("You direct your rage at the bottle of brandy.", 2)
@@ -443,9 +448,17 @@ func consume_angry(p: Pickup) -> bool:
 			pickup.queue_free()
 			pickup =	 make_shards()
 			make_shards().place(get_pos())
+			flammability = 1.0
 			return true
 			#TODO: soak in alchohol
 	return true
+
+func ignite():
+	.ignite()
+	combatLog.say("You combust!")
+	emit_signal(Const.PLAYER_STATUS_CHANGED)
+	self.on_fire = 10
+	flammability = 0.0
 
 func _on_pick_perk(p: Perk):
 	experience -= experience_needed
@@ -501,3 +514,13 @@ func _on_enemy_killed(label: String):
 	experience_gain_rate = min(experience_gain_rate, max_experience_gain_rate)
 	rage += rage_on_kill
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
+
+func _am_i_on_fire():
+	# spread the fire
+	var e = get_pos()
+	if e != null:
+		var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+		for c in candidates:
+			for thing in self.locationService.lookup(c, Const.ON_FIRE):
+				if flammability > 0.0:
+					ignite()

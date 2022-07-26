@@ -2,6 +2,7 @@ class_name Const
 
 #signals
 const END_PLAYER_TURN = "end_player_turn"
+const START_PLAYER_TURN = "start_player_turn"
 const PLAYER_DIED = "player_died"
 const PLAYER_STATUS_CHANGED = "status_changed"
 const PLAYER_LEVEL_UP = "level_up"

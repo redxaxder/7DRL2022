@@ -64,6 +64,7 @@ func _ready():
 	director.load_next_map()
 	connect(Const.END_PLAYER_TURN, scheduler, "_end_player_turn")
 	connect(Const.END_PLAYER_TURN, self, "_help_director_out") # kludge
+	connect(Const.END_PLAYER_TURN, pc, "_am_i_on_fire")
 	pc.connect(Const.PLAYER_DIED, self, "_handle_death")
 	pc.connect(Const.PLAYER_DIED, scheduler, "_on_player_death")
 	pc.connect(Const.PLAYER_STATUS_CHANGED, self, "update_status")
@@ -73,6 +74,7 @@ func _ready():
 	pc.connect(Const.PLAYER_LEVEL_UP,self,"_on_level_up")
 	pc.connect(Const.EXIT_LEVEL,director,"_on_exit_level")
 	pc.connect(Const.RAGE_LIGHTING, $hud/angry_panel, "set_visibility")
+	scheduler.connect(Const.START_PLAYER_TURN, pc, "_am_i_on_fire")
 	update_status()
 	update_pan(-1)
 	combatLog.say(prologue[0])
@@ -221,7 +223,9 @@ func update_status():
 		status_text += "recovery {0}\n".format([pc.recovery])
 		status_text += "fatigue {0}\n".format([pc.fatigue])
 	if pc.is_drunk:
-		status_text += "drunk\n"
+		status_text += "wasted\n"
+	if pc.flammability > 0.0:
+		status_text += "basted\n"
 	var effects = pc.debuffs
 	for name in effects.keys():
 		if effects[name] > 0:

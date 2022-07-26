@@ -12,6 +12,7 @@ var combat_round: int = 0
 var turn: int = 0
 var player_turn: bool = false
 var turns_since_player: int = 0
+signal start_player_turn()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,6 +22,7 @@ func _end_player_turn():
 	self.player_turn = false
 	while next_turn():
 		pass
+	emit_signal("start_player_turn")
 
 func register_actor(actor: Actor):
 	if !actors.has(actor):

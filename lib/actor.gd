@@ -246,8 +246,9 @@ func ignite():
 	if pre_fire_color == null:
 		pre_fire_color = self_modulate
 	add_to_group(Const.ON_FIRE)
-	fire_particles = preload("res://scenes/burning.tscn").instance()
-	add_child(fire_particles)
+	if fire_particles == null:
+		fire_particles = preload("res://scenes/burning.tscn").instance()
+		add_child(fire_particles)
 
 func extinguish():
 	remove_from_group(Const.ON_FIRE)

@@ -54,7 +54,7 @@ func _draw() -> void:
 	for v in anim_screen_offsets:
 		p += Vector2(v.x,v.y)
 	self.position = p
-			
+
 func die():
 	if bloodbag:
 		terrain.splatter_blood(pos, dir)
