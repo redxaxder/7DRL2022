@@ -62,6 +62,7 @@ func _ready():
 	southpaw = randi() % 4 == 0
 	flammability = 0
 	add_to_group(self.constants.PLAYER)
+	add_to_group(Const.BLOCKER)
 	._ready()
 
 var starting_rage: int = 40
@@ -436,7 +437,9 @@ func consume_angry(p: Pickup) -> bool:
 			pickup.queue_free()
 			pickup =	 make_shards()
 			make_shards().place(get_pos())
-			flammability = 0.0
+			if flammability == 1.0:
+				combatLog.say("The brandy washes off.")
+				flammability = 0.0
 			if is_in_group(Const.ON_FIRE):
 				combatLog.say("You are no longer on fire but your rage still smolders.")
 				extinguish()
@@ -444,13 +447,17 @@ func consume_angry(p: Pickup) -> bool:
 			return true
 		p.ITEM_TYPE.BRANDY:
 			combatLog.say("You direct your rage at the bottle of brandy.", 2)
-			combatLog.say("You smash the bottle against your face. You're soaked.")
+			if is_in_group(Const.ON_FIRE):
+				ignite()
+				combatLog.say("You smash the bottle against your face. The brandy erupts in flame!")
+				try_ignite_neighbors(get_pos())
+			else:
+				combatLog.say("You smash the bottle against your face. You're soaked.")
+				flammability = 1.0
 			pickup.queue_free()
 			pickup =	 make_shards()
 			make_shards().place(get_pos())
-			flammability = 1.0
 			return true
-			#TODO: soak in alchohol
 	return true
 
 func ignite():
