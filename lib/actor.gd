@@ -227,8 +227,7 @@ func _draw() -> void:
 func do_fire():
 	on_fire -= 1
 	if on_fire <= 0:
-		if not player:
-			die(Dir.dir_to_vec(randi() % 4))
+		die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
 	# spread the fire
 	var e = get_pos()

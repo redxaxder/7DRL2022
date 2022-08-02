@@ -67,8 +67,10 @@ func _ready():
 
 var starting_rage: int = 40
 var rage_on_got_hit: int = 6
+var rage_on_burn: int = 6
 var rage_on_kill: int = 2
 var fatigue_on_got_hit: int = 5
+var fatigue_on_burn: int = 5
 var flash_damage: int = 1
 var debuffs: Dictionary = {}
 
@@ -83,6 +85,27 @@ func enter_rage():
 	fatigue += fatigue_on_got_hit
 	recovery = starting_recovery
 	speed = rage_speed
+
+func do_fire():
+	on_fire -= 1
+	if on_fire <= 0:
+		extinguish()
+	var e = get_pos()
+	if e != null:
+		try_ignite_neighbors(e)
+	if rage > 0:
+		rage += rage_on_burn
+		fatigue += fatigue_on_burn
+		combatLog.say("It burns!\n +{0} rage  +{1} fatigue".format([rage_on_burn, fatigue_on_burn]))
+	elif fatigue > 0:
+		combatLog.say("You are consumed by the flames")
+		emit_signal(self.constants.PLAYER_DIED)
+	else:
+		rage += rage_on_burn
+		combatLog.say("It burns!\n +{0} rage".format([rage_on_burn, fatigue_on_burn]))
+		enter_rage()
+	update_rage_decay()
+	emit_signal(self.constants.PLAYER_STATUS_CHANGED)
 
 func injure():
 	if rage > 0:
