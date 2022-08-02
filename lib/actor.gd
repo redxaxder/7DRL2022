@@ -139,6 +139,8 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 		anim += knockback_anim_tile
 		travel += 1
 		next = landed + dir
+		if is_in_group(Const.ON_FIRE):
+			try_ignite_neighbors(next)
 		if terrain.atv(next) == '#':
 			if !self.player:
 				combatLog.say("The {0} collides with the wall.".format([self.label]))
@@ -225,18 +227,19 @@ func _draw() -> void:
 func do_fire():
 	on_fire -= 1
 	if on_fire <= 0:
-		if not player:
-			die(Dir.dir_to_vec(randi() % 4))
+		die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
 	# spread the fire
 	var e = get_pos()
 	if e != null:
-		var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
-		for c in candidates:
-			for thing in self.locationService.lookup(c, Const.FLAMMABLE):
-				if randf() < thing.flammability:
-					thing.ignite()
+		try_ignite_neighbors(e)
 
+func try_ignite_neighbors(e: Vector2):
+	var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
+	for c in candidates:
+		for thing in self.locationService.lookup(c, Const.FLAMMABLE):
+			if randf() < thing.flammability:
+				thing.ignite()
 
 var fire_particles: Node = null
 var pre_fire_color = null

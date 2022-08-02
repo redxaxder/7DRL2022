@@ -1,26 +1,24 @@
 
 V 0.2 plans:
 
-- fire for sure
++ fire for sure
   + particles
   + flickering
-  - lighting
+  + lighting
     + normal maps
-    - occlude lights
     + rework rage bulbs into something that doesn't interact with fire lighting
   + spreading
-    - a burning object knocked into an enemy should light them on fire
+    + a burning object knocked past an enemy should light them on fire
   X brandy interaction
-    - Re-up fire duration if you smash brandy in your face when already on fire
-  - Fire enrages and fatigues player
+    + Re-up fire duration if you smash brandy in your face when already on fire
+  + Fire enrages and fatigues player
   + rogues with a dodge stop, drop, and roll to extinguish
     + make sure to change the combat log
   + Things that die from fire shouldn't splatter blood
 x wizard shoots over tables/chairs
 x fireball ignites furniture
-- water should put out the PC fire
-- water should clear alchohol soak
-- being on fire should affect the pc
++ water should put out the PC fire
++ water should clear alchohol soak
 - brazier
 - bookshelf
 - wall torch
