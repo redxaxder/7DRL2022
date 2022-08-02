@@ -53,8 +53,10 @@ const target_scene: PackedScene = preload("res://sprites/Target.tscn")
 const door_scene: PackedScene = preload("res://sprites/door.tscn")
 const table_scene: PackedScene = preload("res://sprites/furniture/table.tscn")
 const chair_scene: PackedScene = preload("res://sprites/furniture/chair.tscn")
+const brazier_scene: PackedScene = preload("res://sprites/furniture/brazier.tscn")
 var furniture: Array = [
 	table_scene,
+	brazier_scene
 ]
 #########################################
 

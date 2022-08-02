@@ -20,6 +20,8 @@ x fireball ignites furniture
 + water should put out the PC fire
 + water should clear alchohol soak
 - brazier
+  - Need a class of non-flammable furniture that is grey
+  - Hot coals should do stuff when you are holding them
 - bookshelf
 - wall torch
 

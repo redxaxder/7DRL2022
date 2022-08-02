@@ -19,8 +19,9 @@ const turkey_sprite: PackedScene = preload("res://pickups/turkey.tscn")
 const brandy_sprite: PackedScene = preload("res://pickups/brandy.tscn")
 const water_sprite: PackedScene = preload("res://pickups/water.tscn")
 const shards_sprite: PackedScene = preload("res://pickups/shards.tscn")
+const hot_coal_sprite: PackedScene = preload("res://pickups/hot_coal.tscn")
 
-enum ITEM_TYPE{ APPLE, TURKEY, WATER, BRANDY, SHARDS }
+enum ITEM_TYPE{ APPLE, TURKEY, WATER, BRANDY, SHARDS, HOT_COAL }
 
 func _ready():
 	randomize()
@@ -49,6 +50,10 @@ func init(item_type: int):
 			sprite = shards_sprite.instance()
 			label = "glass shards"
 			pickup_text = "You pick up a handful of glass shards."
+		ITEM_TYPE.HOT_COAL:
+			sprite = hot_coal_sprite.instance()
+			label = "hot coal"
+			pickup_text = "You pick up the red-hot coal."
 	sprite.modulate = Color(0.767029, 1, 0.672304)
 	add_child(sprite)
 
