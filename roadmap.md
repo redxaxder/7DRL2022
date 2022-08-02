@@ -53,3 +53,12 @@ QOL stuff:
 Strech Goals:
 - dial up the anger along a curve like the zoom
 - fireproof doors spawn on higher levels
+- explosive items
+  * molotov cocktails
+  * straight up bombs
+- fire perks
+  * fire damage gives more rage than normal damage
+  * less fatigue on fire damage
+- Something to not kill
+  * capital M for martyr
+  * shields all its allies on death
