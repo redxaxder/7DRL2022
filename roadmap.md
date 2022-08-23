@@ -22,7 +22,7 @@ x fireball ignites furniture
 + brazier
   + Need a class of non-flammable furniture that is grey
   + Hot coals should do stuff when you are holding them
-  - handle knockback animation ala tables and chairs
+  + handle knockback animation ala tables and chairs
 - bookshelf
 - wall torch
   - don't pick-upable torches in the middle of the room
