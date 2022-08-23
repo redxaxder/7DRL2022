@@ -24,7 +24,10 @@ const hammer_sprite: PackedScene = preload("res://pickups/weapons/hammer.tscn")
 var whip_attack: Attack = preload("res://lib/attacks/whip.gd").new()
 const whip_sprite: PackedScene = preload("res://pickups/weapons/whip.tscn")
 
-enum WEAPON_TYPE{ SWORD, SPEAR, BROADSWORD, AXE, HAMMER, WHIP }
+var torch_attack: Attack = preload("res://lib/attacks/torch.gd").new()
+const torch_sprite: PackedScene = preload("res://pickups/weapons/torch.tscn")
+
+enum WEAPON_TYPE{ SWORD, SPEAR, BROADSWORD, AXE, HAMMER, WHIP, TORCH }
 
 func _ready():
 	._ready()
@@ -63,10 +66,15 @@ func init(type: int, southpaw: bool = false):
 			label = "whip"
 			pickup_text = "You pick up a whip."
 			sprite = whip_sprite.instance()
+		WEAPON_TYPE.TORCH:
+			attack = torch_attack
+			label = "torch"
+			pickup_text = "You pick up a torch."
+			sprite = torch_sprite.instance()
 	sprite.modulate = Color(0.956643, 0.778013, 1)
 	add_child(sprite)
 	attack.southpaw = southpaw
 
 func random_weapon(southpaw: bool = false):
-	init(randi() % 6, southpaw)
+	init(randi() % 7, southpaw)
 #	init(WEAPON_TYPE.HAMMER, true)

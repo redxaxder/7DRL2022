@@ -25,6 +25,11 @@ x fireball ignites furniture
   - handle knockback animation ala tables and chairs
 - bookshelf
 - wall torch
+  - don't pick-upable torches in the middle of the room
+  - be able to pick up a torch from the wall
+  - turn off effects when we pick up the torch
+  - dial back particles, kill smoke
+  - wall sconces get bloody like a wall
 
 V 0.3 plans:
 
@@ -63,6 +68,7 @@ Strech Goals:
 - Something to not kill
   * capital M for martyr
   * shields all its allies on death
+- Ninja mob that spawns in the walls and reveals when you go near
 
 
 - statues

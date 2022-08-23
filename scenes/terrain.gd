@@ -14,6 +14,7 @@ var contents: Array = []
 var blood_map: Array = []
 var blood_spread_frontier: Dictionary = {}
 var active_rooms: Dictionary = {} # used as a set. room -> 0
+var torch_map: Dictionary = {} # position to torches, used for lighting
 
 const cosmetic_map_seed: int = 68000
 
@@ -99,7 +100,10 @@ func is_exit(v: Vector2) -> bool:
 	return atv(v) == '>'
 
 func is_wall(v: Vector2) -> bool:
-	return atv(v) == '#'
+	return atv(v) == '#' or atv(v) == 'w' or atv(v) == 'W'
+
+func is_torch(v: Vector2) -> bool:
+	return atv(v) == 'W'
 
 func is_floor(v: Vector2) -> bool:
 	var t = atv(v)
@@ -197,7 +201,10 @@ func load_map(ix, level: int): # max index: 26460
 			for v in map.room_outline(room):
 				var t = to_linear(v.x,v.y)
 				if contents[t] == null:
-					contents[t] = '#'
+					if randf() < 0.05:
+						contents[t] = 'W'
+					else:
+						contents[t] = '#'
 	update()
 
 func splatter_blood(pos: Vector2, dir: Vector2):
@@ -275,6 +282,12 @@ func _draw():
 					glyph_color = Color(1, 1, 1)
 				else:
 					glyph_color = blood_color
+			elif tile == 'w':
+				terrain_glyph.index = 206
+				glyph_color = Color(0.2, 0.2, 0.2)
+			elif tile == 'W':
+				terrain_glyph.index = 206
+				glyph_color = Color(0.2, 0.2, 0.2)
 			else:
 				if blood == 0:
 					terrain_glyph.index = Glyph.from('.')
@@ -293,3 +306,17 @@ func _draw():
 					terrain_glyph.index = 247
 					glyph_color = blood_color
 			draw_texture_rect(terrain_glyph.texture,target, false, glyph_color, false, terrain_glyph.normal_map)
+
+const burning = preload("res://scenes/burning.tscn")
+func add_light_at(pos):
+	if torch_map.has(pos):
+		return
+	var torch = burning.instance()
+	torch.position = SCREEN.dungeon_to_screen(pos)
+	torch_map[pos] = torch
+	add_child(torch)
+
+func remove_light_at(pos):
+	if torch_map.has(pos):
+		torch_map[pos].queue_free()
+		torch_map.erase(pos)

@@ -142,6 +142,9 @@ func activate_room(room: Vector3):
 			node.visible = true
 			if node.is_in_group(constants.MOBS):
 				scheduler.register_actor(node)
+	for cell in terrain.map.room_outline(room):
+		if terrain.atv(cell) == 'W':
+			terrain.add_light_at(cell)
 	terrain.update()
 	for neighbor in terrain.map.adjacent_rooms(room):
 		populate_room(neighbor)

@@ -15,6 +15,9 @@ func is_in_room(p: Vector2, room: Vector3, fudge: int = 0) -> bool:
 	return inside
 
 func room_cells(room: Vector3, fudge: int = 0) -> Array:
+	#fudge is a max-norm distance from the rectangle boundaries
+	# 0 includes the room walls
+	# 1 is just the interior
 	var cells = []
 	for i in range(room.x + 1 - fudge, room.x + room.z + fudge):
 		for j in range(room.y + 1 - fudge, room.y + room.z + fudge):
