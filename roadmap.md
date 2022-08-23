@@ -19,9 +19,10 @@ x wizard shoots over tables/chairs
 x fireball ignites furniture
 + water should put out the PC fire
 + water should clear alchohol soak
-- brazier
-  - Need a class of non-flammable furniture that is grey
-  - Hot coals should do stuff when you are holding them
++ brazier
+  + Need a class of non-flammable furniture that is grey
+  + Hot coals should do stuff when you are holding them
+  - handle knockback animation ala tables and chairs
 - bookshelf
 - wall torch
 
@@ -62,3 +63,16 @@ Strech Goals:
 - Something to not kill
   * capital M for martyr
   * shields all its allies on death
+
+
+- statues
+  - calm: nudge
+  - angry:
+     - if there is room to knock it back, knock it back
+     - knockback passes through targets unless blocked
+     - statue stays intact
+     - if there is no room to knock it back, heroic vandalism
+- vases
+  - calm: you tip over the vase. it collapses into a pile of glass. oops!
+  - angry: you smash the vase. glass is scattered everywhere.
+  - maybe chance for item drop

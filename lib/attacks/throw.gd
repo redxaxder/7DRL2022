@@ -22,6 +22,7 @@ func try_attack(ls: LocationService, pos: Vector2, dir: int, anim_delay: float, 
 		# this is dumb but the sane ways didnt work for mysterious reasons
 		var projectile: Sprite = fireball_sprite.instance()
 		projectile.texture = sprite.texture
+		projectile.scale = sprite.scale
 		projectile.modulate = sprite.modulate
 		projectile.self_modulate = sprite.self_modulate
 		terrain.add_child(Projectile.new(25, pos, target, projectile))

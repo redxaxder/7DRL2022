@@ -9,6 +9,10 @@ var attack_indicator: PackedScene = preload("res://sprites/attack_indicator.tscn
 var southpaw = false
 var extra_knockback: int = 0
 
+var damage_type = DAMAGE_TYPE.NORMAL
+
+enum DAMAGE_TYPE{ NORMAL, FIRE }
+
 #returns true if an attack was made
 func try_attack(_ls: LocationService, _pos: Vector2, _dir: int, _anim_delay: float, _terr = null) -> bool:
 	return false
@@ -24,7 +28,11 @@ func try_attack_with_log_at(ls: LocationService, target: Vector2, dir: int, anim
 		m.animation_delay(anim_delay)
 		if combatLog != null && message != "":
 			combatLog.say(message.format([m.label]))
-		m.is_hit(d, extra_knockback)
+		match damage_type:
+			DAMAGE_TYPE.FIRE:
+				m.ignite()
+			_:
+				m.is_hit(d, extra_knockback)
 		attacked = true
 	return attacked
 

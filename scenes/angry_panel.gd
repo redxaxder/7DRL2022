@@ -28,7 +28,6 @@ func set_alpha(_alpha):
 	update_gragient()
 
 func set_visibility(vis):
-	print(vis)
 	if vis:
 		approach_rage_level(0.3, 1)
 	else:

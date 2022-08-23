@@ -74,7 +74,7 @@ func _ready():
 	pc.connect(Const.PLAYER_LEVEL_UP,self,"_on_level_up")
 	pc.connect(Const.EXIT_LEVEL,director,"_on_exit_level")
 	pc.connect(Const.RAGE_LIGHTING, $hud/angry_panel, "set_visibility")
-	scheduler.connect(Const.START_PLAYER_TURN, pc, "_am_i_on_fire")
+	scheduler.connect(Const.START_PLAYER_TURN, pc, "_on_player_turn_start")
 	update_status()
 	update_pan(-1)
 	combatLog.say(prologue[0])

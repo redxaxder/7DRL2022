@@ -7,8 +7,8 @@ func set_rate(light_rate: int):
 	var tex = $light.texture.duplicate()
 	$light.texture = tex
 	$light.texture.fps = 10.0/primes[rate]
-	print(primes[rate])
-	print($light, $light.texture)
+#	print(primes[rate])
+#	print($light, $light.texture)
 
 # Declare member variables here. Examples:
 # var a: int = 2

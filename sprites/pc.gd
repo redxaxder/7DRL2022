@@ -418,6 +418,8 @@ func consume_calm(p: Pickup) -> bool:
 		p.ITEM_TYPE.SHARDS:
 			combatLog.say("Careful not to cut yourself.")
 			return false
+		_:
+			return false
 	pickup.queue_free()
 	pickup = null
 	emit_signal("status_changed")
@@ -429,6 +431,10 @@ func throw_item() -> bool:
 	dirs.shuffle()
 	for d in dirs: #first, try to throw at an enemy
 		if !did_throw:
+			if pickup.type == Pickup.ITEM_TYPE.HOT_COAL:
+				throw.damage_type = Attack.DAMAGE_TYPE.FIRE
+			else:
+				throw.damage_type = Attack.DAMAGE_TYPE.NORMAL
 			throw.combatLog = combatLog
 			throw.parent = terrain
 			throw.sprite = pickup.sprite
@@ -453,6 +459,8 @@ func consume_angry(p: Pickup) -> bool:
 			combatLog.say("You direct your rage at the turkey.", 2)
 			return throw_item()
 		p.ITEM_TYPE.SHARDS:
+			return throw_item()
+		p.ITEM_TYPE.HOT_COAL:
 			return throw_item()
 		p.ITEM_TYPE.WATER:
 			combatLog.say("You direct your rage at the bottle of water.", 2)
@@ -545,8 +553,18 @@ func _on_enemy_killed(label: String):
 	rage += rage_on_kill
 	emit_signal(constants.PLAYER_STATUS_CHANGED)
 
+func _on_player_turn_start():
+	#spread fire if appropriate
+	_am_i_on_fire()
+	#if holding hot coals while calm: drop them!
+	if rage <= 0 && pickup != null && pickup.type == Pickup.ITEM_TYPE.HOT_COAL:
+		combatLog.say("You smell something burning. It's your hand! You drop the coals.")
+		pickup.place(get_pos())
+		pickup = null
+
 func _am_i_on_fire():
 	# spread the fire
+	# we expect this to happen on player turn start and end
 	var e = get_pos()
 	if e != null:
 		var candidates = [Vector2(e.x + 1, e.y), Vector2(e.x, e.y + 1), Vector2(e.x - 1, e.y), Vector2(e.x, e.y - 1)]
