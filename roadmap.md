@@ -29,7 +29,8 @@ x fireball ignites furniture
   - be able to pick up a torch from the wall
   - turn off effects when we pick up the torch
   - dial back particles, kill smoke
-  - wall sconces get bloody like a wall
+  + wall sconces get bloody like a wall
+  + don't let things get knocked through wall sconce
 
 V 0.3 plans:
 
