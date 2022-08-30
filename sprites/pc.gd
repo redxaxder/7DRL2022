@@ -292,7 +292,14 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				return false # cancel!
 		if terrain.is_wall(target):
 			if ran_to == null:
-				if rage > 0:
+				if terrain.is_torch(target):
+					var item = Weapon.new()
+					item.init(Weapon.WEAPON_TYPE.TORCH, southpaw)
+					item.locationService = locationService
+					get_parent().add_child(item)
+					pick_up(item, position)
+					return true
+				elif rage > 0:
 					combatLog.say("The wall blocks your path.")
 				else:
 					combatLog.say("The wall looms over you.")
@@ -304,11 +311,6 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 				update()
 				play_run(ran)
 				return true
-		if terrain.is_torch(target):
-			if ran_to == null:
-				pass
-			else:
-				pass
 		elif blockers.size() > 0:
 			if ran_to == null:
 				return false
