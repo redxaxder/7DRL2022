@@ -141,7 +141,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 		next = landed + dir
 		if is_in_group(Const.ON_FIRE):
 			try_ignite_neighbors(next)
-		if terrain.atv(next) == '#':
+		if terrain.is_wall(next):
 			if !self.player:
 				combatLog.say("The {0} collides with the wall.".format([self.label]))
 			else:

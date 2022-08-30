@@ -269,25 +269,18 @@ func _draw():
 			var pos = SCREEN.dungeon_to_screen(cell)
 			var tile = atv(cell)
 			var target = Rect2(pos + offset, Glyph.cell_size / 8)
-			var glyph_color = Color(1, 1, 1)
+			var glyph_color = Color(0.2, 0.2, 0.2)
+			if blood > 0:
+				glyph_color = blood_color
 			if tile == '#':
 				terrain_glyph.index = Glyph.from('#')
-				if blood == 0:
-					glyph_color = Color(0.2, 0.2, 0.2)
-				else:
-					glyph_color = blood_color
 			elif tile == '>':
 				terrain_glyph.index = Glyph.from('>')
-				if blood == 0:
-					glyph_color = Color(1, 1, 1)
-				else:
-					glyph_color = blood_color
+				glyph_color = Color(1,1,1)
 			elif tile == 'w':
 				terrain_glyph.index = 206
-				glyph_color = Color(0.2, 0.2, 0.2)
 			elif tile == 'W':
 				terrain_glyph.index = 206
-				glyph_color = Color(0.2, 0.2, 0.2)
 			else:
 				if blood == 0:
 					terrain_glyph.index = Glyph.from('.')
@@ -295,16 +288,12 @@ func _draw():
 					glyph_color = min_floor_color.linear_interpolate(max_floor_color, weight)
 				elif blood < 10:
 					terrain_glyph.index = 250
-					glyph_color = blood_color
 				elif blood < 20:
 					terrain_glyph.index = 249
-					glyph_color = blood_color
 				elif blood < 30:
 					terrain_glyph.index = 248
-					glyph_color = blood_color
 				else:
 					terrain_glyph.index = 247
-					glyph_color = blood_color
 			draw_texture_rect(terrain_glyph.texture,target, false, glyph_color, false, terrain_glyph.normal_map)
 
 const burning = preload("res://scenes/burning.tscn")
