@@ -56,6 +56,9 @@ technical debt ideas:
 
 QOL stuff:
 - An option to dial back particle effects
+- Better fire deaths, unsatisfying how enemies just disappear
+  - Also, we should stop emitting particles and only free enemies
+    when particles are all gone
 
 Strech Goals:
 - dial up the anger along a curve like the zoom
