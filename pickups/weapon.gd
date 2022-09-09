@@ -76,5 +76,5 @@ func init(type: int, southpaw: bool = false):
 	attack.southpaw = southpaw
 
 func random_weapon(southpaw: bool = false):
-	init(randi() % 7, southpaw)
+	init(randi() % WEAPON_TYPE.TORCH, southpaw)
 #	init(WEAPON_TYPE.HAMMER, true)

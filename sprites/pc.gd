@@ -297,7 +297,8 @@ func try_move(dir, anim_speed_multiplier = 1.0) -> bool:
 					item.init(Weapon.WEAPON_TYPE.TORCH, southpaw)
 					item.locationService = locationService
 					get_parent().add_child(item)
-					pick_up(item, position)
+					pick_up(item, get_pos())
+					terrain.remove_light_at(target)
 					return true
 				elif rage > 0:
 					combatLog.say("The wall blocks your path.")

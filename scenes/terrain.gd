@@ -308,4 +308,8 @@ func add_light_at(pos):
 func remove_light_at(pos):
 	if torch_map.has(pos):
 		torch_map[pos].queue_free()
+# warning-ignore:return_value_discarded
 		torch_map.erase(pos)
+	var ix = to_linear(pos.x, pos.y)
+	if in_bounds(pos) && contents[ix] == 'W':
+		contents[ix] = 'w'

@@ -24,11 +24,11 @@ x fireball ignites furniture
   + Hot coals should do stuff when you are holding them
   + handle knockback animation ala tables and chairs
 - bookshelf
-- wall torch
-  - don't pick-upable torches in the middle of the room
-  - be able to pick up a torch from the wall
-  - turn off effects when we pick up the torch
-  - dial back particles, kill smoke
++ wall torch
+  + don't pick-upable torches in the middle of the room
+  + be able to pick up a torch from the wall
+  + turn off effects when we pick up the torch
+  + dial back particles, kill smoke
   + wall sconces get bloody like a wall
   + don't let things get knocked through wall sconce
 
