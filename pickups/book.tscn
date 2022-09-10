@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://sprites/glyph.gd" type="Script" id=1]
+[ext_resource path="res://resources/curses_8_12_scaled_x8.png" type="Texture" id=2]
+[ext_resource path="res://resources/curses_8_12_scaled_x8_normal.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 768, 1344, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 768, 1344, 64, 96 )
+
+[node name="hot_coal" type="Sprite"]
+scale = Vector2( 0.125, 0.125 )
+texture = SubResource( 1 )
+normal_map = SubResource( 2 )
+script = ExtResource( 1 )
+index = 236

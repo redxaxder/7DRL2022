@@ -102,6 +102,9 @@ func is_exit(v: Vector2) -> bool:
 func is_wall(v: Vector2) -> bool:
 	return atv(v) == '#' or atv(v) == 'w' or atv(v) == 'W'
 
+func is_door(v: Vector2) -> bool:
+	return atv(v) == '.'
+
 func is_torch(v: Vector2) -> bool:
 	return atv(v) == 'W'
 

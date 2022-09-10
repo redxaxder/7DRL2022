@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://sprites/furniture/bookcase.gd" type="Script" id=1]
+
+[node name="bookcase" type="Sprite"]
+self_modulate = Color( 0.627451, 0.294118, 0, 1 )
+z_index = 5
+script = ExtResource( 1 )
+glyph_index = 227
+glyph_opaque = true

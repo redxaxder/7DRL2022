@@ -54,9 +54,13 @@ const door_scene: PackedScene = preload("res://sprites/door.tscn")
 const table_scene: PackedScene = preload("res://sprites/furniture/table.tscn")
 const chair_scene: PackedScene = preload("res://sprites/furniture/chair.tscn")
 const brazier_scene: PackedScene = preload("res://sprites/furniture/brazier.tscn")
+const bookcase_scene: PackedScene = preload("res://sprites/furniture/bookcase.tscn")
 var furniture: Array = [
 	table_scene,
 	brazier_scene
+]
+var wall_furniture: Array = [
+	bookcase_scene
 ]
 #########################################
 
@@ -179,7 +183,7 @@ func populate_room(room: Vector3):
 		if c && terrain.is_floor(c): spawn_random_enemy(c)
 	for _i in min_furniture + (randi() % int(max(max_furniture - min_furniture,1))):
 		var c = cells.pop_back()
-		if c && terrain.is_floor(c) && terrain.map.is_in_room(c, room, -1): spawn_random_furniture(c)
+		spawn_random_furniture(c, room)
 	# add some weapons
 	var max_weapons := int(max(sz/2,1))
 	for _i in randi() % max_weapons:
@@ -202,7 +206,7 @@ func spawn_random_enemy(pos: Vector2):
 
 func room_doors(room: Vector3):
 	for cell in terrain.map.room_outline(room):
-		if terrain.atv(cell) == '.':
+		if terrain.is_door(cell):
 			__ = spawn_door(cell)
 
 func spawn_door(pos: Vector2) -> Actor:
@@ -265,36 +269,51 @@ func spawn_random_consumable(p: Vector2):
 		item.place(p)
 		item.visible = false
 
-func spawn_random_furniture(p: Vector2):
-	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:
-		furniture.shuffle()
-		var item = furniture[0].instance()
-		item.connect("thump",pc,"_on_thump")
-		item.locationService = locationService
-		item.visible = false
-		item.combatLog = combatLog
-		item.terrain = terrain
-		parent.add_child(item)
-		if item.label == "table":
-			for _i in range(4):
-				if rand_range(0, 1) < 0.25:
-					# spawn a chair next to the table
-					var candidates = [p + Vector2(1, 0), p + Vector2(-1, 0), p + Vector2(0, 1), p + Vector2(0, -1)]
-					var fc = []
-					for c in candidates:
-						if terrain.is_floor(c) && locationService.lookup(c).size() == 0:
-							fc.push_back(c)
-					if fc.size() > 0:
-						fc.shuffle()
-						var chair = chair_scene.instance()
-						chair.connect("thump",pc,"_on_thump")
-						chair.locationService = locationService
-						chair.visible = false
-						chair.combatLog = combatLog
-						chair.terrain = terrain
-						parent.add_child(chair)
-						chair.set_pos(fc[0])
-		item.set_pos(p)
+func spawn_random_furniture(p: Vector2, room: Vector3):
+	if not (p && terrain.is_floor(p) && locationService.lookup(p).size() == 0):
+		return
+	var draw_from
+	if terrain.map.is_in_room(p, room, -1):
+		draw_from = furniture
+	elif terrain.map.is_in_room(p, room, 0):
+		draw_from = wall_furniture
+		for i in range(0, 3):
+			for j in range(0, 3):
+				var pp = p + Vector2(i-1, j-1)
+				if terrain.is_door(pp):
+					return
+	else:
+		return
+	draw_from.shuffle()
+	var item = draw_from[0].instance()
+	item.connect("thump",pc,"_on_thump")
+	item.locationService = locationService
+	item.visible = false
+	item.combatLog = combatLog
+	item.terrain = terrain
+	item.pc = pc
+	parent.add_child(item)
+	if item.label == "table":
+		for _i in range(4):
+			if rand_range(0, 1) < 0.25:
+				# spawn a chair next to the table
+				var candidates = [p + Vector2(1, 0), p + Vector2(-1, 0), p + Vector2(0, 1), p + Vector2(0, -1)]
+				var fc = []
+				for c in candidates:
+					if terrain.is_floor(c) && locationService.lookup(c).size() == 0:
+						fc.push_back(c)
+				if fc.size() > 0:
+					fc.shuffle()
+					var chair = chair_scene.instance()
+					chair.connect("thump",pc,"_on_thump")
+					chair.locationService = locationService
+					chair.visible = false
+					chair.combatLog = combatLog
+					chair.terrain = terrain
+					parent.add_child(chair)
+					chair.set_pos(fc[0])
+	item.set_pos(p)
+
 
 func spawn_random_weapon(p: Vector2):
 	if terrain.is_floor(p) && locationService.lookup(p).size() == 0:

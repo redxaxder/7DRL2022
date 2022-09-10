@@ -426,6 +426,9 @@ func consume_calm(p: Pickup) -> bool:
 		p.ITEM_TYPE.SHARDS:
 			combatLog.say("Careful not to cut yourself.")
 			return false
+		p.ITEM_TYPE.BOOK:
+			combatLog.say(p.read_text)
+			return false
 		_:
 			return false
 	pickup.queue_free()
@@ -469,6 +472,8 @@ func consume_angry(p: Pickup) -> bool:
 		p.ITEM_TYPE.SHARDS:
 			return throw_item()
 		p.ITEM_TYPE.HOT_COAL:
+			return throw_item()
+		p.ITEM_TYPE.BOOK:
 			return throw_item()
 		p.ITEM_TYPE.WATER:
 			combatLog.say("You direct your rage at the bottle of water.", 2)
