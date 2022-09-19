@@ -115,6 +115,8 @@ func refresh_pc_dijkstras():
 func load_next_map():
 	populated_rooms = {}
 	exits = []
+	for torch_pos in terrain.torch_map.keys():
+		terrain.remove_light_at(torch_pos)
 	var map_id = decide_map(level)
 	terrain.load_map(map_id, level)
 	refresh_pc_dijkstras()

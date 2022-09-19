@@ -23,7 +23,7 @@ x fireball ignites furniture
   + Need a class of non-flammable furniture that is grey
   + Hot coals should do stuff when you are holding them
   + handle knockback animation ala tables and chairs
-- bookshelf
++ bookshelf
 + wall torch
   + don't pick-upable torches in the middle of the room
   + be able to pick up a torch from the wall
@@ -31,6 +31,11 @@ x fireball ignites furniture
   + dial back particles, kill smoke
   + wall sconces get bloody like a wall
   + don't let things get knocked through wall sconce
+- things light up when they die
+- sounds are jank
+- animations are jank (e.g. when a fireball hits an enemy, the death animation
+  does not line up with the fireball animation)
++ torches visible in unexplored rooms starting from the second floor
 
 V 0.3 plans:
 
