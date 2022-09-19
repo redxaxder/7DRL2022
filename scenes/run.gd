@@ -78,7 +78,6 @@ func _ready():
 	update_status()
 	update_pan(-1)
 	combatLog.say(prologue[0])
-	pc.ignite()
 
 
 var tick = 0
