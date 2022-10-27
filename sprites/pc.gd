@@ -574,6 +574,7 @@ func _on_player_turn_start():
 		combatLog.say("You smell something burning. It's your hand! You drop the coals.")
 		pickup.place(get_pos())
 		pickup = null
+		emit_signal("status_changed")
 
 func _am_i_on_fire():
 	# spread the fire
