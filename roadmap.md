@@ -35,6 +35,7 @@ x fireball ignites furniture
 - sounds are jank
 - animations are jank (e.g. when a fireball hits an enemy, the death animation
   does not line up with the fireball animation)
+- should update ui after dropping hot coals while calm
 + torches visible in unexplored rooms starting from the second floor
 
 V 0.3 plans:
