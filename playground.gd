@@ -15,4 +15,7 @@ func button2():
 	$AudioPlayerPool.play(shuffle)
 	$AudioPlayerPool.play(shuffle)
 	$AudioPlayerPool.play(shuffle)
-	$AudioPlayerPool.play(shuffle)
+#	$AudioPlayerPool.play_delay(shuffle)
+#	$AudioPlayerPool.play_delay(shuffle)
+#	$AudioPlayerPool.play_delay(shuffle)
+#	$AudioPlayerPool.play_delay(shuffle)
