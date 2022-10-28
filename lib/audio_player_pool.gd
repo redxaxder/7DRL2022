@@ -3,6 +3,7 @@ extends Node
 class_name AudioPlayerPool
 
 export var pool_size: int = 4
+export var bus: String
 
 var __pool_ready = []
 
@@ -17,6 +18,7 @@ func play(stream: AudioStream) -> bool:
 	if asp == null:
 		return false
 	asp.stream = stream
+	asp.bus = bus
 	asp.play()
 	asp.connect("finished", self, "_on_playback_complete", [asp], CONNECT_ONESHOT)
 	return true
