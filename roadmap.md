@@ -92,3 +92,9 @@ Strech Goals:
   - calm: you tip over the vase. it collapses into a pile of glass. oops!
   - angry: you smash the vase. glass is scattered everywhere.
   - maybe chance for item drop
+
+- ragdoll redemption plan:
+  - instead of doing a bunch of state handoff from actor to ragdoll when it dies,
+    the ragdoll will act as the "body" of the actor (as its child) while the actor
+    is alive. and when the actor dies, the body will be given to the actor's parent
+    and a timer will let the ragdoll make its final preparations
