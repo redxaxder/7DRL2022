@@ -9,10 +9,15 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "OffsetSprite",
+"base": "Node2D",
 "class": "Actor",
 "language": "GDScript",
 "path": "res://lib/actor.gd"
+}, {
+"base": "OffsetSprite",
+"class": "ActorBody",
+"language": "GDScript",
+"path": "res://sprites/actor_body.gd"
 }, {
 "base": "Reference",
 "class": "Attack",
@@ -166,6 +171,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Actor": "",
+"ActorBody": "",
 "Attack": "",
 "AttackIndicator": "",
 "AudioPlayerPool": "",

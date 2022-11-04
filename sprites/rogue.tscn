@@ -6,8 +6,6 @@
 [node name="rogue" type="Sprite"]
 z_index = 6
 script = ExtResource( 3 )
-glyph_index = 114
-glyph_opaque = true
 
 [node name="dodge" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )

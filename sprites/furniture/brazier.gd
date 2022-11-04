@@ -42,7 +42,6 @@ func nudge(dir: int, player_did_it: bool = true) -> bool:
 			if player_did_it:
 				combatLog.say("You knock over the brazier.")
 			self.glyph_index = fallen_idx
-			self._refresh()
 			fallen = true
 			emit_signal("thump")
 			var pos = get_pos()

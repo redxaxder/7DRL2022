@@ -42,7 +42,7 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The samurai slashes with his katana!")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.injure()
 
 func dash_attack(pos: Vector2):
@@ -51,5 +51,5 @@ func dash_attack(pos: Vector2):
 	self.cur_dash_cooldown = dash_cooldown
 	end_ready()
 	self.animated_move_to(pos)
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.injure()

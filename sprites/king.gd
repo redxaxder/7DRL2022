@@ -68,7 +68,7 @@ func on_turn():
 
 func attack():
 	combatLog.say("His Highness strikes you with his sceptre.")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.injure()
 
 func die(_dir: Vector2):

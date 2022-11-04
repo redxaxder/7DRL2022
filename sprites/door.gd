@@ -7,6 +7,8 @@ signal door_opened(pos)
 func _ready():
 	self.door = true
 	self.label = "door"
+	self.glyph_index = 43
+	self.color = Const.WOOD_COLOR
 	add_to_group(self.constants.FURNITURE)
 	add_to_group(self.constants.BLOCKER)
 	add_to_group(self.constants.PROJECTILE_BLOCKER)

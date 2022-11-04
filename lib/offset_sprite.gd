@@ -29,7 +29,7 @@ func pending_animation() -> float:
 	var total = 0
 	for v in self.anim_screen_offsets:
 		total += v.z
-	return total
+	return total / anim_speed
 
 func animations_step(delta) -> bool:
 	if anim_screen_offsets.size() > 0:

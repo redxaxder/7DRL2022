@@ -28,7 +28,7 @@ func attack():
 	else:
 		self.combatLog.say("The monk punches you!")
 # warning-ignore:return_value_discarded
-		AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+		AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 		self.pc.injure()
 		if cur_knockback_cooldown > 0:
 			cur_knockback_cooldown -= 1

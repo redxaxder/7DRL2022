@@ -51,7 +51,7 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The rogue stabs you!")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.injure()
 
 func die(_dir: Vector2):

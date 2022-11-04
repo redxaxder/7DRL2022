@@ -34,7 +34,7 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("A camera flash dazzles you!")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.dazzle()
 
 func _draw() -> void:

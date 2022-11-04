@@ -1,4 +1,4 @@
-extends OffsetSprite
+extends Node2D
 
 class_name Actor
 
@@ -8,7 +8,12 @@ var DIR: Dir = preload("res://lib/dir.gd").new()
 const thump_scene = preload("res://audio/thump.tscn")
 var thump_node: AudioStreamPlayer = null
 
-var terrain
+export var glyph_index: int = 5 setget set_glyph_index
+export var color: Color = Color(1,1,1,1) setget set_color
+var actor_body: ActorBody = null
+
+
+var terrain setget set_terrain
 var combatLog: CombatLog
 var locationService: LocationService
 var pc
@@ -21,7 +26,7 @@ var door: bool = false
 var blocking: bool = false
 var telegraphing: bool = false
 var is_ready: bool = false
-var on_fire: int = 0
+var on_fire: int = 0 setget set_on_fire
 var flammability: float = 0.3
 
 const block_duration: int = 2
@@ -34,7 +39,13 @@ signal killed_by_pc(label)
 signal thump()
 
 func _ready():
-	._ready()
+	position = Vector2.ZERO
+	actor_body = ActorBody.new()
+	add_child(actor_body)
+	set_terrain(terrain)
+	set_glyph_index(glyph_index)
+	set_on_fire(on_fire)
+	set_color(color)
 
 func do_turn():
 	if on_fire <= 0 || player:
@@ -54,6 +65,7 @@ func do_turn():
 		animated_move_to(target)
 
 func get_pos(default = null) -> Vector2:
+	if !locationService: return default
 	return locationService.lookup_backward(self, default)
 
 func set_pos(p: Vector2):
@@ -65,6 +77,24 @@ func block_decay():
 			cur_block_duration += 1
 		else:
 			end_block()
+
+func update():
+	if self.is_in_group(Const.MOBS) && !self.is_in_group(Const.ON_FIRE):
+		if blocking:
+			if telegraphing:
+				actor_body.set_color(Const.WINDUP_AND_PROTECTED_COLOR)
+			elif is_ready:
+				actor_body.set_color(Const.READY_AND_PROTECTED_COLOR)
+			else:
+				actor_body.set_color(Const.PROTECTED_COLOR)
+		else:
+			if telegraphing:
+				actor_body.set_color(Const.WINDUP_COLOR)
+			elif is_ready:
+				actor_body.set_color(Const.READY_COLOR)
+			else:
+				actor_body.set_color(Color(0.7, 0.7, 0.7))
+	actor_body.update()
 
 func end_block():
 	blocking = false
@@ -84,21 +114,14 @@ func end_ready():
 	is_ready = false
 	update()
 
-func die(dir: Vector2):
+func die(_dir: Vector2):
 	#notify PC of kills
 	#TODO: maybe handle if it was killed by someone else (eg: wizard)
 	if is_in_group(Const.MOBS):
 		emit_signal("killed_by_pc", label)
-	# spawn an animation dummy that dies on completing animation
-	if get_pos() != null:
-		var rag = Ragdoll.new(
-			_glyph.texture, modulate, self_modulate, is_in_group(Const.BLOODBAG) && !is_in_group(Const.ON_FIRE),
-			anim_screen_offsets, terrain, get_pos(), dir, get_parent()
-		)
-		if self.get("_glyph") != null:
-			rag.scale = self._glyph.scale
 	if self.locationService:
 		self.locationService.delete_node(self)
+	#TODO: the body outlives the soul (briefly)
 	queue_free()
 
 func animated_move_to(target: Vector2, duration: float = 1):
@@ -109,7 +132,7 @@ func animated_move_to(target: Vector2, duration: float = 1):
 	var target_screen_position = self.SCREEN.dungeon_to_screen(target)
 	var dp = prev_screen_position - target_screen_position
 	var av = Vector3(dp.x,dp.y,duration)
-	anim_screen_offsets.push_back(av)
+	actor_body.anim_screen_offsets.push_back(av)
 	set_pos(target)
 
 func animated_move_to_combine(target: Vector2, backup_duration: float = 1):
@@ -120,8 +143,8 @@ func animated_move_to_combine(target: Vector2, backup_duration: float = 1):
 	var target_screen_position = self.SCREEN.dungeon_to_screen(target)
 	var dp = prev_screen_position - target_screen_position
 	var av = Vector3(dp.x,dp.y,0)
-	if anim_screen_offsets.size() > 0:
-		anim_screen_offsets[anim_screen_offsets.size() - 1] += av
+	if actor_body.anim_screen_offsets.size() > 0:
+		actor_body.anim_screen_offsets[actor_body.anim_screen_offsets.size() - 1] += av
 		set_pos(target)
 	else:
 		animated_move_to(target, backup_duration)
@@ -162,17 +185,17 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 					var rem = power
 					power = 0 #perfectly inelastic
 					combatLog.say("The {0} goes flying!".format([blockers[0].label]))
-					b.animation_delay(self.pending_animation()+anim)
+					b.animation_delay(actor_body.pending_animation()+anim)
 					b.knockback(dir, distance, rem)
 					strong_collision = true
 					break
 				elif	 b.is_in_group(Const.FURNITURE):
-					b.animation_delay(self.pending_animation()+anim)
+					b.animation_delay(actor_body.pending_animation()+anim)
 					b.die(dir)
 				elif b.player:
 					b.injure()
 				else:
-					b.animation_delay(self.pending_animation()+anim)
+					b.animation_delay(actor_body.pending_animation()+anim)
 					b.die(dir)
 		if power > 0:
 			landed = next
@@ -191,41 +214,8 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	update()
 	emit_signal("thump")
 
-var fire_colors = [Color(1, 0, 0), Color(1, 1, 0)]
-func _process(delta):
-	var did_animation_step = self.animations_step(delta)
-	if is_ragdoll && !did_animation_step:
-		die(ragdoll_dir)
-	if on_fire > 0:
-		if self_modulate == fire_colors[0]:
-			set_color(fire_colors[1])
-		else:
-			set_color(fire_colors[0])
-
-func _draw() -> void:
-	var pos = get_pos()
-	if pos != null:
-		self.position = self.SCREEN.dungeon_to_screen(pos)
-		for v in anim_screen_offsets:
-			 self.position += Vector2(v.x,v.y)
-	if self.is_in_group(Const.MOBS) && !self.is_in_group(Const.ON_FIRE):
-		if blocking:
-			if telegraphing:
-				set_color(Const.WINDUP_AND_PROTECTED_COLOR)
-			elif is_ready:
-				set_color(Const.READY_AND_PROTECTED_COLOR)
-			else:
-				set_color(Const.PROTECTED_COLOR)
-		else:
-			if telegraphing:
-				set_color(Const.WINDUP_COLOR)
-			elif is_ready:
-				set_color(Const.READY_COLOR)
-			else:
-				set_color(Color(0.7, 0.7, 0.7))
-
 func do_fire():
-	on_fire -= 1
+	self.on_fire -= 1
 	if on_fire <= 0:
 		die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
@@ -247,7 +237,7 @@ var pre_fire_color = null
 func ignite():
 	self.on_fire = 3
 	if pre_fire_color == null:
-		pre_fire_color = self_modulate
+		pre_fire_color = actor_body.self_modulate
 	add_to_group(Const.ON_FIRE)
 	if fire_particles == null:
 		fire_particles = preload("res://scenes/burning.tscn").instance()
@@ -255,8 +245,46 @@ func ignite():
 
 func extinguish():
 	remove_from_group(Const.ON_FIRE)
-	set_color(pre_fire_color)
+	actor_body.set_color(pre_fire_color)
 	pre_fire_color = null
 	if fire_particles != null:
 		fire_particles.queue_free()
 		fire_particles = null
+
+
+########## indirection to actor_body
+
+func pending_animation() -> float:
+	if !actor_body:
+		return 0.0
+	return actor_body.pending_animation()
+
+func animation_delay(duration: float):
+	if !actor_body:
+		return
+	actor_body.animation_delay(duration)
+
+func set_glyph_index(x: int):
+	glyph_index = x
+	if !actor_body:
+		return
+	actor_body.glyph_index = x
+	actor_body._refresh()
+
+func set_color(x: Color):
+	color = x
+	if !actor_body: return
+	actor_body.self_modulate = color
+	actor_body._refresh()
+
+func set_terrain(x: Terrain):
+	terrain = x
+	if !actor_body:
+		return
+	actor_body.terrain = x
+
+func set_on_fire(x: int):
+	on_fire = x
+	if !actor_body: return
+	actor_body.on_fire = on_fire
+	actor_body._refresh()

@@ -35,7 +35,6 @@ func nudge(dir: int, player_opened: bool = true) -> bool:
 			else:
 				combatLog.say("You hear a table fall over. A plate shatters loudly.")
 			self.glyph_index = fallen_idx
-			self._refresh()
 			fallen = true
 			add_to_group(Const.PROJECTILE_BLOCKER)
 			emit_signal("thump")

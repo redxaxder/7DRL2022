@@ -67,5 +67,5 @@ func on_turn():
 
 func attack():
 	combatLog.say("The archaeologist bashes you with a trowel!")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.injure()

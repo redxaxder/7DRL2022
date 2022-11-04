@@ -93,12 +93,12 @@ func attack():
 				if thing.is_in_group(Const.FURNITURE):
 					if randf() < thing.flammability:
 						combatLog.say("The {0} bursts into flames!".format([thing.label]))
-						thing.animation_delay(self.pending_animation() + fireball_delay)
+						thing.animation_delay(actor_body.pending_animation() + fireball_delay)
 						thing.ignite()
 				if thing.is_in_group(Const.PROJECTILE_BLOCKER):
 					cont = false
 				if thing.is_in_group(Const.MOBS):
-					thing.animation_delay(self.pending_animation() + fireball_delay)
+					thing.animation_delay(actor_body.pending_animation() + fireball_delay)
 					if thing.blocking:
 						combatLog.say("The fireball is blocked by the {0}".format([thing.label]))
 						thing.knockback(shot_dir)
@@ -109,6 +109,6 @@ func attack():
 			combatLog.say("The fireball misses.", 20)
 			cont = false
 		if !cont:
-			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation() / anim_speed,  fireball_trail.instance()))
+			terrain.add_child(Projectile.new(20, pos, target, fireball_sprite.instance(), self.pending_animation(),  fireball_trail.instance()))
 		target += shot_dir
 		travel += 1

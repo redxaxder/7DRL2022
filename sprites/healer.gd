@@ -21,5 +21,5 @@ func on_turn():
 
 func attack():
 	self.combatLog.say("The healer brings forth a wave of calming energy.")
-	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation() / anim_speed)
+	AttackIndicator.new(terrain, pc.get_pos(), self.pending_animation())
 	self.pc.calm(heal_damage)

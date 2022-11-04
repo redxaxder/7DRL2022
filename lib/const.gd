@@ -43,5 +43,7 @@ const READY_COLOR = Color(0.7, 0.653333, 0)
 const READY_AND_PROTECTED_COLOR = Color(0.35, 0.7, 0.385)
 const WINDUP_AND_PROTECTED_COLOR = Color(0.315, 0.340667, 0.7)
 
+const WOOD_COLOR = Color(0.627451, 0.294118, 0)
+
 # misc
 const THE_HIDEOUT: Vector2 = Vector2(-1000,-1000)

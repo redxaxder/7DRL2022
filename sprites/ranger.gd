@@ -62,7 +62,7 @@ func attack():
 		pc.injure()
 	else:
 		combatLog.say("The ranger's arrow harmlessly flies wide.",  20)
-	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance(), self.pending_animation() / anim_speed))
+	terrain.add_child(Projectile.new(15, get_pos(), target, arrow_projectile_scene.instance(), self.pending_animation()))
 
 
 func die(dir: Vector2):

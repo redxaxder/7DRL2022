@@ -58,6 +58,7 @@ func _ready():
 	self.player = true
 	self.speed = normal_speed
 	self.pc = self
+	glyph_index = 64
 	tiebreaker = 100
 	southpaw = randi() % 4 == 0
 	flammability = 0
@@ -225,7 +226,7 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 		if weapon != null and not force_bear_hands:
 			weapon.attack.extra_knockback = extra_knockback
 			weapon.attack.parent = terrain
-			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
+			did_attack = weapon.attack.try_attack(locationService, get_pos(), dir, actor_body.pending_animation(), terrain)
 			if did_attack && fatigue - (weapons_broken * weapon_break_level) > weapon_break_level:
 				combatLog.say("The {0} crumbles in your grasp.".format([weapon.label]))
 				weapons_broken += 1
@@ -235,7 +236,7 @@ func try_attack(dir, force_bear_hands: bool = false) -> bool:
 		else:
 			punch.extra_knockback = extra_knockback
 			punch.parent = terrain
-			did_attack = punch.try_attack(locationService, get_pos(), dir, pending_animation(), terrain)
+			did_attack = punch.try_attack(locationService, get_pos(), dir, actor_body.pending_animation(), terrain)
 	return did_attack
 
 func try_kick_furniture(dir) -> bool:
@@ -243,7 +244,7 @@ func try_kick_furniture(dir) -> bool:
 	var targetCell = get_pos() + DIR.dir_to_vec(dir)
 	var targets = locationService.lookup(targetCell, constants.FURNITURE)
 	for t in targets:
-		t.animation_delay(self.pending_animation())
+		t.animation_delay(actor_body.pending_animation())
 		if rage > 0:
 			acted = t.kick(dir, extra_knockback)
 		else:
@@ -450,7 +451,7 @@ func throw_item() -> bool:
 			throw.parent = terrain
 			throw.sprite = pickup.sprite
 			throw.message = "You throw your {0} at the ".format([pickup.label]) + "{0}."
-			did_throw = throw.try_attack(locationService, get_pos(), d, self.pending_animation(), terrain)
+			did_throw = throw.try_attack(locationService, get_pos(), d, actor_body.pending_animation(), terrain)
 	if did_throw:
 		pickup.queue_free()
 		pickup = null
