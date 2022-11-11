@@ -241,7 +241,7 @@ func ignite():
 	add_to_group(Const.ON_FIRE)
 	if fire_particles == null:
 		fire_particles = preload("res://scenes/burning.tscn").instance()
-		add_child(fire_particles)
+		actor_body.add_child(fire_particles)
 
 func extinguish():
 	self.on_fire = 0

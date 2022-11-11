@@ -52,7 +52,7 @@ V 0.3 plans:
 - consumable rebalance
 
 BUGS:
-  - wall torch flames visible in out of bounds area
+  + wall torch flames visible in out of bounds area
   - "collides with ." messages
   - consumed by flames on exiting rage
   - desync between body state changes and animations
