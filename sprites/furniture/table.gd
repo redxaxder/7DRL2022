@@ -13,6 +13,7 @@ func _ready():
 	add_to_group(Const.PATHING_BLOCKER)
 	add_to_group(Const.FLAMMABLE)
 	self.flammability = 0.5
+	self.color = Const.WOOD_COLOR
 #	add_child(fallen_inst)
 #	fallen_inst.visible = false
 

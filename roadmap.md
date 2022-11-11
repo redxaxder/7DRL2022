@@ -58,7 +58,8 @@ BUGS:
   - desync between body state changes and animations
   - pathing is jank
   - trampling does not splat
-  - furniture is not furniture-colored
+  + furniture is not furniture-colored
+  - lethal knockback does not animate
 
 technical debt ideas:
   - individual scenes for images
