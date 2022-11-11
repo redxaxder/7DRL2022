@@ -63,7 +63,7 @@ func init(item_type: int):
 			pickup_text = "You pick up a book."
 			read_text = snooty_array[randi() % snooty_array.size()]
 
-	sprite.modulate = Color(0.767029, 1, 0.672304)
+	sprite.self_modulate = Const.PICKUP_COLOR
 	add_child(sprite)
 
 func take():

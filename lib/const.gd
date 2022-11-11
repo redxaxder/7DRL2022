@@ -40,11 +40,14 @@ const IMMOBILIZED = "immobilized"
 const PROTECTED_COLOR = Color(0, 0.688334, 0.7)
 const WINDUP_COLOR = Color(0.63, 0, 0.7)
 const READY_COLOR = Color(0.7, 0.653333, 0)
-const READY_AND_PROTECTED_COLOR = Color(0.35, 0.7, 0.385)
+const READY_AND_PROTECTED_COLOR = Color(0.243, 0.45, 0.2637)
 const WINDUP_AND_PROTECTED_COLOR = Color(0.315, 0.340667, 0.7)
 
 const WOOD_COLOR = Color(0.627451, 0.294118, 0)
 const METAL_COLOR = Color(0.460938, 0.460938, 0.460938)
+const PICKUP_COLOR = Color(0.389385, 0.51, 0.3417)
+const WEAPON_COLOR = Color(0.59536, 0.3904, 0.61)
+
 
 # misc
 const THE_HIDEOUT: Vector2 = Vector2(-1000,-1000)
