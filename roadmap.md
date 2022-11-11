@@ -51,6 +51,15 @@ V 0.3 plans:
 - display current floor
 - consumable rebalance
 
+BUGS:
+  - wall torch flames visible in out of bounds area
+  - "collides with ." messages
+  - consumed by flames on exiting rage
+  - desync between body state changes and animations
+  - pathing is jank
+  - trampling does not splat
+  - furniture is not furniture-colored
+
 technical debt ideas:
   - individual scenes for images
   - manual side-arguments
