@@ -54,7 +54,8 @@ V 0.3 plans:
 BUGS:
   + wall torch flames visible in out of bounds area
   - "collides with ." messages
-  - consumed by flames on exiting rage
+    - having trouble reproducing
+  + consumed by flames on exiting rage
   - desync between body state changes and animations
   - pathing is jank
   + trampling does not splat
@@ -76,6 +77,8 @@ QOL stuff:
 - Better fire deaths, unsatisfying how enemies just disappear
   - Also, we should stop emitting particles and only free enemies
     when particles are all gone
+- Some kind of separator on the log so that you can tell the most
+  recent turn from older turns at a glance
 
 Strech Goals:
 - dial up the anger along a curve like the zoom

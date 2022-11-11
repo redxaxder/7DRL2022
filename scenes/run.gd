@@ -171,6 +171,9 @@ const relax_bonuses: Array = [0,5,10,10,100,100,1000,1000,1000000000000]
 func do_relax() -> bool:
 	if pc.rage <= 0:
 		return false
+	elif pc.on_fire:
+		combatLog.say("Like your body, your rage smolders.")
+		return false
 	combatLog.say(relax_messages[relax_chain])
 	var calm = relax_bonuses[relax_chain]
 	if calm > 0:
