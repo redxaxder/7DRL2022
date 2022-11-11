@@ -48,7 +48,7 @@ func _ready():
 	set_color(color)
 
 func do_turn():
-	if on_fire <= 0 || player:
+	if self.on_fire <= 0 || player:
 		if has_method("on_turn"):
 			call("on_turn")
 		return
@@ -215,7 +215,7 @@ func knockback(dir: Vector2, distance: int = 1000, power = 1):
 	emit_signal("thump")
 
 func do_fire():
-	self.on_fire -= 1
+	self.on_fire = self.on_fire - 1
 	if on_fire <= 0:
 		die(Dir.dir_to_vec(randi() % 4))
 		extinguish()
@@ -244,6 +244,7 @@ func ignite():
 		add_child(fire_particles)
 
 func extinguish():
+	self.on_fire = 0
 	remove_from_group(Const.ON_FIRE)
 	actor_body.set_color(pre_fire_color)
 	pre_fire_color = null
