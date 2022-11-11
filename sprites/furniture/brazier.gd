@@ -12,6 +12,7 @@ func _ready():
 	add_to_group(Const.BLOCKER)
 	add_to_group(Const.PATHING_BLOCKER)
 	self.flammability = 0.0
+	self.color = Const.METAL_COLOR
 
 func kick(dir: int, extra_knockback = 0) -> bool:
 	ignite()
