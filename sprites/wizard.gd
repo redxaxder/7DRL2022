@@ -97,6 +97,10 @@ func attack():
 						thing.ignite()
 				if thing.is_in_group(Const.PROJECTILE_BLOCKER):
 					cont = false
+					if thing.flammability > 0 && !thing.is_in_group(Const.ON_FIRE):
+						combatLog.say("The {0} bursts into flames!".format([thing.label]))
+						thing.animation_delay(actor_body.pending_animation() + fireball_delay)
+						thing.ignite()
 				if thing.is_in_group(Const.MOBS):
 					thing.animation_delay(actor_body.pending_animation() + fireball_delay)
 					if thing.blocking:

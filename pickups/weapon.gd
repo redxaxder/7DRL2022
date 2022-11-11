@@ -71,7 +71,8 @@ func init(type: int, southpaw: bool = false):
 			label = "torch"
 			pickup_text = "You pick up a torch."
 			sprite = torch_sprite.instance()
-	sprite.modulate = Color(0.956643, 0.778013, 1)
+
+	sprite.self_modulate = Const.WEAPON_COLOR
 	add_child(sprite)
 	attack.southpaw = southpaw
 
