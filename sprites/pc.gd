@@ -64,7 +64,6 @@ func _ready():
 	flammability = 0
 	add_to_group(self.constants.PLAYER)
 	add_to_group(Const.BLOCKER)
-	._ready()
 
 var starting_rage: int = 40
 var rage_on_got_hit: int = 6
