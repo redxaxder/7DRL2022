@@ -57,6 +57,7 @@ BUGS:
   - consumed by flames on exiting rage
   - desync between body state changes and animations
   - pathing is jank
+  - trampling does not splat
 
 technical debt ideas:
   - individual scenes for images
