@@ -114,14 +114,18 @@ func end_ready():
 	is_ready = false
 	update()
 
-func die(_dir: Vector2):
+func die(dir: Vector2):
+	actor_body.queue_death(dir)
+
 	#notify PC of kills
 	#TODO: maybe handle if it was killed by someone else (eg: wizard)
 	if is_in_group(Const.MOBS):
 		emit_signal("killed_by_pc", label)
 	if self.locationService:
 		self.locationService.delete_node(self)
-	#TODO: the body outlives the soul (briefly)
+
+	remove_child(actor_body)
+	get_parent().add_child(actor_body)
 	queue_free()
 
 func animated_move_to(target: Vector2, duration: float = 1):

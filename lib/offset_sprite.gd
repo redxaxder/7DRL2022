@@ -25,6 +25,9 @@ func animation_delay(duration: float):
 	var av = Vector3(0,0,duration)
 	anim_screen_offsets.push_back(av)
 
+func has_pending_animation() -> bool:
+	return self.anim_screen_offsets.size() > 0
+
 func pending_animation() -> float:
 	var total = 0
 	for v in self.anim_screen_offsets:

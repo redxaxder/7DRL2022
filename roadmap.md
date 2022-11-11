@@ -57,9 +57,10 @@ BUGS:
   - consumed by flames on exiting rage
   - desync between body state changes and animations
   - pathing is jank
-  - trampling does not splat
+  + trampling does not splat
   + furniture is not furniture-colored
-  - lethal knockback does not animate
+  + lethal knockback does not animate
+  - splat sound effect missing
 
 technical debt ideas:
   - individual scenes for images
