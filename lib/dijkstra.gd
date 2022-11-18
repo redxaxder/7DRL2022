@@ -27,10 +27,11 @@ func refresh():
 	dijkstra_map.resize(terrain.contents.size())
 	destination_score = 0
 	for i in range(terrain.contents.size()):
-		if terrain.contents[i] == '#':
-			dijkstra_map[i] = null
-		else:
+		var contents = terrain.contents[i]
+		if ['#','w','W'].find(contents) == -1: # this terrain is not a wall or torch
 			dijkstra_map[i] = big
+		else:
+			dijkstra_map[i] = null
 
 func d_score(v: Vector2) -> int:
 	var ix = terrain.to_linear(v.x,v.y)

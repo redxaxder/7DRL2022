@@ -57,7 +57,7 @@ BUGS:
     - having trouble reproducing
   + consumed by flames on exiting rage
   - desync between body state changes and animations
-  - pathing is jank
+  + pathing is jank
   - rangers can shoot through walls
   + trampling does not splat
   + furniture is not furniture-colored
